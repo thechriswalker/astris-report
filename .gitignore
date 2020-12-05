@@ -1,0 +1,10 @@
+# The actual report.
+*.pdf
+
+# All the latex temporary crap
+*.aux
+*.lof
+*.log
+*.lot
+*.synctex.gz
+*.toc

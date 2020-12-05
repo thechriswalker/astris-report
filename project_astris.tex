@@ -1,0 +1,46 @@
+\documentclass[oneside]{scrbook}
+
+% Title Page
+\title{Reducing Trust in e-Voting Schemes}
+\author{Chris Walker}
+\date{December 2020}
+\titlehead{Dissertation as part of the Information Security Masters}
+\publishers{Information Security Master\\ Royal Holloway}
+
+\begin{document}
+\maketitle
+
+\frontmatter
+
+% Using \section* here instead of \chapter makes it not require and special
+% page for each one, so we make the page manually.
+% these 2
+\vspace*{\fill}
+\section*{Abstract}
+
+What is it all about
+
+\vspace*{1in}
+\section*{Acknowledgments}
+
+Thanks to Rosie for her endless patience and support during the process of creating this project. It would not have been possible otherwise.
+
+\vspace*{\fill}
+
+\tableofcontents
+
+\listoffigures
+\listoftables
+
+
+\mainmatter
+\include{chapters/introduction.tex}
+\include{chapters/requirements-of-voting.tex}
+\include{chapters/evoting.tex}
+\include{chapters/helios.tex}
+\include{chapters/blockchains.tex}
+\include{chapters/proposal-astris.tex}
+\include{chapters/implementation.tex}
+\include{chapters/conclusion.tex}
+
+\end{document}
