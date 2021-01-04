@@ -1,25 +1,20 @@
 
-\chapter{Conclusion}
-\label{ch:conclusion}
+\chapter{Analysis}
+\label{ch:analysis}
 
 \section{Analysis of the Proposed Protocol}
-\label{ch:conclusion:analysis}
+\label{ch:analysis:analysis}
 
 Does the protocol meet the security properties I wanted it to?
 
 \section{Comparison to Existing Protocols}
-\label{ch:conclusion:comparison}
+\label{ch:analysis:comparison}
 
 Does it tick more boxes? Does it make different assumptions? Is there less trust required?
 
 \section{Implementation Success and Analysis}
-\label{ch:conclusion:impl}
+\label{ch:analysis:impl}
 
 Did the implementation work? Did it achieve it's objectives?
 Does is have any obvious flaws? Where did I take shortcuts?
 What assumptions does it make?
-
-\section{Final Conclusions}
-\label{ch:conclusion:final}
-
-Wrap up and say something interesting....

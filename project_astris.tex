@@ -1,46 +1,92 @@
 \documentclass[oneside]{scrbook}
-
-% Title Page
-\title{Reducing Trust in e-Voting Schemes}
-\author{Chris Walker}
-\date{December 2020}
-\titlehead{Dissertation as part of the Information Security Masters}
-\publishers{Information Security Master\\ Royal Holloway}
+\usepackage{graphicx}
+\usepackage[onehalfspacing]{setspace}
+\usepackage[top=1.2in, left=2.7cm, bottom=1.2in, right=2.7cm]{geometry}
 
 \begin{document}
-\maketitle
 
+% our custom title page with the RHUL logo on it
+\begin{titlepage}
+
+% \title{Reducing Trust in e-Voting Schemes}
+% \author{Chris Walker}
+% \date{December 2020}
+% \titlehead{Dissertation as part of the Information Security Masters}
+% \publishers{Information Security Master\\ Royal Holloway}
+
+
+\begin{center}
+    {\large Student Number: 170197098 \\ Christopher Walker}
+
+    \vspace*{1cm}
+
+    {\Huge\bfseries Reducing Trust Requirements for e-Voting Schemes}
+
+    \vspace*{1cm}
+
+    {\large Supervisor:  Professor Kostas Markantonakis}
+
+    \vspace*{1cm}
+
+    \includegraphics[scale=0.5]{lib/rhuol_logo.jpg}
+
+    \vspace*{2cm}
+
+    \large Submitted as part of the requirements for the award of the \\
+MSc in Information Security at \\
+Royal Holloway, University of London.
+
+\end{center}
+
+\vspace*{3cm}
+
+\begin{flushleft}
+I declare that this assignment is all my own work and that I have acknowledged all quotations from published or unpublished work of other people.  I also declare that I have read the statements on plagiarism in Section 1 of the Regulations Governing Examination and Assessment Offences, and in accordance with these regulations I submit this project report as my own work.
+
+\includegraphics[scale=0.7]{lib/signature.png} \\
+
+Christopher Walker \\ \today
+\end{flushleft}
+
+\end{titlepage}
+
+% and the anti-plagierism declaration page
 \frontmatter
 
 % Using \section* here instead of \chapter makes it not require and special
 % page for each one, so we make the page manually.
 % these 2
-\vspace*{\fill}
+
 \section*{Abstract}
 
 What is it all about
 
-\vspace*{1in}
-\section*{Acknowledgments}
+\newpage
 
-Thanks to Rosie for her endless patience and support during the process of creating this project. It would not have been possible otherwise.
 
-\vspace*{\fill}
+
+% \newpage
+
+% \section*{Acknowledgments}
+
+% Thanks to Rosie for her endless patience and support during the process of creating this project. It would not have been possible otherwise.
+
+
+% \vspace*{\fill}
 
 \tableofcontents
-
 \listoffigures
 \listoftables
 
-
 \mainmatter
-\include{chapters/introduction.tex}
-\include{chapters/requirements-of-voting.tex}
-\include{chapters/evoting.tex}
-\include{chapters/helios.tex}
-\include{chapters/blockchains.tex}
-\include{chapters/proposal-astris.tex}
-\include{chapters/implementation.tex}
-\include{chapters/conclusion.tex}
+\include{chapters/02-introduction}
+\include{chapters/03-requirements-of-voting}
+\include{chapters/04-evoting}
+\include{chapters/05-helios}
+\include{chapters/06-blockchains}
+\include{chapters/07-proposal-astris}
+\include{chapters/08-implementation}
+\include{chapters/09-analysis}
+\include{chapters/10-conclusion}
 
 \end{document}
