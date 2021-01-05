@@ -1,0 +1,44 @@
+
+\chapter{Introduction}
+\label{ch:intro}
+
+\section{Motivation}
+\label{ch:intro:motiv}
+
+I will admit that I had not given much thought to voting schemes before I started the Information Security Masters here at Royal Holloway. However, I have long been fascinated by trust in software systems and the implicit trust required to use almost any system. Indeed that was a key motivation of my participation in the course. Information Security covers a wide variety of topics but a common thread is that it must ensure the \emph{right} entities have the \emph{right} information and the \emph{wrong} entities do not. Much of that involves establishing which people or systems we will \emph{trust} and which we will consider \emph{untrusted}.
+
+Early on in looking for topics for this project I can across the idea of e-voting systems and was immediately drawn in by the interesting security properties that are desirable for them and the fascinating uses of cryptography to achieve some of those properties. While researching various e-voting systems I noticed that there was little mention of trust, which led me to start thinking about it.
+
+I believe that we have technologies and cryptography now that can allow us to design secure, desirable and trustworthy e-voting schemes and this is what I aim to show in this report.
+
+% The level of trust required by any system is calculated from the probability that the system can be compromised.
+
+\section{Objectives}
+\label{ch:intro:object}
+
+% \todo{clean up this list, it's not 100\% yet}
+
+This report aims to:
+
+\begin{enumerate}
+    \item Describe the security properties desirable in e-voting schemes.
+    \item Analyse existing e-voting schemes, their security properties and identify areas that require significant trust from the user.
+    \item Introduce the technologies and cryptogrphic systems we can leverage to desgin a better system.
+    \item Propose and provide a software implementation of a scheme that is minimises trust requirements while maximising coverage of the desirable security properties.
+    \item Implement a proof-of-concept software implementation of the propsed protocol
+    \item Analyse the protocol and the success of the implementation against the criteria used to analyse the existing schemes.
+    \item Form a conclusion as to whether we {\textbf{can}} reach a minimum level of trust while maintaining the desirable security properties.
+\end{enumerate}
+
+
+\section{Structure of the Report and Methodology}
+\label{ch:intro:method}
+
+The is structured as shown in the following diagram:
+
+\todo{
+    Structure could probably do with a graphic, I like the tree (DAG) diagram
+}
+
+In order to compile this report,
+
