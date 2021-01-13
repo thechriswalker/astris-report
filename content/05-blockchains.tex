@@ -6,23 +6,47 @@
 \label{ch:blockchain:intro}
 
 \todo{
-    Why have blockchains become a thing? What makes them special? \\
-    What is the key advancement that has shot them to notoriety? \\
-    That is the distributed consensus and immutability. \\
+  Why have blockchains become a thing? What makes them special? \\
+  What is the key advancement that has shot them to notoriety? \\
+  That is the distributed consensus and immutability. \\
 }
 
 \section{Structure of a Blockchain}
 \label{ch:blockchain:structure}
 
-\todo{Simple tech write up of the basic idea of a blockchain}
+Blockchains are at their core built from two simple principles. These two principles provide a foundation of the technology and number of useful properties. They are:
+
+\begin{enumerate}
+  \item Every block is linked unforgeably to the previous block.
+  \item Creating a block requires some "work".
+\end{enumerate}
+
+Let us look at the first principle. The important word is \emph{unforgeably}. Each block has it's contents assured by a cryptographic hash function. This hash includes data from the hash of the previous block. This way we cannot retrospectively change the contents of a block, as it's hash would no longer validate, nor would the hash of any subsequent blocks. This means that to rewrite a block in the chain, we would need to rewrite the entire thing from that block onwards.
+
+\todo {diagram?}
+
+This would not be difficult to do if it weren't for the second principle which says that in order to create (\emph{mine}) a block, we must perform a non-trivial amount of work. This means that in order to rewrite a block, you would need to be able to perform this work again for all the block and for all subsequent blocks.
+
+This immutability of data is the main property of a blockchain. On top of this, a distributed system using a blockchain can agree to a consensus algorithm to allow untrusted systems to agree on the data. We will discuss this in the Consensus section.
 
 \subsection{Blocks, Hashes and Work functions}
 \label{ch:blockchain:structure:basics}
 
+Here is a representation of data in a simple block chain. Note that the structure of the most famous blockchain (as used in BitCoin \needcite{bitcoin})
+
 \todo{
-    How a block is structured, how the hashes are "chained" to the contents and how the blocks can be "validated" back to the "genesis" block. \\
-    Maybe Work functions should get their own section as there are options: Proof of Work or Proof of Stake or someother proof. Each option has variants and will be implemented differently. \\
-    Look at proof of work and the "hashcash" algorithm, the almost "hashcash" in bitcoin and the PoW in Monero (much more variable). \\
+  SVG of a few blocks each with a payload, previous hash, proof of work, payload \\
+  Show how the block's hash is H(prev, H(payload)) \\
+  Do not elaborate on the proof of work here.
+}
+
+Each block include a reference to the hash of the previous block. All immutable data is included in the block's own hash, the
+
+
+\todo{
+  How a block is structured, how the hashes are "chained" to the contents and how the blocks can be "validated" back to the "genesis" block. \\
+  Maybe Work functions should get their own section as there are options: Proof of Work or Proof of Stake or someother proof. Each option has variants and will be implemented differently. \\
+  Look at proof of work and the "hashcash" algorithm, the almost "hashcash" in bitcoin and the PoW in Monero (much more variable). \\
 }
 
 \subsection{Consensus}
@@ -34,9 +58,9 @@
 \label{ch:blockchain:types}
 
 \todo{
-    Public chains like cryptocurrencies, private chains like internal audit logs. Hybrid distributed ledgers for open viewing, but private updates. \\
-    - Bitcoin and transactions \\
-    - Ethereum and smart contracts
+  Public chains like cryptocurrencies, private chains like internal audit logs. Hybrid distributed ledgers for open viewing, but private updates. \\
+  - Bitcoin and transactions \\
+  - Ethereum and smart contracts
 }
 
 
@@ -44,5 +68,5 @@
 \label{ch:blockchain:trust}
 
 \todo{
-    How do blockchains reduce trust requirements? What to we need to trust? How is that different/better/worse than centralised systems?
+  How do blockchains reduce trust requirements? What to we need to trust? How is that different/better/worse than centralised systems?
 }

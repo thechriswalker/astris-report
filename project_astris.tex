@@ -1,5 +1,6 @@
 \documentclass[oneside]{scrbook}
 \usepackage{graphicx}
+\usepackage[acronym]{glossaries}
 \usepackage[onehalfspacing]{setspace}
 \usepackage[top=2.7cm, left=2.7cm, bottom=2.7cm, right=2.6cm]{geometry}
 \usepackage{xcolor}
@@ -18,6 +19,14 @@
   }
 }
 
+\newcommand{\needcite}[1]{{\color{magenta} \textbf{\{NeedCite }#1\textbf{\}} }}
+
+\makeglossaries
+
+% abbreviations:
+\newacronym{oed}{OED}{Oxford English Dictionary}
+
+
 \begin{document}
 
 % title / cover and the anti-plagierism declaration page
@@ -35,9 +44,11 @@
 
 \listoftables
 
+\printglossary[type=\acronymtype,title=List of Abbreviations,nonumberlist]
 
 % This is the start of the project "for-real"
 \mainmatter
+
 \include{content/01-introduction}
 
 \include{content/02-requirements-of-voting}
@@ -55,5 +66,9 @@
 \include{content/08-analysis}
 
 \include{content/09-conclusion}
+
+
+\bibliography{project_astris}
+\bibliographystyle{lib/ieeetran}
 
 \end{document}
