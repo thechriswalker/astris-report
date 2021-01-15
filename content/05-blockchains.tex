@@ -7,7 +7,7 @@
 
 Blockchains are an immutable ledger: they allow you to record data in a way that cannot be disputed in the future. Along with a distributed peer-to-peer network, a blockchain allows for mutually untrusting parties to agree on the content of a shared immutable ledger.
 
-This forms the basis of cryptocurrencies where the transactions in the currency are entries into this ledger. The transactions themselves use other cyptographic functions to ensure their own rules, but the chain is what allows a public system where no node is required to trust any other node yet all nodes can agree on the content of the ledger.
+This forms the basis of cryptocurrencies where the transactions in the currency are entries into this ledger. The transactions themselves use other cryptographic functions to ensure their own rules, but the chain is what allows a public system where no node is required to trust any other node, yet all nodes can agree on the content of the ledger.
 
 \todo{
     Why have blockchains become a thing? What makes them special? \\
@@ -21,17 +21,17 @@ This forms the basis of cryptocurrencies where the transactions in the currency 
 Blockchains are at their core built from two simple principles. These two principles provide a foundation of the technology and number of useful properties. They are:
 
 \begin{enumerate}
-    \item Every block is linked unforgeably to the previous block.
+    \item Every block is linked to the previous block in a deterministic manner.
     \item Creating a block requires investment of some value.
 \end{enumerate}
 
-Let us look at the first principle. The important word is \emph{unforgeably}. Each block has it's contents assured by a cryptographic hash function. This hash includes data from the hash of the previous block. This way we cannot retrospectively change the contents of a block, as it's hash would no longer validate, nor would the hash of any subsequent blocks. This means that to rewrite a block in the chain, we would need to rewrite the entire thing from that block onwards.
+Let us look at the first principle. The important word is \emph{deterministic}. Each block has its contents assured by a cryptographic hash function. This hash includes data from the hash of the previous block. This way we cannot retrospectively change the contents of a block, as its hash would no longer validate, nor would the hash of any subsequent blocks. To rewrite a block in the chain, we would need to rewrite the entire thing from that block onwards, so that all the new hashes would be correct.
 
 \todo {diagram?}
 
-This would not be difficult to do if it weren't for the second principle which says that in order to create (\emph{mine}) a block, we must put in something of value. This means that in order to rewrite a block, you would need to re-input the same amount of value again for that block and for all subsequent blocks.
+This would not be difficult to do if it weren't for the second principle which says that in order to create (\emph{mine}) a block, we must put in something of value. In order to rewrite a block, you would need to re-input the same amount of value again for that block and for all subsequent blocks.
 
-This immutability of data is the main property of a blockchain. On top of this, a distributed system using a blockchain can agree to a consensus algorithm to allow untrusted systems to agree on the data. We will discuss this in the Consensus section.
+The immutability of data is the main property of a blockchain. On top of this, a distributed system using a blockchain can agree to a consensus algorithm to allow untrusted systems to agree on the data. We will discuss this in the Consensus section.
 
 \subsection{Blocks, Hashes and Work functions}
 \label{ch:blockchain:structure:basics}
@@ -44,9 +44,9 @@ Blockchains use cryptographic hash functions for a number of their properties. H
     \item \textbf{Collision Resistance} It should be hard to find two messages $m_1$ and $m_2$ such that $H(m_1) = H(m_2)$.
 \end{enumerate}
 
-Note that second preimage resistance is implied by collision resistance, however it is subtley different as we are not attempting to find \emph{any} collision, but a specific collision for a known message. The recent SHAttered \cite{katz_first_2017} attack on the SHA1 hash function was used to break of collision resistance, not second pre-image resistance.
+Note that second preimage resistance is implied by collision resistance, however it is subtly different as we are not attempting to find \emph{any} collision, but a specific collision for a known message. The recent SHAttered \cite{katz_first_2017} attack on the SHA1 hash function was used to break collision resistance, not second pre-image resistance.
 
-Here is a representation of data in a simple block chain. Note that the structure of the most famous blockchain (as used in BitCoin \needcite{bitcoin}) is quite different, but the core concepts are the same here.
+Here is a representation of data in a simple blockchain. Note that the structure of the most famous blockchain (as used in BitCoin \needcite{bitcoin}) is quite different, but the core concepts are the same here.
 
 \todo{
     SVG of a few blocks each with a payload, previous hash, proof of work, payload \\
@@ -58,9 +58,9 @@ Here we see how the data we want to ensure are immutable -- the block payload, t
 
 The remaining piece of information here is the \emph{proof}. There idea here is that the entity creating the block must invest some value in it, as if it were free then anyone could recreate the chain at zero cost. The method most often used in blockchains is known as a proof of work and involves performing a computational task that takes a non-trivial amount of processing power to perform but a trivial amount to check it was performed correctly.
 
-An early implementation of this idea is HashCash \needcite{hashcash} initially devised as a spam prevention mechanism. The main principle is that we have the data we wish to cover with the proof and we append a random number. We then take the SHA-1 hash of this and if the first 20-bits of the 160-bit output are all zeros, then we deem the proof valid. If not then we change the random number and try again. The hash function chosen has a property known as \emph{psuedo-randomness} which means that the output appears random, with no correllation to how similiar the inputs. This means that the probability of a hash having the first 20-bits all zero is fixed at $2_-20$ and so this will likely take a large number of attempts to find such a number.
+An early implementation of this idea is HashCash \needcite{hashcash} initially devised as a spam prevention mechanism. The main principle is that we have the data we wish to cover with the proof and we append a random number. We then take the SHA-1 hash of this and if the first 20-bits of the 160-bit output are all zeros, then we deem the proof valid. If not then we change the random number and try again. The hash function chosen has a property known as \emph{psuedo randomness} which means that the output appears random, with no correlation to how similar the inputs. This means that the probability of a hash having the first 20-bits all zero is fixed at $2_-20$ and so this will likely take many attempts to find such a number.
 
-For a blockchain we can use a similiar function using all the data that makes the block identifier hash as the prefix and trying values for the proof until a satisfactory value is found. Most real blockchains implement a more advanced version of this which takes into account the computing power available, for example adjusting the difficulty of the work function to attempt to keep the new block creation rate fixed.
+For a blockchain we can use a similar function using all the data that makes the block identifier hash as the prefix and trying values for the proof until a satisfactory value is found. Most real blockchains implement a more advanced version of this which takes into account the computing power available, for example adjusting the difficulty of the work function to attempt to keep the new block creation rate fixed.
 
 \todo{
     How a block is structured, how the hashes are "chained" to the contents and how the blocks can be "validated" back to the "genesis" block. \\
