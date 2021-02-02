@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="401.63mm" height="123.88mm" version="1.1" viewBox="0 0 401.63 123.88" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <marker id="DiamondS" overflow="visible" orient="auto">
+   <path transform="scale(.2)" d="m0-7.0711-7.0711 7.0711 7.0711 7.0711 7.071-7.0711z" fill="#f00" fill-rule="evenodd" stroke="#f00" stroke-width="1pt"/>
+  </marker>
+  <marker id="DiamondSend" overflow="visible" orient="auto">
+   <path transform="matrix(.2 0 0 .2 -1.2 0)" d="m0-7.0711-7.0711 7.0711 7.0711 7.0711 7.071-7.0711z" fill="#f00" fill-rule="evenodd" stroke="#f00" stroke-width="1pt"/>
+  </marker>
+  <marker id="Arrow2Mstart" overflow="visible" orient="auto">
+   <path transform="scale(.6)" d="m8.7186 4.0337-10.926-4.0177 10.926-4.0177c-1.7455 2.3721-1.7354 5.6175-6e-7 8.0354z" fill="#00f" fill-rule="evenodd" stroke="#00f" stroke-linejoin="round" stroke-width=".625"/>
+  </marker>
+  <marker id="Arrow2Mstart-1" overflow="visible" orient="auto">
+   <path transform="scale(.6)" d="m8.7186 4.0337-10.926-4.0177 10.926-4.0177c-1.7455 2.3721-1.7354 5.6175-6e-7 8.0354z" fill="#00f" fill-rule="evenodd" stroke="#00f" stroke-linejoin="round" stroke-width=".625"/>
+  </marker>
+  <marker id="Arrow2Mstart-11" overflow="visible" orient="auto">
+   <path transform="scale(.6)" d="m8.7186 4.0337-10.926-4.0177 10.926-4.0177c-1.7455 2.3721-1.7354 5.6175-6e-7 8.0354z" fill="#00f" fill-rule="evenodd" stroke="#00f" stroke-linejoin="round" stroke-width=".625"/>
+  </marker>
+  <marker id="Arrow2Mstart-1-1" overflow="visible" orient="auto">
+   <path transform="scale(.6)" d="m8.7186 4.0337-10.926-4.0177 10.926-4.0177c-1.7455 2.3721-1.7354 5.6175-6e-7 8.0354z" fill="#00f" fill-rule="evenodd" stroke="#00f" stroke-linejoin="round" stroke-width=".625"/>
+  </marker>
+  <marker id="Arrow2Mstart-0" overflow="visible" orient="auto">
+   <path transform="scale(.6)" d="m8.7186 4.0337-10.926-4.0177 10.926-4.0177c-1.7455 2.3721-1.7354 5.6175-6e-7 8.0354z" fill="#00f" fill-rule="evenodd" stroke="#00f" stroke-linejoin="round" stroke-width=".625"/>
+  </marker>
+  <marker id="Arrow2Mstart-1-9" overflow="visible" orient="auto">
+   <path transform="scale(.6)" d="m8.7186 4.0337-10.926-4.0177 10.926-4.0177c-1.7455 2.3721-1.7354 5.6175-6e-7 8.0354z" fill="#00f" fill-rule="evenodd" stroke="#00f" stroke-linejoin="round" stroke-width=".625"/>
+  </marker>
+  <marker id="Arrow2Mstart-1-1-0" overflow="visible" orient="auto">
+   <path transform="scale(.6)" d="m8.7186 4.0337-10.926-4.0177 10.926-4.0177c-1.7455 2.3721-1.7354 5.6175-6e-7 8.0354z" fill="#00f" fill-rule="evenodd" stroke="#00f" stroke-linejoin="round" stroke-width=".625"/>
+  </marker>
+  <marker id="DiamondSend-1" overflow="visible" orient="auto">
+   <path transform="matrix(.2 0 0 .2 -1.2 0)" d="m0-7.0711-7.0711 7.0711 7.0711 7.0711 7.071-7.0711z" fill="#f00" fill-rule="evenodd" stroke="#f00" stroke-width="1pt"/>
+  </marker>
+  <marker id="DiamondS-2" overflow="visible" orient="auto">
+   <path transform="scale(.2)" d="m0-7.0711-7.0711 7.0711 7.0711 7.0711 7.071-7.0711z" fill="#f00" fill-rule="evenodd" stroke="#f00" stroke-width="1pt"/>
+  </marker>
+  <marker id="DiamondSend-1-4" overflow="visible" orient="auto">
+   <path transform="matrix(.2 0 0 .2 -1.2 0)" d="m0-7.0711-7.0711 7.0711 7.0711 7.0711 7.071-7.0711z" fill="#f00" fill-rule="evenodd" stroke="#f00" stroke-width="1pt"/>
+  </marker>
+  <marker id="DiamondS-2-2" overflow="visible" orient="auto">
+   <path transform="scale(.2)" d="m0-7.0711-7.0711 7.0711 7.0711 7.0711 7.071-7.0711z" fill="#f00" fill-rule="evenodd" stroke="#f00" stroke-width="1pt"/>
+  </marker>
+ </defs>
+ <g transform="translate(313.66 33.068)">
+  <g fill="none" stroke="#000">
+   <rect x="-287.04" y="-16.902" width="90.957" height="82.872" stroke-width=".22624"/>
+   <rect x="-287.11" y="-16.967" width="91.088" height="14.766" stroke-width=".095567"/>
+   <rect x="-287.11" y="-2.201" width="91.088" height="14.766" stroke-width=".095567"/>
+   <rect x="-287.11" y="12.565" width="91.088" height="14.766" stroke-width=".095567"/>
+  </g>
+  <g fill="#000000" font-family="sans-serif" font-size="5.6444px" stroke-width=".26458">
+   <text x="-283.04504" y="-7.4797316" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;line-height:1.25" xml:space="preserve"><tspan x="-283.04504" y="-7.4797316" font-family="sans-serif" font-size="5.6444px" stroke-width=".26458" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">block hash</tspan></text>
+   <text x="-283.04504" y="6.7392745" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;line-height:1.25" xml:space="preserve"><tspan x="-283.04504" y="6.7392745" font-family="sans-serif" font-size="5.6444px" stroke-width=".26458" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">previous hash</tspan></text>
+   <text x="-283.04504" y="21.505362" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;line-height:1.25" xml:space="preserve"><tspan x="-283.04504" y="21.505362" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">payload hash</tspan><tspan x="-283.04504" y="28.560911" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal"/></text>
+   <text x="-283.04504" y="36.761909" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;line-height:1.25" xml:space="preserve"><tspan x="-283.04504" y="36.761909" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">payload</tspan><tspan x="-283.04504" y="43.817459" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal"/></text>
+  </g>
+  <g fill="none" stroke="#000">
+   <rect x="-153.99" y="-16.902" width="90.957" height="82.872" stroke-width=".22624"/>
+   <rect x="-154.05" y="-16.967" width="91.088" height="14.766" stroke-width=".095567"/>
+   <rect x="-154.05" y="-2.201" width="91.088" height="14.766" stroke-width=".095567"/>
+   <rect x="-154.05" y="12.565" width="91.088" height="14.766" stroke-width=".095567"/>
+  </g>
+  <g fill="#000000" font-family="sans-serif" font-size="5.6444px" stroke-width=".26458">
+   <text x="-149.98856" y="-7.4797316" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;line-height:1.25" xml:space="preserve"><tspan x="-149.98856" y="-7.4797316" font-family="sans-serif" font-size="5.6444px" stroke-width=".26458" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">block hash</tspan></text>
+   <text x="-149.98856" y="6.7392745" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;line-height:1.25" xml:space="preserve"><tspan x="-149.98856" y="6.7392745" font-family="sans-serif" font-size="5.6444px" stroke-width=".26458" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">previous hash</tspan></text>
+   <text x="-149.98856" y="21.505362" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;line-height:1.25" xml:space="preserve"><tspan x="-149.98856" y="21.505362" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">payload hash</tspan><tspan x="-149.98856" y="28.560911" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal"/></text>
+   <text x="-149.98856" y="36.761909" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;line-height:1.25" xml:space="preserve"><tspan x="-149.98856" y="36.761909" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">payload</tspan><tspan x="-149.98856" y="43.817459" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal"/></text>
+  </g>
+  <g fill="none" stroke="#000">
+   <rect x="-20.93" y="-16.902" width="90.957" height="82.872" stroke-width=".22624"/>
+   <rect x="-20.995" y="-16.967" width="91.088" height="14.766" stroke-width=".095567"/>
+   <rect x="-20.995" y="-2.201" width="91.088" height="14.766" stroke-width=".095567"/>
+   <rect x="-20.995" y="12.565" width="91.088" height="14.766" stroke-width=".095567"/>
+  </g>
+  <g fill="#000000" font-family="sans-serif" stroke-width=".26458">
+   <g font-size="5.6444px">
+    <text x="-16.932064" y="-7.4797316" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;line-height:1.25" xml:space="preserve"><tspan x="-16.932064" y="-7.4797316" font-family="sans-serif" font-size="5.6444px" stroke-width=".26458" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">block hash</tspan></text>
+    <text x="-16.932064" y="6.7392745" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;line-height:1.25" xml:space="preserve"><tspan x="-16.932064" y="6.7392745" font-family="sans-serif" font-size="5.6444px" stroke-width=".26458" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">previous hash</tspan></text>
+    <text x="-16.932064" y="21.505362" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;line-height:1.25" xml:space="preserve"><tspan x="-16.932064" y="21.505362" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">payload hash</tspan><tspan x="-16.932064" y="28.560911" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal"/></text>
+    <text x="-16.932064" y="36.761909" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal;line-height:1.25" xml:space="preserve"><tspan x="-16.932064" y="36.761909" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">payload</tspan><tspan x="-16.932064" y="43.817459" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal"/></text>
+   </g>
+   <g font-size="10.583px">
+    <text x="-283.86517" y="-20.027319" style="line-height:1.25" xml:space="preserve"><tspan x="-283.86517" y="-20.027319" stroke-width=".26458">Block <tspan font-style="italic">n-1</tspan></tspan></text>
+    <text x="-151.14561" y="-19.543568" style="line-height:1.25" xml:space="preserve"><tspan x="-151.14561" y="-19.543568" stroke-width=".26458">Block <tspan font-style="italic">n</tspan></tspan></text>
+    <text x="-18.571566" y="-18.773348" style="line-height:1.25" xml:space="preserve"><tspan x="-18.571566" y="-18.773348" stroke-width=".26458">Block <tspan font-style="italic">n+1</tspan></tspan></text>
+   </g>
+  </g>
+  <g fill="none" stroke="#00f">
+   <path d="m-286.98 18.504h-6.0774v-15.091h6.0774" stroke-dasharray="0.636637, 0.636637" stroke-width=".63664"/>
+   <path d="m-288.53-10.55h-13.059v21.529h8.4073" marker-start="url(#Arrow2Mstart)" stroke-dasharray="0.739, 0.739" stroke-width=".739"/>
+   <path d="m-288.42 24.036h-13.059v21.529h14.161" marker-start="url(#Arrow2Mstart-1)" stroke-dasharray="0.739, 0.739" stroke-width=".739"/>
+   <path d="m-153.89 18.504h-6.0774v-15.091h6.0774" stroke-dasharray="0.636637, 0.636637" stroke-width=".63664"/>
+   <path d="m-155.44-10.55h-13.059v21.529h8.4073" marker-start="url(#Arrow2Mstart-11)" stroke-dasharray="0.739, 0.739" stroke-width=".739"/>
+   <path d="m-155.34 24.036h-13.059v21.529h14.161" marker-start="url(#Arrow2Mstart-1-1)" stroke-dasharray="0.739, 0.739" stroke-width=".739"/>
+   <path d="m-21.007 18.504h-6.0774v-15.091h6.0774" stroke-dasharray="0.636637, 0.636637" stroke-width=".63664"/>
+   <path d="m-22.563-10.55h-13.059v21.529h8.4073" marker-start="url(#Arrow2Mstart-0)" stroke-dasharray="0.739, 0.739" stroke-width=".739"/>
+   <path d="m-22.456 24.036h-13.059v21.529h14.161" marker-start="url(#Arrow2Mstart-1-9)" stroke-dasharray="0.739, 0.739" stroke-width=".739"/>
+  </g>
+  <g transform="translate(64.615)">
+   <path d="m-252.55 83.222h-27.556" fill="none" marker-start="url(#Arrow2Mstart-1-1-0)" stroke="#00f" stroke-dasharray="1, 1"/>
+   <text x="-140.62617" y="84.791008" fill="#ff0000" font-family="sans-serif" font-size="10.583px" stroke-width=".26458" style="line-height:1.25" xml:space="preserve"><tspan x="-140.62617" y="84.791008" fill="#ff0000" font-family="sans-serif" font-size="4.2333px" stroke-width=".26458" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">data from both blocks matches</tspan></text>
+   <path d="m-149.48 83.213h-27.556" fill="none" marker-end="url(#DiamondS)" marker-start="url(#DiamondSend)" stroke="#f00" stroke-dasharray="2, 2"/>
+   <text x="-243.69557" y="84.380699" fill="#000000" font-family="sans-serif" font-size="10.583px" stroke-width=".26458" style="line-height:1.25" xml:space="preserve"><tspan x="-243.69557" y="84.380699" fill="#0000ff" font-family="sans-serif" font-size="4.2333px" stroke-width=".26458" style="font-variant-caps:normal;font-variant-east-asian:normal;font-variant-ligatures:normal;font-variant-numeric:normal">cryptographic hash function</tspan></text>
+  </g>
+  <path d="m-13.958 0.85668-52.605-13.199" fill="none" marker-end="url(#DiamondS-2)" marker-start="url(#DiamondSend-1)" stroke="#f00" stroke-dasharray="2.148, 2.148" stroke-width="1.074"/>
+  <path d="m-146.94 0.24561-52.605-13.199" fill="none" marker-end="url(#DiamondS-2-2)" marker-start="url(#DiamondSend-1-4)" stroke="#f00" stroke-dasharray="2.148, 2.148" stroke-width="1.074"/>
+ </g>
+</svg>

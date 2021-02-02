@@ -5,7 +5,33 @@
 \section{Security Requirements}
 \label{ch:req:sec}
 
-There have been many papers outlining the security requirements specific to voting \cite{epstein_electronic_2007}, \cite{delaune_formalising_nodate}. Here we outline the important ones.
+There are a number of desirable properties for a voting system to have, some of which could be considered required for a voting system given the assumption that the system aspires to be fair and honest. There have been many papers outlining the security requirements specific to voting \cite{epstein_electronic_2007}, \cite{delaune_formalising_nodate}, \cite{li_taxonomy_2014}, and they tend to agree on the majority. First we make some definitions of the primary entities involved:
+
+\begin{description}
+    \item[Candidate] An entity that is entering into the election as a potential choice for the voters. All possible candidates will be listed for the voter to choose from when voting.
+    \item[Voter] An entity that is eligible to vote in the election. Proof of eligibility is not defined here but must be possible within the framework of an election.
+    \item[Authority] The entity holding the election. The authority will define the parameters of the election, for example which candidates there will be, the timeframe voting will take place in and the voting scheme that will be used.
+    \item[Registrar] An entity that will be held responsible for authenticating the voters, and hence determining eligibility. This entity may be the same as the authority, or it may be separate.
+    \item[Bulletin Board] Refers to a publicly available record of the information regarding the election. Depending on the voting scheme, this is not always made available and may have differing amounts of information \needcite{no bulletin board}. If it is made available, it will almost certainly be read-only for the public and maintained by the authority. This need not be electronic, or can be even if the voting scheme is otherwise non-electronic.
+    \item[Auditor] Any entity that validates the election data is correct by inspecting the bulletin board, votes or tallies. In some schemes this is a separate entity \needcite{no public audit} and in others \needcite{public-audit} it can be performed by anyone.
+    \item[Adversary] Any entity that is attempting to subvert the election in any way. This could be to attempt to have their preferred candidate elected or to stop the election from taking place at all.
+\end{description}
+
+The following properties are basic requirements for a voting system to have any practical use:
+
+\begin{description}
+    \item[Correctness] The outcome of the election should be a reflection of the voters' will. That is, if the protocol of the voting system is followed and the entities involved are honest then the outcome will be a true reflection of the votes cast.
+    \item[Privacy] The information about a voter must remain secret. This means that any and all data published regarding the election (e.g. on the bulletin board) must not contain identifiable voter information.
+    \item[Eligibility] Only eligible voters should be able to cast a vote. The conditions for eligibility can vary, but these conditions must be met by all voters and the system must enforce this.
+    \item[Fairness] No information about the results -- full or partial tallies -- can be made available before the close of the election. That is, no party can gain information about the tally before all votes have been cast.
+\end{description}
+
+
+
+
+% Verifiability is for e-voting, not all voting.
+% \item[Verifiablility] There are a number of
+
 
 \todo{Security Requirements for voting systems... Here we start with the citations}
 
@@ -22,7 +48,7 @@ The \gls{oed} defines trust as follows:
 
 This is a difficult thing to quantify. Romano \cite{romano_nature_2003} defines a scale for measuring trust, but it is very subjective. We want to remove as much subjectivity from the question of trust and move it into something definite that we can answer --- is it \emph{easier} to trust $X$ or $Y$?
 
-Trust can be defined as a binary thing: either you trust something or you don't. Trust can also be considered as a continuous thing: you can trust something a little or a lot. I believe the two concepts are related, in that the amount of continuous trust you have in something must exceed the trust requirements it imposes on you for you to consider that you have the binary trust in it.
+Trust can be defined on a binary scale: either you trust something or you don't. Trust can also be considered on a continuous scale: you can trust something a little or a lot. I believe the two concepts are related, in that the amount of continuous trust you have in something must exceed the trust requirements it imposes on you for you to consider that you have the binary trust in it.
 
 Often the thing you have continuous trust in --- to whatever extent --- will only be converted into the binary trust at the point of deciding to rely on that thing. At this point the value of the thing and the impact of the trust being subverted come into play to make the final decision.
 

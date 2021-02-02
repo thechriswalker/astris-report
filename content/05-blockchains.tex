@@ -5,9 +5,11 @@
 \section{Introduction to Blockchains and the Problems they can solve}
 \label{ch:blockchain:intro}
 
-Blockchains are an immutable ledger: they allow you to record data in a way that cannot be disputed in the future. Along with a distributed peer-to-peer network, a blockchain allows for mutually untrusting parties to agree on the content of a shared immutable ledger.
+Blockchains are fundamentally an immutable ledger: they allow you to record data in an append-only manner and such that the order and content of the ledger cannot be disputed in the future. Combined with a common, shared set of rules for how to add blocks to the chain, a blockchain allows for mutually untrusting parties to agree on the content of a shared immutable ledger.
 
-This forms the basis of cryptocurrencies where the transactions in the currency are entries into this ledger. The transactions themselves use other cryptographic functions to ensure their own rules, but the chain is what allows a public system where no node is required to trust any other node, yet all nodes can agree on the content of the ledger.
+This forms the basis of cryptocurrencies where the transactions in the currency are entries into this ledger. The transactions themselves use other cryptographic functions to ensure their own rules -- which all parties can agree on -- and the chain is what allows a public system where no node is required to trust any other node, yet all nodes can agree on the content of the ledger.
+
+
 
 \todo{
     Why have blockchains become a thing? What makes them special? \\
@@ -25,18 +27,25 @@ Blockchains are at their core built from two simple principles. These two princi
     \item Creating a block requires investment of some value.
 \end{enumerate}
 
-Let us look at the first principle. The important word is \emph{deterministic}. Each block has its contents assured by a cryptographic hash function. This hash includes data from the hash of the previous block. This way we cannot retrospectively change the contents of a block, as its hash would no longer validate, nor would the hash of any subsequent blocks. To rewrite a block in the chain, we would need to rewrite the entire thing from that block onwards, so that all the new hashes would be correct.
+Here is a simple figure showing the core structure of a blockchain. Implementations will vary the specifics but the concepts remain.
 
-\todo {diagram?}
+\begin{figure}
+    \centering
+    \includesvg[width=\columnwidth]{figures/blockchain-chaining}
+    \caption{Basic Blockchain Structure}
+    \label{fig:basic-blockchain}
+\end{figure}
 
-This would not be difficult to do if it weren't for the second principle which says that in order to create (\emph{mine}) a block, we must put in something of value. In order to rewrite a block, you would need to re-input the same amount of value again for that block and for all subsequent blocks.
+Let us look at the first principle. The important word is \emph{deterministic}. Consider \autoref{fig:basic-blockchain}; each block has its identifier as the output of a cryptographic hash function over data from the payload of the block as well as the hash of the previous block. This way we cannot retrospectively change the contents of a block, as its hash would no longer validate, nor would the hash of any subsequent blocks. To rewrite a block in the chain, we would need to rewrite the entire thing from that block onwards, so that all the new hashes would be correct.
 
-The immutability of data is the main property of a blockchain. On top of this, a distributed system using a blockchain can agree to a consensus algorithm to allow untrusted systems to agree on the data. We will discuss this in the Consensus section.
+This would not be difficult to do if it weren't for the second principle which says that in order to create a block (referred to as \emph{mining} a block in this context), we must put in something of value. This value is also known as the cost of creating a block. In order to rewrite a block, you would need to re-input the same amount of value again for that block and for all subsequent blocks: that is it would \emph{cost} you for every block that is re-written. As no-one has an unlimited budget, no-one is able to pay the cost to re-write the chain in a manner that would satisfy all other users of the blockchain and as such once the data is sufficiently deep into the chain it can be considered immutable.
+
+The immutability of data is the core desirable property of a blockchain. On top of this, a distributed system using a blockchain can agree to a consensus algorithm to allow untrusted systems to agree on the data. This is discussed in \autoref{ch:blockchain:structure:consensus}.
 
 \subsection{Blocks, Hashes and Work functions}
 \label{ch:blockchain:structure:basics}
 
-Blockchains use cryptographic hash functions for a number of their properties. Here is a quick overview of the main security properties of a cryptographic hash function $H$:
+The figure Blockchains use cryptographic hash functions for a number of their properties. Here is a quick overview of the main security properties of a cryptographic hash function $H$:
 
 \begin{enumerate}
     \item \textbf{Preimage Resistance} Given a hash output $h$, it should be hard to find a message $m$ such that $H(m) = h$.

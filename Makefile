@@ -1,7 +1,11 @@
 filename=project_astris
+pdflatex_args=-synctex=1 -shell-escape -interaction=nonstopmode
+
+svgs:
+	inkscape
 
 pdf:
-	pdflatex -synctex=1 -interaction=nonstopmode ${filename}
+	pdflatex ${pdflatex_args} ${filename}
 
 clean:
 	find . -type f -regex '.*.\(acn\|acr\|alg\|aux\|lof\|log\|lot\|synctex.gz\|toc\)' -delete
@@ -14,8 +18,8 @@ bib:
 
 final:
 	# twice to ensure that the indexes are all built correctly
-	pdflatex -synctex=1 -interaction=nonstopmode ${filename}
+	pdflatex ${pdflatex_args} ${filename}
 	bibtex ${filename}
-	pdflatex -synctex=1 -interaction=nonstopmode ${filename}
+	pdflatex ${pdflatex_args} ${filename}
 	pdflatex -synctex=1 -interaction=nonstopmode ${filename}
 	#	mv build/${filename}.pdf ${filename}_${shell date +%Y%m%d}.pdf

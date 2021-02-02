@@ -17,3 +17,6 @@
 *.glo
 *.gls
 *.ist
+
+# the inscape plugin converts to png
+svg-inkscape
