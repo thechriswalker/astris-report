@@ -5,17 +5,19 @@
 \section{Introduction to Blockchains and the Problems they can solve}
 \label{ch:blockchain:intro}
 
-Blockchains are fundamentally an immutable ledger: they allow you to record data in an append-only manner and such that the order and content of the ledger cannot be disputed in the future. Combined with a common, shared set of rules for how to add blocks to the chain, a blockchain allows for mutually untrusting parties to agree on the content of a shared immutable ledger.
+Blockchains are fundamentally an immutable ledger: they allow data to be recorded in an append-only manner and such that the order and content of the ledger cannot be disputed in the future. Combined with a common, shared set of rules ---known as \emph{consensus}--- for how to add data to the chain and validate those data, a blockchain allows for mutually untrusting parties to agree on the content of a shared immutable ledger.
 
-This forms the basis of cryptocurrencies where the transactions in the currency are entries into this ledger. The transactions themselves use other cryptographic functions to ensure their own rules -- which all parties can agree on -- and the chain is what allows a public system where no node is required to trust any other node, yet all nodes can agree on the content of the ledger.
+This forms the basis of cryptocurrencies where the transactions in the currency are entries into this ledger. The transactions themselves use other cryptographic functions to ensure their own rules ---which all parties can agree on--- and the chain is what allows a public system where no node is required to trust any other node, yet all nodes can agree on the content of the ledger.
 
+I believe it was this lack of trust requirements that really allowed the blockchain technology to become popular. The first well known use of a blockchain was in the cryptocurrency Bitcoin \cite{nakamoto_bitcoin_2008} which has gone from interesting experiment to a large industry. One of the key factors in its success was the lack of central authority. There was no way to regulate trade in the coins and no restrictions on who could send or receive them. This would not have been possible without the trust-less distributed immutable ledger provided by the blockchain backbone of Bitcoin.
 
-
-\todo{
-    Why have blockchains become a thing? What makes them special? \\
-    What is the key advancement that has shot them to notoriety? \\
-    That is the distributed consensus and immutability. \\
+Cryptocurrencies may have brought blockchains into the limelight, but they are only one use of the technology. Blockchains can and have been used for ... \todo{ more blockchain\\
+    public audit logs \\
+    smart contract executors \\
+    domain names --- maybe another example of censorship resistant tech \\
 }
+
+
 
 \section{Structure of a Blockchain}
 \label{ch:blockchain:structure}
@@ -27,7 +29,8 @@ Blockchains are at their core built from two simple principles. These two princi
     \item Creating a block requires investment of some value.
 \end{enumerate}
 
-Here is a simple figure showing the core structure of a blockchain. Implementations will vary the specifics but the concepts remain.
+Let us look at the first principle. The important word is \emph{deterministic}. Consider \autoref{fig:basic-blockchain}; each block has its identifier as the output of a cryptographic hash function over data from the payload of the block as well as the hash of the previous block. This way we cannot retrospectively change the contents of a block, as its hash would no longer validate, nor would the hash of any subsequent blocks. To rewrite a block in the chain, we would need to rewrite the entire thing from that block onwards, so that all the new hashes would be correct.
+
 
 \begin{figure}
     \centering
@@ -36,7 +39,6 @@ Here is a simple figure showing the core structure of a blockchain. Implementati
     \label{fig:basic-blockchain}
 \end{figure}
 
-Let us look at the first principle. The important word is \emph{deterministic}. Consider \autoref{fig:basic-blockchain}; each block has its identifier as the output of a cryptographic hash function over data from the payload of the block as well as the hash of the previous block. This way we cannot retrospectively change the contents of a block, as its hash would no longer validate, nor would the hash of any subsequent blocks. To rewrite a block in the chain, we would need to rewrite the entire thing from that block onwards, so that all the new hashes would be correct.
 
 This would not be difficult to do if it weren't for the second principle which says that in order to create a block (referred to as \emph{mining} a block in this context), we must put in something of value. This value is also known as the cost of creating a block. In order to rewrite a block, you would need to re-input the same amount of value again for that block and for all subsequent blocks: that is it would \emph{cost} you for every block that is re-written. As no-one has an unlimited budget, no-one is able to pay the cost to re-write the chain in a manner that would satisfy all other users of the blockchain and as such once the data is sufficiently deep into the chain it can be considered immutable.
 
@@ -53,9 +55,10 @@ The figure Blockchains use cryptographic hash functions for a number of their pr
     \item \textbf{Collision Resistance} It should be hard to find two messages $m_1$ and $m_2$ such that $H(m_1) = H(m_2)$.
 \end{enumerate}
 
-Note that second preimage resistance is implied by collision resistance, however it is subtly different as we are not attempting to find \emph{any} collision, but a specific collision for a known message. The recent SHAttered \cite{katz_first_2017} attack on the SHA1 hash function was used to break collision resistance, not second pre-image resistance.
+Note that second preimage resistance is implied by collision resistance, however it is subtly different as we are not attempting to find \emph{any} collision, but a specific collision for a known message. The recent SHAttered \cite{katz_first_2017} attack on the SHA1 hash function was used to break collision resistance, not second preimage resistance. Blockchains use cryptographic hashes to link blocks together precisely because of second preimage resistance, which implies that we cannot feasibly forge a block while keeping the hash identical -- which would be the only way to insert a block without having to rewrite the entire following chain.
 
-Here is a representation of data in a simple blockchain. Note that the structure of the most famous blockchain (as used in BitCoin \needcite{bitcoin}) is quite different, but the core concepts are the same here.
+The
+Here is a representation of data in a simple blockchain.
 
 \todo{
     SVG of a few blocks each with a payload, previous hash, proof of work, payload \\
