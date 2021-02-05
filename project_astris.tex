@@ -3,10 +3,13 @@
 \usepackage{svg}
 \usepackage{url}
 \usepackage{hyperref}
-\usepackage[acronym]{glossaries}
+\usepackage{listings}
+\usepackage[acronym, nomain]{glossaries}
 \usepackage[onehalfspacing]{setspace}
 \usepackage[top=2.7cm, left=2.7cm, bottom=2.7cm, right=2.6cm]{geometry}
 \usepackage{xcolor}
+\usepackage[autostyle]{csquotes}
+
 
 
 \svgsetup{inkscapeformat=png}
@@ -31,6 +34,11 @@
 
 % abbreviations:
 \newacronym{oed}{OED}{Oxford English Dictionary}
+\newacronym{dns}{DNS}{Domain Name System}
+\newacronym{pki}{PKI}{Public Key Infrastructure}
+\newacronym{tls}{TLS}{Transport Layer Security}
+\newacronym{pow}{PoW}{Proof of Work}
+\newacronym{pos}{PoW}{Proof of Stake}
 
 
 \begin{document}
@@ -40,9 +48,9 @@
 
 \frontmatter
 
-\include{content/01-abstract}
+\include{content/00-abstract}
 
-% \include{content/01-acknowledgments}
+% \include{content/00-acknowledgments}
 
 \tableofcontents
 
