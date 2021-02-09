@@ -5,12 +5,30 @@
 \section{Objectives and Non-Objectives of the Protocol}
 \label{ch:astris:aims}
 
-\todo{Which aspects I intend to improve, and what assumptions/axioms I will make.}
+\todo{
+  Which aspects I intend to improve, and what assumptions/axioms I will make.
+
+  - removal of single points of failure \\
+  - tradeoff between requiring all parties to collude vs resilience
+}
+
+\todo{explain the security requirements we aim to achieve}
 
 \section{Protocol Overview}
 \label{ch:astris:overview}
 
-\todo{Brief outline of the basics of the protocol, with the phases mentioned.}
+\todo{Brief outline of the basics of the protocol, with the phases mentioned.
+
+  The protocol bears a distinct resemblance to the Helios v4 protocol. This is because Helios already contained a good amount of the privacy goals and the encryption protocols are far simpler than alternatives, whilst still being extensible into multi-party setups for shared-nothing initialization.
+
+  We begin with the trustees mutually defining the parameters for the election, candidates, time periods, etc. The trustees also each generate their part of the multi-party key setup based on \cite{petersen_distributed_1992}.
+
+  This means no entity has the private key and dependent on the setup $K$ of $N$ (where $K <= N$) trustees are required for decryption. $K = N$ gives at least one honest trustee keeps the whole thing honest, but one lost key ruins the entire election. The appropriate trade-off between security and robustness must be made on a case by case basis.
+
+  One of the parameters chosen will be the eligibility authority (registrar) who will oversee the eligibility. This is problematic single point of trust. In a governmental
+}
+
+
 
 \section{Protocol Detail}
 \label{ch:astris:detail}
@@ -26,8 +44,8 @@
 \label{ch:astris:detail:vote}
 
 \todo{
-    How are voters authenticated, how are their votes secured, how they are verified. \\
-    Are multiple votes allowed? last vote wins?
+  How are voters authenticated, how are their votes secured, how they are verified. \\
+  Are multiple votes allowed? last vote wins?
 }
 
 \subsection{Tallying Phase}

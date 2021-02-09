@@ -22,23 +22,15 @@
 
 \newcommand{\todo}[1]{
   {
-    \noindent
     \color{magenta}
-    \textbf{@TODO #1}
+    \setlength\parindent{0pt}
+    \hspace{-5em} \textbf{@TODO} #1
   }
 }
 
 \newcommand{\needcite}[1]{{\color{magenta} \textbf{\{NeedCite }#1\textbf{\}} }}
 
-\makeglossaries
-
-% abbreviations:
-\newacronym{oed}{OED}{Oxford English Dictionary}
-\newacronym{dns}{DNS}{Domain Name System}
-\newacronym{pki}{PKI}{Public Key Infrastructure}
-\newacronym{tls}{TLS}{Transport Layer Security}
-\newacronym{pow}{PoW}{Proof of Work}
-\newacronym{pos}{PoW}{Proof of Stake}
+\include{glossary}
 
 
 \begin{document}

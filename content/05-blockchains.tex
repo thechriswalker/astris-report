@@ -50,37 +50,31 @@ The figure Blockchains use cryptographic hash functions for a number of their pr
     \item \textbf{Preimage Resistance} Given a hash output $h$, it should be hard to find a message $m$ such that $H(m) = h$.
     \item \textbf{Second Preimage Resistance} Given a message $m_1$ and the output $H(m_1) = h$ it should be hard to find a message $m_2$ such that $H(m_2) = H(m_1) \equiv h$.
     \item \textbf{Collision Resistance} It should be hard to find two messages $m_1$ and $m_2$ such that $H(m_1) = H(m_2)$.
-    \item \textbf{Psuedo-Randomness} The output from the function should be hard to distinguish from a random oracle. That is, there should be no discernable relation between the input and output and similar inputs should not produce similar outputs.
+    \item \textbf{Pseudo-Randomness} The output from the function should be hard to distinguish from a random oracle. That is, there should be no discernable relation between the input and output and similar inputs should not produce similar outputs.
 \end{enumerate}
 
 Note that second preimage resistance is implied by collision resistance, however it is subtly different as we are not attempting to find \emph{any} collision, but a specific collision for a known message. The recent SHAttered \cite{katz_first_2017} attack on the SHA1 hash function was used to break collision resistance, not second preimage resistance. Blockchains use cryptographic hashes to link blocks together precisely because of second preimage resistance, which implies that we cannot feasibly forge a block while keeping the hash identical --- which would be the only way to insert a block without having to rewrite the entire following chain.
 
 We see in \autoref{fig:basic-blockchain} the data we want to ensure are immutable --- the block payload, the previous block's hash and metadata --- are included in the block's own hash.  We can validate the block has not been tampered with by recomputing the hash and checking it matches the hash we expect. This also means we cannot change any of the block data without also changing the hash and if we change the hash then the next block will have the incorrect previous hash and the chain is broken.
 
-\todo{ can I put some more in this section? feels short}
+There is a single exception for the first block in the chain --- known as a \emph{genesis} block --- which by definition cannot have a previous block to reference. Most blockchain implementations prefer to keep the genesis block as similar to any other block as possible and simply use a zero value for the previous block hash.
+
+\todo{ Perhaps there is more that could go in this section. It feels short, but I have covered the main points.}
 
 \subsection{Consensus}
 \label{ch:blockchain:structure:consensus}
 
 Consensus in a distributed system is the property that the honest nodes in the system will agree about the data in that system, even in the presence of adversarial nodes. This is the reason for the second principle mentioned in \autoref{ch:blockchain:intro}.
 
-A blockchain peer-to-peer network consists of a group of nodes in a gossip network. Each node searches for other nodes and then \emph{gossips} with them. They swap knowledge of other nodes in the network to expand the number of peers they can attempt to connect to. They also swap knowledge of their view of the blockchain. If one node claims to know a longer chain it will tell its peers, and send the blocks to them. The receiving node must then validate that the block are valid. The node will use the consensus algorithm to check this. If the blocks are invalid, then the node will block the sender as a dishonest node, ensuring that eventually dishonest nodes are ejected from the network. If the blocks are valid, then the node can be sure that the creator of the block has indeed put in the cost to create it.
+A blockchain peer-to-peer network consists of a group of nodes in a gossip network. Each node searches for other nodes and then \emph{gossips} with them. They swap knowledge of other nodes in the network to expand the number of peers they can attempt to connect to. They also swap knowledge of their view of the blockchain. If one node claims to know a longer chain it will tell its peers, and send the blocks to them. The receiving node must then validate that the blocks are valid. The node will use the consensus algorithm to check this. If the blocks are invalid, then the node will block the sender as a dishonest node, ensuring that eventually dishonest nodes are ejected from the network. If the blocks are valid, then the node can be sure that the creator of the block has indeed put in the cost to create it.
 
-As more than one new block could be sent to a node at the same time, we need a second part to the consensus algorithm to ensure that the chain doesn't split into many chains. This is actually very simple and all blockchains I could fine use the "longest valid chain wins" heuristic. If a peer node can produce a longer valid chain, then the network will start to treat that as the true chain.
-
-\todo{
-    consensus has an endgame, in bitcoin miners are rewarded in the cryptocurrency for mining a block, and so they compete to do so. In a blockchain without a cryptocurrency, there is no reward, so why would anyone mine a block. \\
-    the only reason to mine a block in our voting system is to ensure your vote is recorded. if votes are bundled then we have no incentive to mine as it costs, and "someone else will do it." \\
-    if votes are one-per-block then each user must mine a block and it will cost them, which is something I am very much against and why I didn't want to use a cryptocurrency based chain. \\
-    however there is no good proof of stake algorithm either, as there is "nothing at stake". \\
-    basically the reason to use PoW is to prevent re-writing the chain. However for an election the transaction rate is low and there may be long periods when no votes are made, during this time blocks could be rebuilt - so we will need no-ops, and they should probably have higher difficulty than the vote blocks to keep votes quick.
-}
+As more than one new block could be sent to a node at the same time, we need a second part to the consensus algorithm to ensure that the chain doesn't split into many chains. This is actually very simple and all blockchains I could fine use the "longest valid chain wins" heuristic. If a peer node can produce a longer valid chain, then the network will treat that as the true chain. This happens with a reasonable probability and most blockchains do not consider blocks "confirmed" unless they have a number (6 in the case of Bitcoin) of blocks on ahead of them. After the blocks have been added it is considered infeasible for an adversary to be able to produce a longer valid chain with that block altered.
 
 The consensus method most often used in blockchains is known as a \gls{pow} and involves performing a computational task that takes a non-trivial amount of processing power to perform but a trivial amount to check it was performed correctly. The value invested is the computation work performed.
 
 An early example of a \gls{pow} system is HashCash \cite{back_hashcash_2002} initially devised as a spam prevention mechanism. By adding a \gls{pow} requirement to email it would no longer be cheaper for spammers to send mail at volume. The main principle behind HashCash is to give a proof that some work has been done, specifically for a given commitment. The commitment is some data we wish to show we knew before we did the work. The \emph{work} involved is the computation time required to perform the hash function. A single hash requires a very small amount of work, so we want the prover to perform a very large number of hashes, however the verifier should not have to do much work at all. This may seem impossible as the pseudo-randomness property means that to be sure the prover has performed the hashes, the verifier would have to perform the same number of hashes.
 
-The solution to this is to lower our requirement of proof from complete certainty to \emph{within a given probability}. Now we can take advantage of the psuedo-randomness of the hash function. As every input produces a random hash, each bit of the hash will be $0$ or $1$ with probability $1/2$. So producing a hash with the first bit $0$ has probability $1/2$. A hash with the first 2 bits $0$ has probability $1/2^2$. For a hash with the first $n$ bits $0$ the probability is $1/2^n$ and will on average take $2^n$ attempts to find. Now we can create our commitment $c$ with a shared method and append some randomness $r$ and calculate the hash $H(c || r) = h$. If the first $n$ bits of the hash are 0, we consider the work done, if not we create a new random value $r$ and try again. This will take on average $2^n$ attempts, but the verifier given $r$ can create the commitment $c$ and confirm that $H(c || r)$ starts with $n$ 0-bits with a single hash. Psuedo-code for this algorithm is shown in \autoref{fig:hashcash}.
+The solution to this is to lower our requirement of proof from complete certainty to \emph{within a given probability}. Now we can take advantage of the pseudo-randomness of the hash function. As every input produces a random hash, each bit of the hash will be $0$ or $1$ with probability $1/2$. So producing a hash with the first bit $0$ has probability $1/2$. A hash with the first 2 bits $0$ has probability $1/2^2$. For a hash with the first $n$ bits $0$ the probability is $1/2^n$ and will on average take $2^n$ attempts to find. Now we can create our commitment $c$ with a shared method and append some randomness $r$ and calculate the hash $H(c || r) = h$. If the first $n$ bits of the hash are 0, we consider the work done, if not we create a new random value $r$ and try again. This will take on average $2^n$ attempts, but the verifier given $r$ can create the commitment $c$ and confirm that $H(c || r)$ starts with $n$ 0-bits with a single hash. Pseudo-code for this algorithm is shown in \autoref{fig:hashcash}.
 
 \begin{figure}[h]
     \centering
@@ -107,7 +101,7 @@ The solution to this is to lower our requirement of proof from complete certaint
         }
 
         \end{lstlisting}
-    \caption{Psuedo-code for the HashCash algorithm}
+    \caption{Pseudo-code for the HashCash algorithm}
     \label{fig:hashcash}
 \end{figure}
 
@@ -115,22 +109,38 @@ For a blockchain we can use a similar function using all the data that makes the
 
 As the blockchain needs new blocks added, performing the work required for \gls{pow} usually results in a reward for the miner, incentivizing miners to continue to add blocks. This rewards good behaviour in the system, but bad actors are not punished.
 
-The second method of consensus is known as \gls{pos}. \todo{and is more difficult to explain}
+The second method of consensus is known as \gls{pos} and instead of performing work to "prove" the block has been mined correctly, instead the mining is delegated to a committee of stakeholders. This is simplest to explain in the context of a cryptocurrency where the coin itself is assumed to have value. The idea is that holders of the currency ---that is, those with a \emph{stake} in it and motivation to act in it's best interest--- are chosen to mine blocks. The method of choosing varies amongst algorithms, but it is usually a group of coin holders where the coin is oldest, ties broken by "lowest hash" over the transactions which can be effectively considered a random, but deterministic, choice. Those stakeholders must then digitally sign the block data to \emph{vouch} for it. Only the correct stakeholder can sign the requisite data and the algorithm means all can determine who should sign the data, all parties can confirm the block's legitimacy.
+
+Algorithms based on \gls{pos} have the advantage that they can punish bad actors just as they can reward good behaviour. They also do not excessively waste energy performing the \gls{pow} proofs. However there has been criticism of proposals for \gls{pos} algorithms \needcite{critics of pos} and although some blockchains \needcite{pos hybrid chains} have adopted a hybrid approach requiring a \gls{pow} block (known as a \emph{checkpoint}) at certain points in the chain.
+
+Although consensus is mostly used to cover the core algorithm for ascertaining that a block has been mined \emph{correctly}, I would argue that the rules inherent in the chain for exactly how the data are laid out and what constitutes valid block payloads should be considered part of the consensus, as blocks will be rejected if they don't match these core rules, just as if the main \gls{pow} or \gls{pos} fails to verify.
 
 \section{Transactions, Smart Contracts and other chains}
 \label{ch:blockchain:types}
 
+Blockchains can have arbitrary data in the block payloads, each chain defines the rules for what is allowed and the significance of the data. Cryptocurrencies based on blockchains typically allow for transactions moving currency around the system. These transactions may be directly from one user to another, or they may have some more complex logic embedded. This logic is known as a \emph{smart contract} and the functionality available in such contracts is defined by the blockchain itself. Some chains have a Turing-complete instruction set for the smart contracts (e.g. Ethereum) and others a more restricted instruction set (e.g. Bitcoin).
+
+Unless the blockchain has only a single transaction model, there will be some form of smart contract involved with every transaction. Transactions can be split into inputs and outputs, where the funds are sourced from the inputs and moved to the outputs. These transactions also form a chain where outputs of one transaction must be used as the input for another transaction. Some cryptocurrencies have rules for the creation of new currency without a previous transaction as a method of increasing the supply of currency available. The Bitcoin network rewards block miners with an amount of bitcoin in an input-less transaction known as a \emph{coinbase} transaction.
+
+In order to spend funds from a previous transaction output the smart contract comes into play. The logic in the contract will determine what needs to be done to use the funds in a new transaction. A simple contract type would be simply that the spender must prove access to the private key matching a given public key in the transaction. A more complex contract might stipulate that $M$ of $N$ keys must be proved in order to release the funds. Both these types of contract can be created on the Bitcoin network. Contracts of theoretically unlimited complexity may be created on the Ethereum network, however there are practicality issues and costs involved with high complexity contracts.
+
 \todo{
-    Public chains like cryptocurrencies, private chains like internal audit logs. Hybrid distributed ledgers for open viewing, but private updates. \\
-    - Bitcoin: wallets and transactions: unspent tx buffer \\
-    - Ethereum and smart contracts: Users vs Contracts, Solidity, the EVM, gas and eth. \\
+    should I explain the on-disk format of bitcoin transactions, merkle-roots and the UTXO etc...
+
+    what about more on smart contracts, ETH vs. GAS, solidity and the EVM...
 }
 
+In the Namecoin (\url{https://namecoin.org}) blockchain while fully functioning as a cryptocurrency --- it started as a fork of the original Bitcoin code --- also has a second type of output for transactions which allows \emph{purchasing} a key-value pair publicized on the chain which then lasts a fixed period of time before it must be renewed. The main idea behind the chain was to provide a censor-resistant platform for registering \gls{dns} records without a central authority. The cost in the currency would deter squatting or mass registering domains and the immutability and decentralized nature would make external censorship or seizure impossible.
+
+These transactions give a blockchain value, either by simply allowing it to function as a cryptocurrency or as a platform for trustless computing by the execution of arbitrary smart contracts. There are some blockchains that do not aim for this public utility and instead aim for the immutability for audit purposes. By making it infeasible to alter historic records, the blockchain allows entities to publicize the chain for external audit, even if the rules do not allow external entities to write to the chain. Known as a \emph{permissioned} blockchain where participants have different permission levels, the blockchain can still provide value with no cryptocurrency involved.
 
 \section{Trust in Blockchains}
 \label{ch:blockchain:trust}
 
 Trust is important in decentralized systems. With no authority to control access to the system, it is important to understand that nodes \emph{must not} trust each other. All nodes in the system are considered untrusted, but the consensus algorithm will ensure that the rules are followed. This does mean that all honest nodes need to be adhering to the same rules, but the dishonest parties cannot break them or the honest nodes will notice and ignore them.
 
+This does not mean that a blockchain network is implicitly secure in the presence of adversarial nodes. There are known attacks on blockchain networks and their consensus mechanisms. For example any peer to peer network is susceptible to an eclipse attack \cite{heilman_eclipse_2015} in which the adversary gains control of the peers a node is able to connect to. As the node can only connect to adversarial nodes, they can all lie about the state of the network keeping the target behind the main chain or tricking it into accepting a shorter chain of its own devising. Similarly, a Sybil attack \cite{douceur_sybil_2002} is when the adversary floods the network with adversarial nodes to the point that they wield influence over the network.
 
-That is of course a simplification, we have made the assumption that the consensus algorithm is secure against the adversarial nodes. There have been a number of proposed attacks against both \gls{pow} and \gls{pos} consensus algorithms \needcite{attacks on powpos}.
+The Eclipse and Sybil attacks are generic to any peer-to-peer network. In terms of trust, we as participants in a blockchain network must trust that the network is sufficiently robust against these attacks and that there exists a sufficient number of honest nodes.
+
+\todo{ how to say: Most of the trust in blockchains comes from the incentives for honest behaviour combined with a large network size - there is a network effect there.}
