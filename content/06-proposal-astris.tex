@@ -6,10 +6,16 @@
 \label{ch:astris:aims}
 
 \todo{
-  Which aspects I intend to improve, and what assumptions/axioms I will make.
+    Which aspects I intend to improve, and what assumptions/axioms I will make.
 
-  - removal of single points of failure \\
-  - tradeoff between requiring all parties to collude vs resilience
+    - removal of single points of failure \\
+    - tradeoff between requiring all parties to collude vs resilience
+
+    Assumptions: \\
+    - there exists a secure channel for the voter to communicate with the registrar. \\
+    - coercion cannot be eliminated without physical security for voting (secure booth) \\
+    - we are not programming satan's comupter, the voter can vote from a "trusted" device \\
+
 }
 
 \todo{explain the security requirements we aim to achieve}
@@ -19,16 +25,47 @@
 
 \todo{Brief outline of the basics of the protocol, with the phases mentioned.
 
-  The protocol bears a distinct resemblance to the Helios v4 protocol. This is because Helios already contained a good amount of the privacy goals and the encryption protocols are far simpler than alternatives, whilst still being extensible into multi-party setups for shared-nothing initialization.
+    The protocol bears a distinct resemblance to the Helios v4 protocol. This is because Helios already contained a good amount of the privacy goals and the encryption protocols are far simpler than alternatives, whilst still being extensible into multi-party setups for shared-nothing initialization.
 
-  We begin with the trustees mutually defining the parameters for the election, candidates, time periods, etc. The trustees also each generate their part of the multi-party key setup based on \cite{petersen_distributed_1992}.
+    We begin with the trustees mutually defining the parameters for the election, candidates, time periods, etc. The trustees also each generate their part of the multi-party key setup based on \cite{petersen_distributed_1992}.
 
-  This means no entity has the private key and dependent on the setup $K$ of $N$ (where $K <= N$) trustees are required for decryption. $K = N$ gives at least one honest trustee keeps the whole thing honest, but one lost key ruins the entire election. The appropriate trade-off between security and robustness must be made on a case by case basis.
+    This means no entity has the private key and dependent on the setup $K$ of $N$ (where $K <= N$) trustees are required for decryption. $K = N$ gives at least one honest trustee keeps the whole thing honest, but one lost key ruins the entire election. The appropriate trade-off between security and robustness must be made on a case by case basis.
 
-  One of the parameters chosen will be the eligibility authority (registrar) who will oversee the eligibility. This is problematic single point of trust. In a governmental
+    Each trustee publishes the details and a ZKP of knowledge of their own private key. Once all trustees have submitted their data, the overall public key can be calculated.
+
+    One of the parameters chosen will be the eligibility authority (registrar) who will oversee the eligibility. This is problematic single point of trust. In a governmental situation this has to be part of the government, which is not great, but unavoidable (unless all the eligible voters can be registered in escrow somehow...).
+
+    The setup data is added to a block and the hash of this block becomes the election id. This could be the genesis block in a new chain, or another block in an existing chain, all subsequent blocks will have the election id embedded into much of their data and so many elections can share a chain if we want. In the poc implementation we will have one chain per election. Remember the key purpose of the blockchain here is to provide public realtime audit of the election data. It can be collected by anyone and any post-facto changes change be detected.
+
+    The protocol for authenticating eligible users will be unspecified in this scheme. The poc implementation will use a simple authentication protocol. The end result of the authentication is that the user will be able to exchange a blind to be signed by the registrar. The registrar will sign the blind and a nonce and an identifier unique to the voter. The blind will be a hash of the vote data.
+
+    \textbf{How does this stop the registrar from voting on behalf of the user?} The user doesn't have anything uniquely identifying except the auth details that they give to the registrar. but if the registrar is just blind signing the vote data, the registrar could just create the vote themselves and blind sign it on behalf of the user and submit that to the blockchain - totally subverting the system. This is a major gap in my knowledge, the registrar should NOT be able to add to the chain. There are 2 answers here, 1: the registrar is trusted - we already have to trust them to a degree. 2: use the setup phase to get eligible users to register to vote and submit public keys to the chain. again, nothing to stop malicious users from submitting fake public keys to DoS other users.
+
+    crap, I think we have to trust the registrar \textbf{THINK ON THIS}. In Helios this is not a problem as the helios server is considered trusted, at least when it comes to authorising users and submitting votes.
+
+    Once the election is opened, voters may vote by creating a number of encrypted votes (one for each candidate), encrypted with the public key for the election. These votes will be assured to each be representing 0 or 1 by means of a zero-knowledge proof. We can them also combine an overall proof that the sum of the votes is less than a threshold (probably $1$ in most cases but sometimes $x$ where $0 < x \le num_{candidates}$). The ElGamal based system we will use for the encryption makes the proofs fairly simple and very compact.
+
+    The user is left with no information that could be used to reveal their vote. They can check their vote is on the chain, but they cannot decrypt it. \textbf{They must trust that the voting software did the right thing}.
+
+    Potentially we could use Helios' reveal function where we hold the randomness in memory after creating the vote, and allow the user to verify the vote, "burning" the ballot or submitting it destroying the randomness and making verifying the value from the ballot impossible.
+
+    The vote is then hashed and the has signed by the registrar. We then submit the vote and the registrar signature to the chain. dependent on the election parameters, the chain may reject duplicate votes, ignore them or it may simply allow last-vote-wins semantics.
+
+    The chain will verify that: \\
+    - the vote is for an electionId it knows
+    - the vote is valid (ZKPs validate)
+    - the vote is eligible (the registrar signature is valid) <- NB the chain could reject here.
+
+    The votes are encrypted, but with a homomorphic encryption allowing summation of the votes without decryption.
+
+    Any user can submit a partial tally to the chain. This is a block with the partial summation of votes produced along with a timestamp. As the partial tally can be calculated by any node, and indeed they will likely keep the running tally in memory. This allows blocks to continue to be added to the chain despite no new votes being added.
+
+    During the election, the votes can be tallied while still encrypted, but it would require collusion of the $K$ of $N$ trustees to be able to reveal any vote.
+
+    Once the voting is closed, the votes can be summed without decryption. Then at least $K$ of the trustees must provide their partial decryptions of the summations along with ZKPs of decryption.
+
+    When the final trustee has provided a partial decryption, the final decrypted tally can be constructed.
 }
-
-
 
 \section{Protocol Detail}
 \label{ch:astris:detail}
@@ -44,8 +81,8 @@
 \label{ch:astris:detail:vote}
 
 \todo{
-  How are voters authenticated, how are their votes secured, how they are verified. \\
-  Are multiple votes allowed? last vote wins?
+    How are voters authenticated, how are their votes secured, how they are verified. \\
+    Are multiple votes allowed? last vote wins?
 }
 
 \subsection{Tallying Phase}
