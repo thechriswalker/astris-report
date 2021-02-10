@@ -7,6 +7,9 @@
 
 There are a number of desirable properties for a voting system to have, some of which could be considered required for a voting system given the assumption that the system aspires to be fair and honest. There have been many papers outlining the security requirements specific to voting \cite{epstein_electronic_2007}, \cite{delaune_formalising_2010}, \cite{li_taxonomy_2014}, and they tend to agree on the majority. First we make some definitions of the primary entities involved:
 
+\subsection{Definitions}
+\label{ch:req:defs}
+
 \begin{description}
     \item[Candidate] An entity that is entering into the election as a potential choice for the voters. All possible candidates will be listed for the voter to choose from when voting.
     \item[Voter] An entity that is eligible to vote in the election. Proof of eligibility is not defined here but must be possible within the framework of an election.
@@ -17,7 +20,10 @@ There are a number of desirable properties for a voting system to have, some of 
     \item[Adversary] Any entity that is attempting to subvert the election in any way. This could be to attempt to have their preferred candidate elected or to stop the election from taking place at all.
 \end{description}
 
-The following properties are basic requirements for a voting system to have any practical use:
+\subsection{Properties}
+\label{ch:req:props}
+
+The following properties are basic requirements for any voting system to have practical use:
 
 \begin{description}
     \item[Correctness] The outcome of the election should be a reflection of the voters' will. That is, if the protocol of the voting system is followed and the entities involved are honest then the outcome will be a true reflection of the votes cast.
@@ -26,12 +32,25 @@ The following properties are basic requirements for a voting system to have any 
     \item[Fairness] No information about the results -- full or partial tallies -- can be made available before the close of the election. That is, no party can gain information about the tally before all votes have been cast.
 \end{description}
 
+The next set of properties are desirable, and indeed should be present in any secure voting system.
 
+\begin{description}
+    \item[Robustness] The scheme should be resilient against an adversary attempting to influence the outcome. The influence could be arbitrary, simply attempting to create errors in the process or to create a denial of service stopping the election from happening at all. The influence could be specific, attempting to sway the results in a pre-determined way. The adversary may be actively working
+    \item[Privacy] The information about a voter must remain secret. This means that any and all data published regarding the election (e.g. on the bulletin board) must not contain identifiable voter information.
+    \item[Eligibility] Only eligible voters should be able to cast a vote. The conditions for eligibility can vary, but these conditions must be met by all voters and the system must enforce this.
+    \item[Fairness] No information about the results --- full or partial tallies --- can be made available before the close of the election. That is, no party can gain information about the tally before all votes have been cast.
+\end{description}
 
 
 % Verifiability is for e-voting, not all voting.
 % \item[Verifiablility] There are a number of
 
+\begin{description}
+    \item[receipt-freeness]
+    \item[coercion-resistance]
+    \item[universal verifiability]
+    \item[]
+\end{description}
 
 \todo{Security Requirements for voting systems... Here we start with the citations}
 
@@ -48,15 +67,21 @@ The Oxford English Dictionary defines trust as follows:
 
 This is a difficult thing to quantify. Romano \cite{romano_nature_2003} defines a scale for measuring trust, but it is very subjective. We want to remove as much subjectivity from the question of trust and move it into something definite that we can answer --- is it \emph{easier} to trust $X$ or $Y$?
 
-Trust can be defined on a binary scale: either you trust something or you don't. Trust can also be considered on a continuous scale: you can trust something a little or a lot. I believe the two concepts are related, in that the amount of continuous trust you have in something must exceed the trust requirements it imposes on you for you to consider that you have the binary trust in it.
+\begin{description}
+    \item[Trust can be considered on a binary scale] either you trust something or you don't.
+    \item[Trust can be considered on a continuous scale] you can trust something a little or a lot.
+\end{description}
+
+I believe the two concepts are related, in that the amount of continuous trust you have in something must exceed the trust requirements it imposes on you for you to consider that you have the binary trust in it.
 
 Often the thing you have continuous trust in --- to whatever extent --- will only be converted into the binary trust at the point of deciding to rely on that thing. At this point the value of the thing and the impact of the trust being subverted come into play to make the final decision.
 
-With respect to voting systems trust is the belief that the system will work fairly and correctly and that it will be resistant to attempts to subvert it. Whether we trust this is the case or not for any given election is subjective and personal, however knowledge that the system is designed in a way to resist subversion attempts will greatly reduce the amount of trust we must extend to the system in order to have that belief.
+With respect to voting systems trust is the belief that the system will work fairly and correctly and that it will be resistant to attempts to subvert it. Whether we trust this is the case or not for any given election is subjective and personal, however knowledge that the system is designed in a way to resist subversion attempts will greatly reduce the amount of trust we must extend to the system in order to maintain that belief.
 
-Let us take a simple example, based on a well known trust exercise. You stand on a chair and there are $N$ people behind you. You fall back trusting that they will catch you and let us say that if any one person reaches to catch you then you will be safe. Clearly, if you know the people behind you, you will be better placed to make a judgement on each one's individual likelihood of letting you fall. Assuming you have no prior knowledge of the individuals behind you cannot make such a judgement. We do know $N$ and the greater the value of $N$ --- the number of people behind you --- the more likely it is that one of them will act in good faith. We can make our own judgement on the probability of a single person being a bad actor and call it $P_b$ then the probability of all actors being bad --- our failure condition --- will be $(P_b)^N$. For any value of $P_b < 1$ then $(P_b)^N$ becomes small very quickly as $N$ rises.
+Let us take a simple example based on a well known trust exercise. You stand on a chair and there are $N$ people behind you. You fall back trusting that they will catch you and let us say that if any single person reaches to catch you then you will be safe. Clearly, if you know the people behind you, you will be better placed to make a judgement on each one's individual likelihood of letting you fall. Assuming you have no prior knowledge of the individuals behind you cannot make such a judgement. We do know $N$ and the greater the value of $N$ --- the number of people behind you --- the more likely it is that one of them will act in good faith. We can make our own judgement on the probability of a single person being a bad actor and call it $P_b$ then the probability of all actors being bad --- our failure condition --- will be $(P_b)^N$. For any value of $P_b < 1$ then $(P_b)^N$ becomes small very quickly as $N$ rises.
 
-As we increase the $N$ value of the system of this exercise, we lower the trust requirements. We could make a reasonable assumption that in most cases the individuals will likely not have motivation to subvert the exercise --- people generally have enough empathy and would not want to see anoyone fall --- therefore we would estimate our $P_b$ to be low and so even with only a few people we could easily exceed the trust requirements placed on us and fall back confidently.
+As we increase the $N$ value of the system of this exercise, we lower the trust requirements. We could make a reasonable assumption that in most cases the individuals will likely not have motivation to subvert the exercise --- people generally have enough empathy and would not want to see anyone fall --- therefore we would estimate our $P_b$ to be low and so even with only a few people we could easily exceed the trust requirements placed on us and fall back confidently.
 
+It seems likely that this concept can extrapolate in most situations. That is to say, where trust is placed in a single entity, spreading that trust amongst a group and only requiring a subset to be trustworthy is likely to lower the overall trust requirements.
 
 \todo{ Now look at the requirements previously stated and discuss trust }

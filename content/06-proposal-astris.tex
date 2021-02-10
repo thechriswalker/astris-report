@@ -43,6 +43,8 @@
 
     crap, I think we have to trust the registrar \textbf{THINK ON THIS}. In Helios this is not a problem as the helios server is considered trusted, at least when it comes to authorising users and submitting votes.
 
+    The only way to alleviate this trust problem is to spread it, meaning we need another KofN Registrars and all must sign the vote hash. This way no single registrar can masquerade as a voter - or at least in theory, in all likelihood any registrar will have enough data to convince another registrar that they are the voter.
+
     Once the election is opened, voters may vote by creating a number of encrypted votes (one for each candidate), encrypted with the public key for the election. These votes will be assured to each be representing 0 or 1 by means of a zero-knowledge proof. We can them also combine an overall proof that the sum of the votes is less than a threshold (probably $1$ in most cases but sometimes $x$ where $0 < x \le num_{candidates}$). The ElGamal based system we will use for the encryption makes the proofs fairly simple and very compact.
 
     The user is left with no information that could be used to reveal their vote. They can check their vote is on the chain, but they cannot decrypt it. \textbf{They must trust that the voting software did the right thing}.
@@ -52,9 +54,9 @@
     The vote is then hashed and the has signed by the registrar. We then submit the vote and the registrar signature to the chain. dependent on the election parameters, the chain may reject duplicate votes, ignore them or it may simply allow last-vote-wins semantics.
 
     The chain will verify that: \\
-    - the vote is for an electionId it knows
-    - the vote is valid (ZKPs validate)
-    - the vote is eligible (the registrar signature is valid) <- NB the chain could reject here.
+    - the vote is for an electionId it knows \\
+    - the vote is valid (ZKPs validate) \\
+    - the vote is eligible (the registrar(s) signature is valid) $\leftarrow$ NB the chain could reject here.
 
     The votes are encrypted, but with a homomorphic encryption allowing summation of the votes without decryption.
 
@@ -76,21 +78,98 @@
 \label{ch:astris:detail:setup}
 
 \todo{What data is recorded onto the chain upfront?}
+{\color{magenta}
+    \begin{verbatim}
+- election name (human readable)
+- election candidates: list of:
+    - candidate id (sequence number in list)
+    - candidate name (human readable, likely contains other metadata like political party)
+- election max choices: number 1-(number of candidates)
+- election trustees: list of
+    - trustee id (sequence number in list, important for the encryption)
+    - trustee name (human readable, maybe other human metadata)
+    - trustee proof of knowledge of private key shard
+    - trustee public key for signature verification (a different key pair to the sharded key)
+    - trustee shard of public key
+- election parameter freeze datetime
+- election voting open datetime
+- election voting close datetime
+- registrars: list of
+    - registrar id (sequence number in list)
+    - registrar name (human readable)
+    - registrar public key (for verifying signatures)
+    - registrar authentication endpoint
+- election vote required registrar count: (1-number of registrars)
+\end{verbatim}}
+
+\todo{After this data is stored on the chain the initial parameters are set and the block id becomes the election id.
+to confirm this block each of the trustees and each of the registrars signs a confirmation block with the election id embedded: [electionId, registrarId, signature, nonce] or [electionId, trusteeId, signature, nonce].
+
+The trustees and registrars may add as many of these blocks as they wish to the chain at this point. The more added the more secure the initial parameters, up until the time of the election paramter freeze.
+
+If not all trustees or not all registrars have committed to the parameters with at least one block by the freeze date, then election is void. This ensures that the regsitrars and trustees are indeed willing to participate and deepens the initial chain to the point that re-writing it will be impossible to the satisfaction of the trusted parties. Note that the public have no say in this initial setup, nor have any possibility to deepen the chain themselves, however they can watch the chain at all times and after all additions, so it is tamper-evident.
+
+}
 
 \subsection{Voting Phase}
 \label{ch:astris:detail:vote}
 
-\todo{
-    How are voters authenticated, how are their votes secured, how they are verified. \\
+\todo{How are voters authenticated, how are their votes secured, how they are verified. \\
     Are multiple votes allowed? last vote wins?
+
+    Voters create there votes by encrypted a 0 or 1 for each candidate. \\
+    Then we create a ZKP of the fact that the value is 0 or 1 for each vote \\
+    Then we create a ZKP of the fact that the sum of votes is $\le$ number of allowed votes. \\
+
+    This vote is then hashed to create a blind for signing.
+
+    At this point in Helios the software allows the user to validate that the vote is indeed the vote they intended to cast, by re-using the randomness to recreate the vote. If done the vote is discarded and a new vote created with a different randomness - again the user can verify or commit. If the user chooses to commit the randomness is discarded (so the vote can no longer be verified), and the process continues.
+
+    Once the vote is decided, the user must authenticate against K of N registrars to prove eligibility. The user provides their vote hash and the registrar returns a piece of data and a signature over it.
+
+    The data contains [voterId, electionId, voteHash, registrarId], the voterId is a unique identifier that represents an individual, common across all registrars.
+
+    Once the user has $K$ approvals, they attach the approvals to their vote and mine a block for it on the chain.
+
+    NB, the difficulty of mining a vote should be fairly low to allow a reasonable rate of voting if only one-per-block, mined by the voter. In order to increase the difficulty of rewriting the chain, every few minutes a "checkpoint block" of harder difficulty could be mined to prevent tampering. We could require one of these blocks every X other blocks or every X minutes to force the chain to add them regularly.
+
+    Another option would be to allow multiple votes to be mined as "one", like transactions in a cryptocurrency. This has the disadvantage of being exceeding more complex as now the network must exchange votes as well as blocks, storing them in a cache until they can be mined. Unlike a cryptocurrency there is no clear incentive for miners to operate, and so this may not work in practice.
 }
+
+
+
 
 \subsection{Tallying Phase}
 \label{ch:astris:detail:tally}
 
-\todo{What is needed to be done to tally the votes, how does this not break the confidentiality of the voter?}
+\todo{What is needed to be done to tally the votes, how does this not break the confidentiality of the voter?
+
+    Once the election close datetime is reached, new votes are no longer accepted on to the chain.
+
+    Votes are tallied by adding the encrypted votes, as the encryption is homomorphic with respect to addition. Depending on how we allowed duplicates, the votes should be chosen as 1 per voter with whatever method is appropriate (first-vote, last-vote, etc...)
+
+    The summation is added to the chain by any party that calculates it, but every node should calculate it themselves to validate that block and only accept the block if the count is correct.
+
+    Once the summation block is added, the trustees now each add a block with their partial decryptions, ZKP of decryption (verifiable decryption), and a signature over the data verifiable with their signing key.
+
+    Once K of N trustees have added their blocks, ideally all of them, but only K are required, the final tally can be successfully decrypted.
+
+    This final result block does not be added to the chain, as it is implicit.
+
+
+
+}
+
 
 \subsection{Verification Phase}
 \label{ch:astris:detail:verify}
 
-\todo{How can an observer who has been part of the chain verify the result? Can an outsider that only see the final chain be convinced it is valid?}
+\todo{How can an observer who has been part of the chain verify the result? Can an outsider that only see the final chain be convinced it is valid?
+
+    The chain verification process is simply the consensus algorithm of the chain, combined with the knowledge of the electionId. The genesis block will contain all election parameters required to confirm the entirity of the rest of the chain.
+
+    Theoretically (and practically) any individual can create a "real-looking" election for any number of participants, but no-one will be able to recreate an election with the same fingerprint. In fact some sort of easily user-identifiable image should accompany the election id (like an identicon) to encourage verification that you are looking at the correct election.
+
+    The cryptography is fairly low complexity in the grand scheme of things, and so an independant implementation could be created for verification or indeed full network participation.
+}
+

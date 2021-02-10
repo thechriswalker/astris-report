@@ -5,14 +5,39 @@
 \section{Objectives of the Implementation}
 \label{ch:sw:objectives}
 
-\todo{What I set out to create}
+\todo{What I set out to create.
+
+    The software implementation will be a minimum viable implementation. That is it will concern itself with implementing the cryptography and the networking required for the scheme. User experience will come second to that. Certain elements of the peer-to-peer networking will not be implemented, unless time permits (likely they will be implemented after this report is completed) - that is automated peer-discovery, a complex function that will not prove or disprove the validity of the rest of the work.
+
+    It will implement the roles of:
+
+    - election organizer: initial setup and input of data from the trustees/registrars \\
+    - generic node: will watch the chain and validate the blocks: will accept fully validated votes to add to the chain (so the "voter" does not need to have the full chain) \\
+    - trustee: generation of the initial setup material and the partial tallying functions \\
+    - registrar: generation of initial setup material, signing of vote blinds for a voter \\
+    - voter: generation of vote, getting it signed by the registrars, adding it to the chain \\
+    - auditor: validate entire chain, re-tally and confirm outcome.
+
+    The generic node is the long-running service, each other function will be a short-lived program performing the single task required (but potentially saving state).
+
+    The software should show that these functions can each be run independantly, with no collusion and that the privacy of the voter is maintained.
+}
 
 \section{Architecture of the Software}
 \label{ch:sw:architecture}
 
 \todo{
     Written in go for clarity and simplicity.
-    How the software is structured, and how the nodes communicate, etc...
+
+    I will use gRPC for inter-node communication as libraries exist in other languages and this should make making alternative implementations more straightforward.
+
+    The core blockchain will be backed by an sqlite database for simplicity and ease of use, although the interface will be abstract to allow other storage backends should we want to. SQLite remains a solid, dependable product and the single file can be copied easily to move state around.
+
+    The core consensus mechanism will be a hashcash variant with configurable difficulty, we will likely keep the difficulty low for the proof-of-concept runs to keep the energy and time cost low.
+
+    The payload for the blocks will be abitrary bytes arrays for the blockchain level, but likely use a human readable structured format on chain - i.e. JSON (with the appropriate caveats) so that debugging and introspection can be performed easily.
+
+    The application will be written as a library, and the various CLI invocations will simply call different parts of the inner library to perform their tasks.
 }
 
 \section{Notes on Implementation}
@@ -22,8 +47,9 @@
     What I learned during the implementation phase. What was challenging. \\
     What was easy. How well it went. etc ... \\
 
+    Mainly that there is an enormous amount of work involved, the blockchain and crypto are a small part of the overall project, the finer grained detail of the peer-to-peer gossiping and managing the chain where much more difficult than anticipated.
 
-    Mainly that there is an enormous amount of work involved, the blockchain and crypto are a small part of the overall project, the finer grained detail of the peer-to-peer gossiping and managing the chain where much more difficult.
+    Fortunately I made some good design decisions early on and the changes to requirements that came as I was continuing to nail down the final specifications of the scheme were able to be handled with minimal disruption.
 
-    Also it became clear during the implementation and specification that blockchain technology only adds so much and the unavoidable problems we have to hand-wave as axioms means that such a system cannot exist practically, despite the theory being sound.
+
 }
