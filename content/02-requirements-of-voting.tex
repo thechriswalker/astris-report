@@ -5,7 +5,7 @@
 \section{Security Requirements}
 \label{ch:req:sec}
 
-There are a number of desirable properties for a voting system to have, some of which could be considered required for a voting system given the assumption that the system aspires to be fair and honest. There have been many papers outlining the security requirements specific to voting \cite{epstein_electronic_2007}, \cite{delaune_formalising_2010}, \cite{li_taxonomy_2014}, and they tend to agree on the majority. First we make some definitions of the primary entities involved:
+There are a number of desirable properties for a voting system to have, some of which could be considered required for a voting system given the assumption that the system aspires to be fair and honest. There have been many papers outlining the security requirements specific to voting \cite{epstein_electronic_2007,delaune_formalising_2010,li_taxonomy_2014,hastings_security_2011}, and they tend to agree on the majority. First we make some definitions of the primary entities involved:
 
 \subsection{Definitions}
 \label{ch:req:defs}
@@ -29,30 +29,18 @@ The following properties are basic requirements for any voting system to have pr
     \item[Correctness] The outcome of the election should be a reflection of the voters' will. That is, if the protocol of the voting system is followed and the entities involved are honest then the outcome will be a true reflection of the votes cast.
     \item[Privacy] The information about a voter must remain secret. This means that any and all data published regarding the election (e.g. on the bulletin board) must not contain identifiable voter information.
     \item[Eligibility] Only eligible voters should be able to cast a vote. The conditions for eligibility can vary, but these conditions must be met by all voters and the system must enforce this.
-    \item[Fairness] No information about the results -- full or partial tallies -- can be made available before the close of the election. That is, no party can gain information about the tally before all votes have been cast.
+    \item[Fairness] No information about the results --- full or partial tallies --- can be made available before the close of the election. That is, no party can gain information about the tally before all votes have been cast.
 \end{description}
 
 The next set of properties are desirable, and indeed should be present in any secure voting system.
 
 \begin{description}
-    \item[Robustness] The scheme should be resilient against an adversary attempting to influence the outcome. The influence could be arbitrary, simply attempting to create errors in the process or to create a denial of service stopping the election from happening at all. The influence could be specific, attempting to sway the results in a pre-determined way. The adversary may be actively working
-    \item[Privacy] The information about a voter must remain secret. This means that any and all data published regarding the election (e.g. on the bulletin board) must not contain identifiable voter information.
-    \item[Eligibility] Only eligible voters should be able to cast a vote. The conditions for eligibility can vary, but these conditions must be met by all voters and the system must enforce this.
-    \item[Fairness] No information about the results --- full or partial tallies --- can be made available before the close of the election. That is, no party can gain information about the tally before all votes have been cast.
+    \item[Robustness] The scheme should be resilient against an adversary attempting to influence the outcome. The influence could be arbitrary, simply attempting to create errors in the process or to create a denial of service stopping the election from happening at all. The influence could be specific, attempting to sway the results in a pre-determined way. The scheme must also be resilient to errors occurring for any other reason; malignant or benign.
+    \item[Receipt-Freeness] After casting a vote, the voter should not be able to prove to any party the manner in which they voted. This prevents the voter from being able to prove their vote to a 3rd party in a vote buying or selling scheme, or in the case of coercion.
+    \item[Coercion-Resistance] The scheme should prevent an adversary from being able to manipulate a voter into either abstention, or to coerce the voter into voting a certain way. The adversary should not be able to impersonate the user and place a vote on the voter's behalf.
+    \item[Verifiability] Anyone may verify that the final outcome. The scheme provides enough public evidence to prove the truth of the outcome.
+    \item[Auditability] The scheme provides evidence of its behaviour before, during and after an election.
 \end{description}
-
-
-% Verifiability is for e-voting, not all voting.
-% \item[Verifiablility] There are a number of
-
-\begin{description}
-    \item[receipt-freeness]
-    \item[coercion-resistance]
-    \item[universal verifiability]
-    \item[]
-\end{description}
-
-\todo{Security Requirements for voting systems... Here we start with the citations}
 
 \section{Trust Requirements}
 \label{ch:req:trust}
@@ -84,4 +72,6 @@ As we increase the $N$ value of the system of this exercise, we lower the trust 
 
 It seems likely that this concept can extrapolate in most situations. That is to say, where trust is placed in a single entity, spreading that trust amongst a group and only requiring a subset to be trustworthy is likely to lower the overall trust requirements.
 
-\todo{ Now look at the requirements previously stated and discuss trust }
+In the context of a voting scheme there will always be some requirements for trust, the biggest being that the Registrar confirms eligibility and therefore is able to deny eligibility as well.
+
+\todo{ Now look at the requirements/properties previously stated and discuss trust }
