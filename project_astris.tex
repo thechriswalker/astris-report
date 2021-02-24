@@ -2,16 +2,24 @@
 \usepackage{graphicx}
 \usepackage{svg}
 \usepackage{url}
-\usepackage{hyperref}
+\usepackage{float}
+\usepackage{verbatim}
+\usepackage[symbol]{footmisc}
 \usepackage{listings}
 \usepackage[acronym, nomain]{glossaries}
 \usepackage[onehalfspacing]{setspace}
 \usepackage[top=2.7cm, left=2.7cm, bottom=2.7cm, right=2.6cm]{geometry}
 \usepackage{xcolor}
-\usepackage{babel}
+\usepackage[english]{babel}
 \usepackage[autostyle]{csquotes}
 \usepackage[nottoc]{tocbibind}
 \usepackage[math]{cellspace}
+\usepackage{hyperref}
+
+\addto{\captionsenglish}{%
+  \renewcommand{\bibname}{References}
+}
+
 \cellspacetoplimit 0.6em
 \cellspacebottomlimit 0.6em
 
@@ -31,16 +39,22 @@
   }
 }
 
-\newcommand{\needcite}[1]{{\color{magenta} \textbf{\{NeedCite }#1\textbf{\}} }}
+\newcommand{\needcite}[1]{%
+  {\color{magenta} \textbf{\{NeedCite }#1\textbf{\}}}%
+}
 
 \renewcommand{\lstlistoflistings}{\begingroup
 \tocfile{\lstlistingname}{lol}
 \endgroup}
 
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
 
 \include{glossary}
 
 \begin{document}
+
+%we need variables from this file.
+\input{content/99-go-astris}
 
 % title / cover and the anti-plagierism declaration page
 \include{content/00-cover}
@@ -84,6 +98,6 @@
 \include{content/09-conclusion}
 
 \bibliographystyle{lib/ieeetran}
-\bibliography{library}{References}
+\bibliography{library}
 
 \end{document}

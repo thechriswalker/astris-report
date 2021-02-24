@@ -1,0 +1,47 @@
+sequenceDiagram
+
+ %% convert to png at: https://mermaid-js.github.io/mermaid-live-editor/
+
+    participant AD as Auditor
+    participant BC as Blockchain
+    participant A as Authority
+    participant T as Trustee
+    participant R as Registrar
+    participant V as Voter
+
+    Note over BC,V: Setup Phase
+
+    A->>A: Initial Election Parameters
+    A->>+T: Send Params
+    T-->>-A: Send VerifyKey,<br />PublicKeyShard and ZKP
+    A->>+R: Send Params
+    R-->>-A: Send VoterList, VerifyKey,<br />ZKP, RegURL
+
+    A-->>+BC: Create Genesis Block
+    BC-->+AD: Auditor Watches Chain
+    Note over BC, V: Parameter Confirmation Phase
+
+    BC->>+T: Check Genesis Block
+    T-->>-BC: Confirm with Signature
+    BC->>+R: Check Genesis Block
+    R-->>-BC: Confirm with Signature
+
+    Note over BC,V: Voter Registration Phase
+
+    BC->>+V: Check Genesis Block
+    V->>+R: Authenticate with Registrar<br />and Send PublicKey
+    R-->>-V: Sign PublicKey and VoterId
+    V-->>-BC: Add Block with Signed PublicKey and VoterId
+
+    Note over BC,V: Vote Casting Phase
+
+    V->>BC: Add Block with encrypted vote and ZKP
+
+    Note over BC,V: Tally Decryption Phase
+
+    BC->>T: Calculate homomorphic sum of votes
+    T->>BC: Add Block with Sum, PartialDecryption<br />and ZKP of correct decryption
+
+    Note over BC,V: Audit Phase
+
+    BC->>AD: Collect Partial Decryptions<br />Combine and Calculate<br />final result.

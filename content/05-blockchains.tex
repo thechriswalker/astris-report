@@ -1,21 +1,21 @@
 
-\chapter{Blockchain Technology}
+\chapter{Distributed Ledger Technology (a.k.a Blockchains)}
 \label{ch:blockchain}
 
 \section{Introduction to Blockchains and the Problems they can solve}
 \label{ch:blockchain:intro}
 
-Blockchains are fundamentally an immutable ledger: they allow data to be recorded in an append-only manner and such that the order and content of the ledger cannot be disputed in the future. Combined with a common, shared set of rules ---known as \emph{consensus}--- for how to add data to the chain and validate those data, a blockchain allows for mutually untrusting parties to agree on the content of a shared immutable ledger.
+Blockchains are fundamentally an immutable ledger: they allow data to be recorded in an append-only manner and such that the order and content of the ledger cannot be disputed in the future. Combined with a common, shared set of rules ---known as \emph{consensus}--- for how to add data to the chain and validate those data, a blockchain allows for mutually untrusting parties to agree on the content and state of a shared immutable ledger.
 
 This forms the basis of cryptocurrencies where the transactions in the currency are entries into this ledger. The transactions themselves use other cryptographic functions to ensure their own rules ---which all parties can agree on--- and the chain is what allows a public system where no node is required to trust any other node, yet all nodes can agree on the content of the ledger.
 
-I believe it was this lack of trust requirements that really allowed the blockchain technology to become popular. The first well known use of a blockchain was in the cryptocurrency Bitcoin (\url{https://bitcoin.org}) which has gone from interesting experiment to a global buzzword. One of the key factors in its success was the lack of central authority. There was no way to regulate trade in the coins and no restrictions on who could send or receive them. This would not have been possible without the trust-less distributed immutable ledger provided by the blockchain backbone of Bitcoin.
+I believe it was this lack of trust requirements that really allowed \gls{dlt} to become popular. The first well known use of a blockchain was in the cryptocurrency Bitcoin which has gone from interesting experiment to a global buzzword. One of the key factors in its success was the lack of central authority. There was no way to regulate trade in the coins and no restrictions on who could send or receive them. This would not have been possible without the trust-less distributed immutable ledger provided by the blockchain backbone of Bitcoin.
 
-Blockchains can also be used without the public consensus rules in what is know as a Permissioned Blockchain. In this case the data are public but only authorized entities may write to it. The key feature here is that the public data are tamper-evident. Such systems can be used as public audit logs with a high trust from the public as entries cannot be retroactively altered.
+Blockchains can also be used without the public consensus rules in what is know as a Permissioned Blockchain. In this case the data are public, but only authorized entities may write to it. The key feature here is that the public data are tamper-evident. Such systems can be used as public audit logs with a high trust from the public as entries cannot be retroactively altered.
 
-Whilst cryptocurrencies were the first major application of blockchain technology there are other problems that can benefit from the decentralized nature and immutability. The two properties together imply a form of censorship resistance that centralized systems can never have --- that is, there is no authority that can intercede to perform the censorship, every node in the network has equal rites. Two examples where this is a desirable property are  the attempts to create decentralized alternatives to the most common \gls{dns} used on the Internet \needcite{unstoppable, namecoin, ethereum names} and the central \gls{pki} root(s) of trust used in many Operating Systems for certificate validation in \gls{tls}.
+Whilst cryptocurrencies were the first major application of blockchain technology there are other problems that can benefit from the decentralized nature and immutability. The two properties together imply a form of censorship resistance that centralized systems can never have --- that is, there is no authority that can intercede to perform the censorship, every node in the network has equal rites. Two examples where this is a desirable property are  the attempts to create decentralized alternatives to the most common \gls{dns} used on the Internet \cite{Namecoin,ENSEthereumName,UnstoppableDomainsDocumentation} and the central \gls{pki} root(s) of trust used in many Operating Systems for certificate validation in \gls{tls} \cite{yakubovBlockchainbasedPKIManagement2018,kubilayCertLedgerNewPKI2019,matsumotoIKPTurningPKI2016}.
 
-Blockchains have a major disadvantage to centralized ledgers in that the speed of transactions is often prohibitively slow for many applications. Using the Ethereum (\url{https://ethereum.org}) blockchain network as an example, at the time of writing the largest transaction volume in a single day was 1,406,016 on Thursday, September 17 2020 (data from \url{https://etherscan.io}) which equates to ~16.2 transactions per second compared to the Visa payment network which claims greater than 56,000 messages per second (according to \url{https://visanet.co.uk}).
+Blockchains have a major disadvantage to centralized ledgers in that the speed of transactions is often prohibitively slow for many applications. Using the Ethereum blockchain network as an example, at the time of writing the largest transaction volume in a single day was 1,406,016 on Thursday, September 17 2020 \footnote{Ethereum transaction rate data from \url{https://etherscan.io}} which equates to ~16.2 transactions per second compared to the Visa payment network which claims greater than 56,000 messages per second \footnote{Visa transaction rates as advertised at \url{https://visanet.co.uk}}.
 
 
 \section{Structure of a Blockchain}
@@ -27,6 +27,7 @@ Blockchains have a major disadvantage to centralized ledgers in that the speed o
     \caption{Basic Blockchain Structure}
     \label{fig:basic-blockchain}
 \end{figure}
+
 
 Blockchains are at their core built from two simple principles. These two principles provide a foundation of the technology and number of useful properties. They are:
 
@@ -42,16 +43,15 @@ The second principle ensures that while this may not be impossible in principle 
 \subsection{Blocks and Hashes}
 \label{ch:blockchain:structure:basics}
 
-The figure Blockchains use cryptographic hash functions for a number of their properties. Here is a quick overview of the desirable security properties of a cryptographic hash function $H$:
-
-\todo{better definitions, take from the book from intro to crypto? particularly for PRNG}
+Blockchains use cryptographic hash functions for a number of their properties. Here is a quick overview of the desirable security properties of a cryptographic hash function $H$ \cite{martinEverydayCryptography2017}:
 
 \begin{enumerate}
     \item \textbf{Preimage Resistance} Given a hash output $h$, it should be hard to find a message $m$ such that $H(m) = h$.
     \item \textbf{Second Preimage Resistance} Given a message $m_1$ and the output $H(m_1) = h$ it should be hard to find a message $m_2$ such that $H(m_2) = H(m_1) \equiv h$.
     \item \textbf{Collision Resistance} It should be hard to find two messages $m_1$ and $m_2$ such that $H(m_1) = H(m_2)$.
-    \item \textbf{Pseudo-Randomness} The output from the function should be hard to distinguish from a random oracle. That is, there should be no discernable relation between the input and output and similar inputs should not produce similar outputs.
 \end{enumerate}
+
+A fourth useful property which implies and is implied by second preimage resistance is \textbf{Pseudo-Randomness}. This property is satisfied if the output from the function is hard to distinguish from a random oracle. That is, there should be no discernable relation between the input and output and similar inputs should not produce similar outputs. Without this property, second preimage resistance could not be satisfied as we would gain some knowledge of $m_2$ due to its relationship with $m_1$.
 
 Note that second preimage resistance is implied by collision resistance, however it is subtly different as we are not attempting to find \emph{any} collision, but a specific collision for a known message. The recent SHAttered \cite{stevensFirstCollisionFull2017} attack on the SHA1 hash function was used to break collision resistance, not second preimage resistance. Blockchains use cryptographic hashes to link blocks together precisely because of second preimage resistance, which implies that we cannot feasibly forge a block while keeping the hash identical --- which would be the only way to insert a block without having to rewrite the entire following chain.
 
@@ -132,15 +132,18 @@ In order to spend funds from a previous transaction output the smart contract co
 
 In the Namecoin (\url{https://namecoin.org}) blockchain while fully functioning as a cryptocurrency --- it started as a fork of the original Bitcoin code --- also has a second type of output for transactions which allows \emph{purchasing} a key-value pair publicized on the chain which then lasts a fixed period of time before it must be renewed. The main idea behind the chain was to provide a censor-resistant platform for registering \gls{dns} records without a central authority. The cost in the currency would deter squatting or mass registering domains and the immutability and decentralized nature would make external censorship or seizure impossible.
 
-These transactions give a blockchain value, either by simply allowing it to function as a cryptocurrency or as a platform for trustless computing by the execution of arbitrary smart contracts. There are some blockchains that do not aim for this public utility and instead aim for the immutability for audit purposes. By making it infeasible to alter historic records, the blockchain allows entities to publicize the chain for external audit, even if the rules do not allow external entities to write to the chain. Known as a \emph{permissioned} blockchain where participants have different permission levels, the blockchain can still provide value with no cryptocurrency involved.
+These transactions give a blockchain value, either by simply allowing it to function as a cryptocurrency or as a platform for trust-less computing by the execution of arbitrary smart contracts. There are some blockchains that do not aim for this public utility and instead aim for the immutability for audit purposes. By making it infeasible to alter historic records, the blockchain allows entities to publicize the chain for external audit, even if the rules do not allow external entities to write to the chain. Known as a \emph{permissioned} blockchain where participants have different permission levels, the blockchain can still provide value with no cryptocurrency involved.
 
-\section{Trust in Blockchains}
+\section{Trust in DLT and their use in e-Voting}
 \label{ch:blockchain:trust}
 
-Trust is important in decentralized systems. With no authority to control access to the system, it is important to understand that nodes \emph{must not} trust each other. All nodes in the system are considered untrusted, but the consensus algorithm will ensure that the rules are followed. This does mean that all honest nodes need to be adhering to the same rules, but the dishonest parties cannot break them or the honest nodes will notice and ignore them.
+Trust is important in decentralized systems. With no authority to control access to the system, it is important to understand that nodes must be able to operate \emph{without} trusting each other. All nodes in the system are considered untrusted, but the consensus algorithm will ensure that the rules are followed. This does mean that all honest nodes need to be adhering to the same rules, but the dishonest parties cannot break them or the honest nodes will notice and ignore them.
 
-This does not mean that a blockchain network is implicitly secure in the presence of adversarial nodes. There are known attacks on blockchain networks and their consensus mechanisms. For example any peer to peer network is susceptible to an eclipse attack \cite{heilmanEclipseAttacksBitcoin2015} in which the adversary gains control of the peers a node is able to connect to. As the node can only connect to adversarial nodes, they can all lie about the state of the network keeping the target behind the main chain or tricking it into accepting a shorter chain of its own devising. Similarly, a Sybil attack \cite{douceurSybilAttack2002} is when the adversary floods the network with adversarial nodes to the point that they wield influence over the network.
+This does not mean that a blockchain network is implicitly secure in the presence of adversarial nodes. There are known attacks on blockchain networks and their consensus mechanisms. For example any peer to peer network is susceptible to an eclipse attack \cite{heilmanEclipseAttacksBitcoin2015} in which the adversary gains control over which peers a node is able to connect to. As the targetted node can only connect to adversarial nodes, who can all lie about the state of the network, they can keep the target behind the main chain or trick it into accepting a shorter chain of their own devising. Similarly, a Sybil attack \cite{douceurSybilAttack2002} is when the adversary floods the network with adversarial nodes to the point that they wield influence over the network.
 
-The Eclipse and Sybil attacks are generic to any peer-to-peer network. In terms of trust, we as participants in a blockchain network must trust that the network is sufficiently robust against these attacks and that there exists a sufficient number of honest nodes.
+The Eclipse and Sybil attacks are generic to any peer-to-peer network. In terms of trust, we as participants in a blockchain network must trust that the network is sufficiently robust against these attacks and that there exists a sufficient number of honest nodes. In a cryptocurrency, the block miners are financially incentivized to behave correctly which amplifies the network effect. The more popular blockchain networks see the most miners and users and therefore become the most trustworthy.
 
-\todo{ how to say: Most of the trust in blockchains comes from the incentives for honest behaviour combined with a large network size - there is a network effect there.}
+In our use case, an electronic voting system, there are a number of ways we can use \gls{dlt}.
+
+
+How might we encourage good behaviour in a voting system without a reward mechanism system? The simple answer is that we do not need to as our requirements from the chain are quite different from that of a cryptocurrency. The requirements we have are that of a public audit log, very similar to a concept of a permissioned blockchain, where only certain entities can write to the chain.

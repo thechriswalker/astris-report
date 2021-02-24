@@ -5,40 +5,36 @@
 \section{Objectives of the Implementation}
 \label{ch:sw:objectives}
 
-\todo{What I set out to create.
+The implementation of the Astris voting system will be utility-first. It is intended to prove the feasibility of creating such a system and provide an insight into the practical application of the protocol. User-friendliness will not be a priority, nor efficiency, but instead correctness will be the focus. This extends to some aspects of the peer-to-peer networking such as automatic peer-discovery and black/white listing capability (although these features may be implemented in the fullness of time).
 
-    The software implementation will be a minimum viable implementation. That is it will concern itself with implementing the cryptography and the networking required for the scheme. User experience will come second to that. Certain elements of the peer-to-peer networking will not be implemented, unless time permits (likely they will be implemented after this report is completed) - that is automated peer-discovery, a complex function that will not prove or disprove the validity of the rest of the work.
+The objective of the implementation is to create a software service that can adhere to the protocol and can perform the roles of:
 
-    It will implement the roles of:
+\begin{itemize}
+    \item \textbf{Authority:} the election organiser role. Creating the initial election parameters and setup information, the pieces required to allow the trustees and registrar to perform their setup duties and to create the genesis block.
+    \item \textbf{Trustee:} one of the decryption trustees. Participating in the distributed key generation algorithm in the setup phase, and performing the partial decryption in the tally phase.
+    \item \textbf{Registrar:} the eligibility authority. Creating the setup parameters, keys and voter list. Running a web-server to provide a dummy authentication module to allow voters to have there voting keys signed.
+    \item \textbf{Voter:} a potential voter. Creating a voting key-pair, creating the registration URL for the voter to authenticate with the Registrar and have their key signed. Adding the signed key to the chain.
+    \item \textbf{Auditor:} a member of the network simply validating all blocks on the chain, and therefore all workings of the election.
+\end{itemize}
 
-    - election organizer: initial setup and input of data from the trustees/registrars \\
-    - generic node: will watch the chain and validate the blocks: will accept fully validated votes to add to the chain (so the "voter" does not need to have the full chain) \\
-    - trustee: generation of the initial setup material and the partial tallying functions \\
-    - registrar: generation of initial setup material, signing of vote blinds for a voter \\
-    - voter: generation of vote, getting it signed by the registrars, adding it to the chain \\
-    - auditor: validate entire chain, re-tally and confirm outcome.
+The \textbf{Auditor} is actually performed by an of the other roles when they connect to the blockchain, they will all validate all the blocks.
 
-    The generic node is the long-running service, each other function will be a short-lived program performing the single task required (but potentially saving state).
-
-    The software should show that these functions can each be run independantly, with no collusion and that the privacy of the voter is maintained.
-}
+The software should show that these functions can each be run independently, with no collusion and that the privacy of the voter is maintained.
 
 \section{Architecture of the Software}
 \label{ch:sw:architecture}
 
-\todo{
-    Written in go for clarity and simplicity.
+I have chosen Go (\url{https://golang.org/}) as the implementation language. This choice was for a few main reasons not least of which is that I am already familiar with the language and have implemented several small projects in it. Another good reason for the choice is that the simplicity and enforced formatting make most Go projects easily accessible to new contributors. Finally, the next biggest reason was that Go code can be compiled to \gls{wasm} easily, meaning the same cryptographic code could be used in the browser as natively.
 
-    I will use gRPC for inter-node communication as libraries exist in other languages and this should make making alternative implementations more straightforward.
+I have chosen to use gRPC (\url{https://grpc.io}) as the inter-node communication protocol as hopefully it should make third party implementations more straightforward as they can share the protobuf definitions.
 
-    The core blockchain will be backed by an sqlite database for simplicity and ease of use, although the interface will be abstract to allow other storage backends should we want to. SQLite remains a solid, dependable product and the single file can be copied easily to move state around.
+The core blockchain will be backed by a SQLite3 database for simplicity and ease of use, although the interface will be abstract to allow other storage backends should we want to. SQLite3 remains an incredibly robust, dependable and versatile format.
 
-    The core consensus mechanism will be a hashcash variant with configurable difficulty, we will likely keep the difficulty low for the proof-of-concept runs to keep the energy and time cost low.
+The payload for the blocks will be represented as arbitrary byte arrays at the blockchain level, and the extra validation of the Astris protocol will be performed at a higher level. This will keep the block exchange and networking code isolated from the Astris protocol logic.
 
-    The payload for the blocks will be abitrary bytes arrays for the blockchain level, but likely use a human readable structured format on chain - i.e. JSON (with the appropriate caveats) so that debugging and introspection can be performed easily.
+The application will be constructed as a library, and the various CLI invocations for the different roles will simply call different parts of the inner library to perform their tasks.
 
-    The application will be written as a library, and the various CLI invocations will simply call different parts of the inner library to perform their tasks.
-}
+The code for this project is versioned with the Git version control software and a copy of the repository is located on GitHub. The software may well see further development after this report is completed so for reference, the version at the time of publishing is available at \url{\astrisrepo /tree/ \astrishash}.
 
 \section{Notes on Implementation}
 \label{ch:sw:notes}
@@ -48,8 +44,5 @@
     What was easy. How well it went. etc ... \\
 
     Mainly that there is an enormous amount of work involved, the blockchain and crypto are a small part of the overall project, the finer grained detail of the peer-to-peer gossiping and managing the chain where much more difficult than anticipated.
-
-    Fortunately I made some good design decisions early on and the changes to requirements that came as I was continuing to nail down the final specifications of the scheme were able to be handled with minimal disruption.
-
 
 }

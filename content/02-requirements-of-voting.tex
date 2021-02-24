@@ -7,25 +7,30 @@
 
 There are a number of desirable properties for a voting system to have, some of which could be considered required for a voting system given the assumption that the system aspires to be fair and honest. There have been many papers outlining the security requirements specific to voting \cite{epsteinElectronicVoting2007,delauneFormalisingSecurityProperties2010,liTaxonomyComparisonRemote2014,hastingsSecurityConsiderationsRemote2011}, and they tend to agree on the majority. First we make some definitions of the primary entities involved:
 
-\begin{table}[h!]
+\begin{table}[H]
     \centering
     \begin{tabular}{|Sr|S{p{0.666\textwidth}}|}
         \hline
-        \textbf{Entity}         & \textbf{Definition}                                                                                                                                                                                                                                                                                                                                                                                                                         \\
+        \textbf{Entity}         & \textbf{Definition}                                                                                                                                                                                                                                                                             \\
         \hline\hline
-        \textbf{Candidate}      & An entity that is entering into the election as a potential choice for the voters. All possible candidates will be listed for the voter to choose from when voting.                                                                                                                                                                                                                                                                         \\
+        \textbf{Candidate}      & An entity that is entering into the election as a potential choice for the voters. All possible candidates will be listed for the voter to choose from when voting.                                                                                                                             \\
         \hline
-        \textbf{Voter}          & An entity that is eligible to vote in the election. Proof of eligibility is not defined here but must be possible within the framework of an election.                                                                                                                                                                                                                                                                                      \\
+        \textbf{Voter}          & An entity that is eligible to vote in the election. Proof of eligibility is not defined here but must be possible within the framework of an election.                                                                                                                                          \\
         \hline
-        \textbf{Authority}      & The entity holding the election. The authority will define the parameters of the election, for example which candidates there will be, the timeframe voting will take place in and the voting scheme that will be used.                                                                                                                                                                                                                     \\
+        \textbf{Authority}      & The entity holding the election. The authority will define the parameters of the election, for example which candidates there will be, the timeframe voting will take place in and the voting scheme that will be used.                                                                         \\
         \hline
-        \textbf{Registrar}      & An entity that will be held responsible for authenticating the voters, and hence determining eligibility. This entity may be the same as the authority, or it may be separate.                                                                                                                                                                                                                                                              \\
+        \textbf{Registrar}      & An entity that will be held responsible for authenticating the voters, and hence determining eligibility. This entity may be the same as the authority, or it may be separate.                                                                                                                  \\
         \hline
-        \textbf{Bulletin Board} & Refers to a publicly available record of the information regarding the election. Depending on the voting scheme, this is not always made available and may have differing amounts of information \needcite{no bulletin board}. If it is made available, it will almost certainly be read-only for the public and maintained by the authority. This need not be electronic, or can be even if the voting scheme is otherwise non-electronic. \\
+        \textbf{Trustee}        & An entity or one of a group of entities responsible for counting the votes and computing the final tally. This may be the original Authority or an external entity.                                                                                                                             \\
+
         \hline
-        \textbf{Auditor}        & Any entity that validates the election data is correct by inspecting the bulletin board, votes or tallies. In some schemes this is a separate entity \needcite{no public audit} and in others \needcite{public-audit} it can be performed by anyone.                                                                                                                                                                                        \\
+        \textbf{Bulletin Board} & Refers to a publicly available record of the information regarding the election. Depending on the voting scheme, this is not always made available and may have differing amounts of information. This need not be electronic, or can be even if the voting scheme is otherwise non-electronic. \\
+
         \hline
-        \textbf{Adversary}      & Any entity that is attempting to subvert the election in any way. This could be to attempt to have their preferred candidate elected or to stop the election from taking place at all.                                                                                                                                                                                                                                                      \\
+        \textbf{Auditor}        & Any entity that validates the election data is correct by inspecting the bulletin board, votes or tallies. In some schemes this is a separate, designated entity or group of entities and in others it can be performed by anyone.                                                              \\
+
+        \hline
+        \textbf{Adversary}      & Any entity that is attempting to subvert the election in any way. This could be to attempt to have their preferred candidate elected or to stop the election from taking place at all.                                                                                                          \\
         \hline
     \end{tabular}
     \caption{Table of Definitions of Entities in Voting Systems}
@@ -45,7 +50,6 @@ The next set of properties are desirable, and indeed should be present in any se
 
 \begin{description}
     \item[Robustness] The scheme should be resilient against an adversary attempting to influence the outcome. The influence could be arbitrary, simply attempting to create errors in the process or to create a denial of service stopping the election from happening at all. The influence could be specific, attempting to sway the results in a pre-determined way. The scheme must also be resilient to errors occurring for any other reason; malignant or benign.
-
     \item[Receipt-Freeness] After casting a vote, the voter should not be able to prove their choices to any entity. This prevents the voter from being able to prove their vote to a 3rd party in a vote buying or selling scheme, or in the case of coercion. This property is similar to \emph{secrecy} but stronger, as not even the voter can prove how they voted.
     \item[Coercion-Resistance] The scheme should prevent an adversary from being able to manipulate a voter into either abstention, or to coerce the voter into voting a certain way. The adversary should not be able to impersonate the user and place a vote on the voter's behalf.
     \item[Individual Verifiability] Any vote may verify that their vote has be counted in the tally.

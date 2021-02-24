@@ -20,15 +20,15 @@ func CanonicalJSONEncoder(out io.Writer) func(v interface{}) error {
     return func(v interface{}) error {
         b, err := json.Marshal(v)
         if err != nil {
-		return err
-	}
-	var t interface{}
-	err = json.Unmarshal(b,&t)
-	if err != nil {
-		return err
-	}
-	// t is map[string]interface instead of struct, so the keys will be sorted.
-	return enc.Encode(t)
+            return err
+        }
+        var t interface{}
+        err = json.Unmarshal(b,&t)
+        if err != nil {
+            return err
+        }
+        // t is map[string]interface instead of struct, so the keys will be sorted.
+        return enc.Encode(t)
     }
 }
 ```
@@ -213,3 +213,7 @@ summation by each node was correct
 Once the partial decryptions have been verified by the proofs, we can combine them all into the final decrypted value. As this is done with exponential ElGamal, we need to lower the results back down to the discrete log. This means we need to calculate the discrete log over P of NUM_VOTERS (as that is the highest possible value), well, we don't we can generate the table lazily as we go, as we likely won't get such a convincing majority as 100%.
 
 The final result does not need to be published on the chain, as it would need to be calculated to verify the block if it was, and so we need not do that on-chain. Implementations will likely cache the results (and the encrypted tally's) as they go along to use as a "trusted" checkpoint to save the costly recalculation.
+
+### Verification
+
+The same process that ensure the chain integrity is also the verification for the election. So the verification step is exactly the same as the blockchain verification.

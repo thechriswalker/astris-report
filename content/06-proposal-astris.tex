@@ -1,175 +1,117 @@
 
-\chapter{Proposal for an Improved Protocol}
+\chapter{Proposal for an Improved Protocol: Astris}
 \label{ch:astris}
 
-\section{Objectives and Non-Objectives of the Protocol}
+\begin{quote}
+    ``There are only two hard things in Computer Science: cache invalidation and naming things.''
+
+    \rightline{--- Phil Karlton\footnote{This quote was attributed to Phil Karlton by Tim Bray, first appearing on the Internet in 2005 \url(http://www.tbray.org/ongoing/When/200x/2005/12/23/UPI).}}
+
+\end{quote}
+
+Fortunately our protocol description does not touch on cache invalidation. However, the protocol bears a distinct resemblance to the Helios v4 protocol. This is due to the fact that many constructs within Helios are perfectly suited to the application in this protocol. There are also significant differences in both the way elections are set up, voters registered and how the public bulletin board is constructed. Therefore, \emph{Astris} --- one of the daughters of Helios in Greek mythology --- seemed a fitting name.
+
+\section{Objectives and Non-Objectives}
 \label{ch:astris:aims}
 
-\todo{
-    Which aspects I intend to improve, and what assumptions/axioms I will make.
+Astris aims to lower the trust requirements in comparison to other voting systems while maintaining the key security properties. This is achieved through a combination of processes working together.
 
-    - removal of single points of failure \\
-    - tradeoff between requiring all parties to collude vs resilience
+Firstly, the system is designed for all working to be done in the open or to be provably correct via public data. This is the primary function of using \gls{dlt} in the system --- to provide a platform that is publicly verifiable and immutable. After data is on the chain, it cannot be rewritten without nodes on the network noticing.
 
-    Assumptions: \\
-    - there exists a secure channel for the voter to communicate with the registrar. \\
-    - coercion cannot be eliminated without physical security for voting (secure booth) \\
-    - we are not programming satan's comupter, the voter can vote from a "trusted" device \\
+Secondly, the system is designed to reduce the possible single points of trust to distributed ones. No single entity will be able to decrypt the data on the chain. The registrar has a large amount of power over the system, being the one making the decisions about who is eligible or not. This is an unavoidable focus of power, but we mitigate it by ensuring that the registrar may only wield this power during the voter registration phase and not during the voting phase.
 
-}
+The ability to decrypt the final tally is gifted to the trustees, and only when working in concert through threshold cryptography. This means we have a bound on the number of trustees that must collude before any data is revealed. There is a trade-off here between robustness and security in the choice of our threshold. If we require that all trustees be honest, and we require them all to decrypt the final tally, this will be most secure and only one need be honest to prevent any secret data being decrypted. However, it now only takes a single dishonest party to break the system completely making the final result unknowable, as the withholding of a single decryption will reveal no information about the result. Same outcome would happen if any trustee lost their secret key before the vote decryption phase. On the other hand, if we lower the threshold too much, then fewer trustees need to be dishonest and collude before all the private votes can be decrypted.
 
-\todo{explain the security requirements we aim to achieve}
+There is no correct answer to this trade-off except to consider the circumstances of the election and the required security vs robustness. For example a national level election requires high security, but also must be robust. The electorate will not be happy if the election system fails at the end and has to be restarted, yet neither will they be happy if their votes are revealed. The way to increase both security and robustness is to increase the number of trustees, selecting them carefully to maximize the likelihood that they will not collude --- that is, where there is incentive for them to act correctly, and no shared motivation to collude with other parties. Once the number of trustees is high enough, we can choose a threshold where the probability of lost keys causing failure and the probability of the required amount of trustees colluding are both acceptably low.
+
+Finally, it is worth reiterating that an e-voting system can never attain coercion-resistance (see \autoref{ch:ev:specific}), so we will not aim to cover that property.
+
+We must make some assumptions about the environment in which this protocol will operate:
+
+\begin{itemize}
+    \item We are not ``programming Satan's computer'' \cite{andersonProgrammingSatanComputer1995}. That is we must assume that each entity can trust the use of their own computer system and the integrity of the software running on it.
+    \item We assume the existence of a private communication channel that can be established as needed between any to entities in the system.
+\end{itemize}
+
+With this in mind, the aims of the Astris protocol are:
+
+\begin{itemize}
+    \item Create a voting protocol that is correct, secret, fair, robust, receipt-free, individually and universally verifiable, universally auditable and honours eligibility.
+    \item Create a voting protocol with no single points of trust, minimizing trust requirements.
+    \item Create a voting protocol which maximizes auditability and transparency.
+\end{itemize}
+
+The non-goals of the protocol are:
+
+\begin{itemize}
+    \item To define the exact authentication protocol to prove eligibility.
+    \item To define the \emph{correct} balance between security and robustness.
+    \item To provide defence against a post-quantum adversary.
+\end{itemize}
+
+This last non-goal is an interesting one, that later work may wish to revisit. In order to create the protocol in the manner proposed, we will require a public key encryption system with the following properties:
+
+\begin{itemize}
+    \item There must be a distributed threshold key generation protocol without any party gaining knowledge of the secret key at any point during the protocol. This is important to ensure that there is no possibility to decrypt the data without a threshold of keyholders working together.
+    \item It must be a probabilistic encryption. That is the same plaintext must not always encrypt to the same ciphertext. This is important as votes are going to have little variation in plaintext (i.e. they will be 1 or 0).
+    \item It must support homomorphic addition. This is so we can add up the votes without decrypting them. There is an alternative to homomorphism in voting systems using mix-nets, but our protocol will homomorphism, and so requires an additive homomorphism.
+    \item It must have a signature scheme, which can sign arbitrary messages.
+    \item It must support verifiable encryption. We must be able to proof that our vote plaintext has a certain format, and the combined votes have a certain format. That is, we need to be able to prove that we voted for at most 1 candidate --- the vote for each candidate is either a 0 or a 1, and the sum over the votes for all candidates the sum of votes is also 0 or 1.
+    \item It must support verifiable decryption. A trustee must be able to prove that their decryption of the tally is correct.
+\end{itemize}
+
+There are a number of quantum-resistant algorithms \needcite{LWE, Ring-LWE, NTRU, mulitvariate, supersingular ECC,... } that fit some or all of these properties. ElGamal, while relying on the \gls{dlp} which has shown to be insecure under Shor's alorigthm \cite{shorAlgorithmsQuantumComputation1994}, has all the required properties. Provided all else is equal, using a post-quantum algorithm would indeed lower trust requirements as it would be more likely that the publicly available audit data for the election could \emph{never} be decrypted by an adversary, whereas under ElGamal a post-quantum attack could reveal data. Therefore, should we be able to replace our quantum-vulnerable algorithm with a quantum-resistant one, we would further reduce trust requirements in our system, but this reduction would be orthogonal to any other aspect. It would merely be replacing one black box with another.
+
+Given this and that the post-quantum algorithms are significantly more complex to implement in software, I leave that as future work and accept that the solution will not be optimally minimized without post-quantum algorithms but that the core of this protocol would be unchanged by switching to one. Due to this, \autoref{ch:astris:overview} will not mention any specific cryptography and the exact nature of the implementation will be detailed only in \autoref{ch:astris:detail}.
 
 \section{Protocol Overview}
 \label{ch:astris:overview}
 
-\todo{Brief outline of the basics of the protocol, with the phases mentioned.
+The Astris protocol is split into distinct stages. There is a setup stage where the election parameters are chosen, the trustees named and the distributed secret key created. This stage also names the Registrar and enumerates all the eligible voters. Once this initial setup stage is complete, the data is put into a genesis block for the public audit chain for this election and the hash of the block becomes the election identifier used throughout the rest of the protocol. All further data are added to this chain, and any party wishing to verify the election as it happens can join the network and see all the blocks.
 
-    The protocol bears a distinct resemblance to the Helios v4 protocol. This is because Helios already contained a good amount of the privacy goals and the encryption protocols are far simpler than alternatives, whilst still being extensible into multi-party setups for shared-nothing initialization.
+One section of the election parameters governs the timing of the phases, which will be used throughout the rest of the protocol.
 
-    We begin with the trustees mutually defining the parameters for the election, candidates, time periods, etc. The trustees also each generate their part of the multi-party key setup based on \cite{petersenDistributedProversVerfiable1992}.
+The second stage is the parameter confirmation stage which is a timed stage. During this all the external parties --- the registrar and each of the trustees --- sign an acknowledgement that they agree with the data in the genesis block. Each signed payload is added to the chain. All confirmations but be added within the time bounds or the protocol is deemed failed and must be restarted. We note that at this stage we require \emph{all} parties to confirm, and the protocol can collapse due to a single failure. However, we have not involved the public yet, except early auditors, and so there is little problem in restarting the process, generating a new election ID.
 
-    This means no entity has the private key and dependent on the setup $K$ of $N$ (where $K <= N$) trustees are required for decryption. $K = N$ gives at least one honest trustee keeps the whole thing honest, but one lost key ruins the entire election. The appropriate trade-off between security and robustness must be made on a case by case basis.
+After the parameter confirmation, we have the voter registration phase which is also a timed phase. During this phase, the voters must authenticate with the registrar and have the registrar sign their public key and voter id. The voter may then add this block to the chain, to show that their vote may be allowed and that it will be signed with their secret key. If eligible voters do not register to vote during this period, they may not cast a vote in the later vote casting stage.
 
-    Each trustee publishes the details and a ZKP of knowledge of their own private key. Once all trustees have submitted their data, the overall public key can be calculated.
+The next stage is the vote casting stage, also timed. Once voting opens, a voter may cast a vote by encrypting a series of 0's or 1's in the order of the listed candidates. Alongside the encrypted votes the voter will create a series of \glsplural{zkp} showing that each ciphertext encrypts either a 0 or a 1. The voter will also create a proof that the overall sum of votes is less than or equal to the configured election parameter minimum. Finally, the voter creates a signature over the ballot data and voter id with their private key. This signature can then be verified using the previously published public key.
 
-    One of the parameters chosen will be the eligibility authority (registrar) who will oversee the eligibility. This is problematic single point of trust. In a governmental situation this has to be part of the government, which is not great, but unavoidable (unless all the eligible voters can be registered in escrow somehow...).
+The last stage is the tally decryption stage, also timed. This poses the most threat to the integrity of the election as unless a threshold of trustees submits partial decryption results to the chain within the time bound, then the election will be void. It seems a legal incentive here would be necessary to ensure co-operation. Note that any entity may perform the homomorphic summation to get to the final encrypted tally, and once the threshold of partial decryption results have been published any entity may calculate the final result.
 
-    The setup data is added to a block and the hash of this block becomes the election id. This could be the genesis block in a new chain, or another block in an existing chain, all subsequent blocks will have the election id embedded into much of their data and so many elections can share a chain if we want. In the poc implementation we will have one chain per election. Remember the key purpose of the blockchain here is to provide public realtime audit of the election data. It can be collected by anyone and any post-facto changes change be detected.
+This process is visualized in \autoref{fig:astris-sequence}.
 
-    The protocol for authenticating eligible users will be unspecified in this scheme. The poc implementation will use a simple authentication protocol. The end result of the authentication is that the user will be able to exchange a blind to be signed by the registrar. The registrar will sign the blind and a nonce and an identifier unique to the voter. The blind will be a hash of the vote data.
 
-    \textbf{How does this stop the registrar from voting on behalf of the user?} The user doesn't have anything uniquely identifying except the auth details that they give to the registrar. but if the registrar is just blind signing the vote data, the registrar could just create the vote themselves and blind sign it on behalf of the user and submit that to the blockchain - totally subverting the system. This is a major gap in my knowledge, the registrar should NOT be able to add to the chain. There are 2 answers here, 1: the registrar is trusted - we already have to trust them to a degree. 2: use the setup phase to get eligible users to register to vote and submit public keys to the chain. again, nothing to stop malicious users from submitting fake public keys to DoS other users.
-
-    crap, I think we have to trust the registrar \textbf{THINK ON THIS}. In Helios this is not a problem as the helios server is considered trusted, at least when it comes to authorising users and submitting votes.
-
-    The only way to alleviate this trust problem is to spread it, meaning we need another KofN Registrars and all must sign the vote hash. This way no single registrar can masquerade as a voter - or at least in theory, in all likelihood any registrar will have enough data to convince another registrar that they are the voter.
-
-    Once the election is opened, voters may vote by creating a number of encrypted votes (one for each candidate), encrypted with the public key for the election. These votes will be assured to each be representing 0 or 1 by means of a zero-knowledge proof. We can them also combine an overall proof that the sum of the votes is less than a threshold (probably $1$ in most cases but sometimes $x$ where $0 < x \le num_{candidates}$). The ElGamal based system we will use for the encryption makes the proofs fairly simple and very compact.
-
-    The user is left with no information that could be used to reveal their vote. They can check their vote is on the chain, but they cannot decrypt it. \textbf{They must trust that the voting software did the right thing}.
-
-    Potentially we could use Helios' reveal function where we hold the randomness in memory after creating the vote, and allow the user to verify the vote, "burning" the ballot or submitting it destroying the randomness and making verifying the value from the ballot impossible.
-
-    The vote is then hashed and the has signed by the registrar. We then submit the vote and the registrar signature to the chain. dependent on the election parameters, the chain may reject duplicate votes, ignore them or it may simply allow last-vote-wins semantics.
-
-    The chain will verify that: \\
-    - the vote is for an electionId it knows \\
-    - the vote is valid (ZKPs validate) \\
-    - the vote is eligible (the registrar(s) signature is valid) $\leftarrow$ NB the chain could reject here.
-
-    The votes are encrypted, but with a homomorphic encryption allowing summation of the votes without decryption.
-
-    Any user can submit a partial tally to the chain. This is a block with the partial summation of votes produced along with a timestamp. As the partial tally can be calculated by any node, and indeed they will likely keep the running tally in memory. This allows blocks to continue to be added to the chain despite no new votes being added.
-
-    During the election, the votes can be tallied while still encrypted, but it would require collusion of the $K$ of $N$ trustees to be able to reveal any vote.
-
-    Once the voting is closed, the votes can be summed without decryption. Then at least $K$ of the trustees must provide their partial decryptions of the summations along with ZKPs of decryption.
-
-    When the final trustee has provided a partial decryption, the final decrypted tally can be constructed.
-}
+\begin{figure}[H]
+    \centering
+    \includesvg[width=\columnwidth]{figures/astris-protocol}
+    \caption{Astris Protocol Sequence}
+    \label{fig:astris-sequence}
+\end{figure}
 
 \section{Protocol Detail}
 \label{ch:astris:detail}
 
-\todo{How the phases fit to together and exactly what data is gathered at each step}
+\todo{This is the fine detail - I will likely write up this bit once the software is finished in case of feedback\dots}
 
 \subsection{Setup Phase}
 \label{ch:astris:detail:setup}
 
-\todo{What data is recorded onto the chain upfront?}
-{\color{magenta}
-    \begin{verbatim}
-- election name (human readable)
-- election candidates: list of:
-    - candidate id (sequence number in list)
-    - candidate name (human readable, likely contains other metadata like political party)
-- election max choices: number 1-(number of candidates)
-- election trustees: list of
-    - trustee id (sequence number in list, important for the encryption)
-    - trustee name (human readable, maybe other human metadata)
-    - trustee proof of knowledge of private key shard
-    - trustee public key for signature verification (a different key pair to the sharded key)
-    - trustee shard of public key
-- election parameter freeze datetime
-- election voting open datetime
-- election voting close datetime
-- registrars: list of
-    - registrar id (sequence number in list)
-    - registrar name (human readable)
-    - registrar public key (for verifying signatures)
-    - registrar authentication endpoint
-- election vote required registrar count: (1-number of registrars)
-\end{verbatim}}
+% If not all trustees or not all registrars have committed to the parameters with at least one block by the freeze date, then election is void. This ensures that the regsitrars and trustees are indeed willing to participate and deepens the initial chain to the point that re-writing it will be impossible to the satisfaction of the trusted parties. Note that the public have no say in this initial setup, nor have any possibility to deepen the chain themselves, however they can watch the chain at all times and after all additions, so it is tamper-evident.
 
-\todo{After this data is stored on the chain the initial parameters are set and the block id becomes the election id.
-to confirm this block each of the trustees and each of the registrars signs a confirmation block with the election id embedded: [electionId, registrarId, signature, nonce] or [electionId, trusteeId, signature, nonce].
+\subsection{Parameter Confirmation Phase}
+\label{ch:astris:detail:params}
 
-The trustees and registrars may add as many of these blocks as they wish to the chain at this point. The more added the more secure the initial parameters, up until the time of the election paramter freeze.
+\subsection{Voter Registration Phase}
+\label{ch:astris:detail:registration}
 
-If not all trustees or not all registrars have committed to the parameters with at least one block by the freeze date, then election is void. This ensures that the regsitrars and trustees are indeed willing to participate and deepens the initial chain to the point that re-writing it will be impossible to the satisfaction of the trusted parties. Note that the public have no say in this initial setup, nor have any possibility to deepen the chain themselves, however they can watch the chain at all times and after all additions, so it is tamper-evident.
-
-}
-
-\subsection{Voting Phase}
+\subsection{Vote Casting Phase}
 \label{ch:astris:detail:vote}
 
-\todo{How are voters authenticated, how are their votes secured, how they are verified. \\
-    Are multiple votes allowed? last vote wins?
+% Once the election is opened, voters may vote by creating a number of encrypted votes (one for each candidate), encrypted with the public key for the election. These votes will be assured to each be representing 0 or 1 by means of a zero-knowledge proof. We can them also combine an overall proof that the sum of the votes is less than a threshold (probably $1$ in most cases but sometimes $x$ where $0 < x \le num_{candidates}$). The ElGamal based system we will use for the encryption makes the proofs fairly simple and very compact.
 
-    Voters create there votes by encrypted a 0 or 1 for each candidate. \\
-    Then we create a ZKP of the fact that the value is 0 or 1 for each vote \\
-    Then we create a ZKP of the fact that the sum of votes is $\le$ number of allowed votes. \\
-
-    This vote is then hashed to create a blind for signing.
-
-    At this point in Helios the software allows the user to validate that the vote is indeed the vote they intended to cast, by re-using the randomness to recreate the vote. If done the vote is discarded and a new vote created with a different randomness - again the user can verify or commit. If the user chooses to commit the randomness is discarded (so the vote can no longer be verified), and the process continues.
-
-    Once the vote is decided, the user must authenticate against K of N registrars to prove eligibility. The user provides their vote hash and the registrar returns a piece of data and a signature over it.
-
-    The data contains [voterId, electionId, voteHash, registrarId], the voterId is a unique identifier that represents an individual, common across all registrars.
-
-    Once the user has $K$ approvals, they attach the approvals to their vote and mine a block for it on the chain.
-
-    NB, the difficulty of mining a vote should be fairly low to allow a reasonable rate of voting if only one-per-block, mined by the voter. In order to increase the difficulty of rewriting the chain, every few minutes a "checkpoint block" of harder difficulty could be mined to prevent tampering. We could require one of these blocks every X other blocks or every X minutes to force the chain to add them regularly.
-
-    Another option would be to allow multiple votes to be mined as "one", like transactions in a cryptocurrency. This has the disadvantage of being exceeding more complex as now the network must exchange votes as well as blocks, storing them in a cache until they can be mined. Unlike a cryptocurrency there is no clear incentive for miners to operate, and so this may not work in practice.
-}
-
-
-
-
-\subsection{Tallying Phase}
+\subsection{Tally Decryption Phase}
 \label{ch:astris:detail:tally}
-
-\todo{What is needed to be done to tally the votes, how does this not break the confidentiality of the voter?
-
-    Once the election close datetime is reached, new votes are no longer accepted on to the chain.
-
-    Votes are tallied by adding the encrypted votes, as the encryption is homomorphic with respect to addition. Depending on how we allowed duplicates, the votes should be chosen as 1 per voter with whatever method is appropriate (first-vote, last-vote, etc...)
-
-    The summation is added to the chain by any party that calculates it, but every node should calculate it themselves to validate that block and only accept the block if the count is correct.
-
-    Once the summation block is added, the trustees now each add a block with their partial decryptions, ZKP of decryption (verifiable decryption), and a signature over the data verifiable with their signing key.
-
-    Once K of N trustees have added their blocks, ideally all of them, but only K are required, the final tally can be successfully decrypted.
-
-    This final result block does not be added to the chain, as it is implicit.
-
-
-
-}
-
 
 \subsection{Verification Phase}
 \label{ch:astris:detail:verify}
-
-\todo{How can an observer who has been part of the chain verify the result? Can an outsider that only see the final chain be convinced it is valid?
-
-    The chain verification process is simply the consensus algorithm of the chain, combined with the knowledge of the electionId. The genesis block will contain all election parameters required to confirm the entirity of the rest of the chain.
-
-    Theoretically (and practically) any individual can create a "real-looking" election for any number of participants, but no-one will be able to recreate an election with the same fingerprint. In fact some sort of easily user-identifiable image should accompany the election id (like an identicon) to encourage verification that you are looking at the correct election.
-
-    The cryptography is fairly low complexity in the grand scheme of things, and so an independant implementation could be created for verification or indeed full network participation.
-}
-

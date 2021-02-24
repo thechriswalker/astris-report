@@ -1,577 +1,648 @@
 
-@techreport{albrechtHomomorphicEncryptionSecurity2018,
-  title = {Homomorphic {{Encryption Security Standard}}},
-  author = {Albrecht, Martin and Chase, Melissa and Chen, Hao and Ding, Jintai and Goldwasser, Shafi and Gorbunov, Sergey and Halevi, Shai and Hoffstein, Jeffrey and Laine, Kim and Lauter, Kristin and Lokam, Satya and Micciancio, Daniele and Moody, Dustin and Morrison, Travis and Sahai, Amit and Vaikuntanathan, Vinod},
-  year = {2018},
-  month = nov,
-  address = {{Toronto, Canada}},
-  institution = {{HomomorphicEncryption.org}},
-  annotation = {Backup Publisher: HomomorphicEncryption.org},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/N84L8J3E/Albrecht et al. - Homomorphic Encryption Standard.pdf}
-}
-
-@article{backHashcashDenialService2002,
-  title = {Hashcash - {{A Denial}} of {{Service Counter}}-{{Measure}}},
-  author = {Back, Adam},
-  year = {2002},
-  month = aug,
-  abstract = {Hashcash was originally proposed as a mechanism to throttle systematic abuse of un-metered internet resources such as email, and anonymous remailers in May 1997. Five years on, this paper captures in one place the various applications, improvements suggested and related subsequent publications, and describes initial experience from experiments using hashcash.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/N6PCAG2C/Back - Hashcash - A Denial of Service Counter-Measure.pdf},
-  journal = {Tech Report},
-  language = {en}
-}
-
-@incollection{boudotEfficientProofsThat2000,
-  title = {Efficient {{Proofs}} That a {{Committed Number Lies}} in an {{Interval}}},
-  booktitle = {Advances in {{Cryptology}} \textemdash{} {{EUROCRYPT}} 2000},
-  author = {Boudot, Fabrice},
-  editor = {Goos, Gerhard and Hartmanis, Juris and {van Leeuwen}, Jan and Preneel, Bart},
-  year = {2000},
-  volume = {1807},
-  publisher = {{Springer Berlin Heidelberg}},
-  address = {{Berlin, Heidelberg}},
-  doi = {10.1007/3-540-45539-6_31},
-  abstract = {Alice wants to prove that she is young enough to borrow money from her bank, without revealing her age. She therefore needs a tool for proving that a committed number lies in a specific interval. Up to now, such tools were either inefficient (too many bits to compute and to transmit) or inexact (i.e. proved membership to a much larger interval). This paper presents a new proof, which is both efficient and exact. Here, ``efficient'' means that there are less than 20 exponentiations to perform and less than 2 Kbytes to transmit. The potential areas of application of this proof are numerous (electronic cash, group signatures, publicly verifiable secret encryption, etc. . . ).},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/NSVRPZ9K/Boudot - 2000 - Efficient Proofs that a Committed Number Lies in a.pdf},
-  isbn = {978-3-540-67517-4 978-3-540-45539-4},
-  language = {en}
-}
-
-@article{chillottiHomomorphicLWEBased,
-  title = {An Homomorphic {{LWE}} Based {{E}}-Voting {{Scheme}}},
-  author = {Chillotti, Ilaria and Gama, Nicolas and Georgieva, Mariya and Izabachene, Malika},
-  abstract = {In this paper we present a new post-quantum electronicvoting protocol. Our construction is based on LWE fully homomorphic encryption and the protocol is inspired by existing e-voting schemes, in particular Helios. The strengths of our scheme are its simplicity and transparency, since it relies on public homomorphic operations. Furthermore, the use of lattice-based primitives greatly simplifies the proofs of correctness, privacy and verifiability, as no zero-knowledge proof are needed to prove the validity of individual ballots or the correctness of the final election result. The security of our scheme is based on classical SIS/LWE assumptions, which are asymptotically as hard as worstcase lattice problems and relies on the random oracle heuristic. We also propose a new procedure to distribute the decryption task, where each trustee provides an independent proof of correct decryption in the form of a publicly verifiable ciphertext trapdoor. In particular, our protocol requires only two trustees, unlike classical proposals using threshold decryption via Shamir's secret sharing.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/ANNWKYL9/Chillotti et al. - An homomorphic LWE based E-voting Scheme.pdf},
-  language = {en}
-}
-
-@article{cortierDistributedElGamalPedersen,
-  title = {Distributed {{ElGamal}} `a La {{Pedersen}} - {{Application}} to {{Helios}}},
-  author = {Cortier, V{\'e}ronique and Glondu, St{\'e}phane and Galindo, David and Izabach{\`e}ne, Malika},
-  abstract = {Real-world elections often require threshold cryptosystems so that any t out of trustees can proceed to tallying. This is required to protect the confidentiality of the voters' votes against curious authorities (at least t + 1 trustees must collude to learn individual votes) as well as to increase the robustness of the election (in case some trustees become unavailable, t + 1 trustees suffice to compute the election result). We describe a fully distributed (with no dealer) threshold cryptosystem suitable for the Helios voting system (in particular, suitable to partial decryption), and prove it secure under the Decisional Diffie-Hellman assumption. Secondly, we propose a fully distributed variant of Helios, that allows for arbitrary threshold parameters , t, together with a proof of ballot privacy when used for suffrage elections. Our modification of Helios can be seen as revision of the seminal multi-authority election system from Cramer, Gennaro and Schoenmakers, upon which the original Helios system is based. As such, our work implies, to our knowledge, the first formal proof of ballot privacy for the scheme by Cramer et al. Thirdly, we provide the first open-source implementation of Helios with a fully distributed key generation setup.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/A3S9AHFM/Cortier et al. - Distributed ElGamal `a la Pedersen - Application t.pdf},
-  language = {en}
-}
-
-@book{delauneFormalisingSecurityProperties2010,
-  title = {Formalising Security Properties in Electronic Voting Protocols},
-  author = {Delaune, St{\'e}phanie and Kremer, Steve},
-  year = {2010},
-  month = apr,
-  abstract = {While electronic elections promise the possibility of convenient, efficient and secure facilities for recording and tallying votes, recent studies have highlighted inadequacies in implemented systems. These inadequacies provide additional motivation for applying formal methods to the validation of electronic voting protocols.\textbackslash par In this paper we report on some of our recent efforts in using the applied pi calculus to model security properties of electronic elections. We particularly focus on privacy and verifiability properties. Our definitions allow us to specify and easily change which authorities are supposed to be trustworthy and are compatible with a large class of electronic voting schemes, including those based on blind signatures, homomorphic encryptions, and mixnets.\textbackslash par We distinguish three notions of privacy: vote-privacy, receipt-freeness and coercion-resistance. These properties are expressed using observational equivalence and we show in accordance with intuition that coercion-resistance implies receipt-freeness which implies vote-privacy. Concerning verifiability, we distinguish three aspects of verifiability, which we call individual verifiability, universal verifiability, and eligibility verifiability.},
-  annotation = {Published: Deliverable AVOTE 1.2, (ANR-07-SESU-002)},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/ZFPJ7AIN/Delaune and Kremer - Formalising security properties in electronic voti.pdf},
-  type = {Contract {{Report}}}
-}
-
-@techreport{dimtiriouEfficientCoercionfreeUniversally2019,
-  title = {Efficient, {{Coercion}}-Free and {{Universally Verifiable Blockchain}}-Based {{Voting}}},
-  author = {Dimtiriou, Tassos},
-  year = {2019},
-  abstract = {Most electronic voting systems today satisfy the basic requirements of privacy, unreusability, eligibility and fairness in a natural and rather straightforward way. However, receipt-freeness, incoercibility and universal verifiability are much harder to implement and in many cases they require a large amount of computation and communication overhead. In this work, we propose a blockchain-based voting system which achieves all the properties expected from secure elections without requiring too much from the voter. Coercion resistance and receipt-freeness are ensured by means of a randomizer token -- a tamper-resistance source of randomness which acts as a black box in constructing the ballot for the user. Universal verifiability is ensured by the append-only structure of the blockchain, thus minimizing the trust placed in election authorities. Additionally, the system has linear overhead when tallying the votes, hence it is scalable and practical for large scale elections.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/SBZAXLY2/Dimtiriou - 2019 - Efficient, Coercion-free and Universally Verifiabl.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/DSEZW9NC/1406.html},
-  keywords = {applications,blockchains,coercion resistance,commitments,Internet voting,receipt-freeness,universal verifiability,zkSNARKs},
-  number = {1406}
-}
-
-@inproceedings{douceurSybilAttack2002,
-  title = {The {{Sybil Attack}}},
-  booktitle = {Peer-to-{{Peer Systems}}},
-  author = {Douceur, John R.},
-  editor = {Druschel, Peter and Kaashoek, Frans and Rowstron, Antony},
-  year = {2002},
-  publisher = {{Springer}},
-  address = {{Berlin, Heidelberg}},
-  abstract = {Large-scale peer-to-peer systems face security threats from faulty or hostile remote computing elements. To resist these threats, many such systems employ redundancy. However, if a single faulty entity can present multiple identities, it can control a substantial fraction of the system, thereby undermining this redundancy. One approach to preventing these ``Sybil attacks'' is to have a trusted agency certify identities. This paper shows that, without a logically centralized authority, Sybil attacks are always possible except under extreme and unrealistic assumptions of resource parity and coordination among entities.},
-  isbn = {978-3-540-45748-0},
-  keywords = {Distinct Identity,Hash Function,Local Entity,Multiple Identity,Random Oracle},
-  language = {en},
-  series = {Lecture {{Notes}} in {{Computer Science}}}
-}
-
-@article{epsteinElectronicVoting2007,
-  title = {Electronic {{Voting}}},
-  author = {Epstein, J.},
-  year = {2007},
-  month = aug,
-  volume = {40},
-  issn = {1558-0814},
-  doi = {10.1109/MC.2007.271},
-  abstract = {In the wake of the contested results from the 2000 US presidential election, the US Congress passed the Help America Vote Act, which banned certain voting technologies, provided federal funds for purchasing new voting equipment, and required handicapped accessibility for voting systems. Thus began a rapid migration of US voting systems from technologies such as punch cards, paper ballots, and first-generation electronic voting systems to second-generation electronic voting systems, typically known as direct recording electronic (DRE) systems.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/HNSRZZRB/Epstein - 2007 - Electronic Voting.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/2FZMTJLH/4292024.html},
-  journal = {Computer},
-  keywords = {anonymity,cost effectiveness,Costs,data privacy,direct recording electronic system,electronic voting,Electronic voting,electronic voting system,Electronic voting systems,government data processing,Guidelines,Help America Vote Act,how things work,legislation,Local government,Management training,Nominations and elections,paper ballots,politics,punch cards,Safety,secrecy,security,Security,security of data,Transportation,US Congress,US presidential election,verifiability,voting equipment},
-  number = {8}
-}
-
-@techreport{gajekTrustlessCensorshipResilientScalable2019,
-  title = {Trustless, {{Censorship}}-{{Resilient}} and {{Scalable Votings}} in the {{Permission}}-Based {{Blockchain Model}}},
-  author = {Gajek, Sebastian and Lewandowsky, Marco},
-  year = {2019},
-  abstract = {Voting systems are the tool of choice when it comes to settle an agreement of different opinions. We propose a solution for a trustless, censorship-resilient and scalable electronic voting platform. By leveraging the blockchain together with the functional encryption paradigm, we fully decentralize the system and reduce the risks that a voting provider, like a corrupt government, does censor or manipulate the outcome.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/XAY7KG5W/Gajek and Lewandowsky - 2019 - Trustless, Censorship-Resilient and Scalable Votin.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/GVSEJDNX/617.html},
-  keywords = {applications,blockchain,DAO,functional encryption,Hyperledger,voting},
-  number = {617}
-}
-
-@article{harzSaferSmartContracts2018,
-  title = {Towards {{Safer Smart Contracts}}: {{A Survey}} of {{Languages}} and {{Verification Methods}}},
-  shorttitle = {Towards {{Safer Smart Contracts}}},
-  author = {Harz, Dominik and Knottenbelt, William},
-  year = {2018},
-  month = oct,
-  abstract = {With a market capitalisation of over USD 205 billion in just under ten years, public distributed ledgers have experienced significant adoption. Apart from novel consensus mechanisms, their success is also accountable to smart contracts. These programs allow distrusting parties to enter agreements that are executed autonomously. However, implementation issues in smart contracts caused severe losses to the users of such contracts. Significant efforts are taken to improve their security by introducing new programming languages and advance verification methods. We provide a survey of those efforts in two parts. First, we introduce several smart contract languages focussing on security features. To that end, we present an overview concerning paradigm, type, instruction set, semantics, and metering. Second, we examine verification tools and methods for smart contract and distributed ledgers. Accordingly, we introduce their verification approach, level of automation, coverage, and supported languages. Last, we present future research directions including formal semantics, verified compilers, and automated verification.},
-  archivePrefix = {arXiv},
-  eprint = {1809.09805},
-  eprinttype = {arxiv},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/LDE8IBPP/Harz and Knottenbelt - 2018 - Towards Safer Smart Contracts A Survey of Languag.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/HV3PP2IT/1809.html},
-  journal = {arXiv:1809.09805 [cs]},
-  keywords = {Computer Science - Cryptography and Security},
-  primaryClass = {cs}
-}
-
-@techreport{hastingsSecurityConsiderationsRemote2011,
-  title = {Security Considerations for Remote Electronic {{UOCAVA}} Voting},
-  author = {Hastings, Nelson and Peralta, Rene and Popoveniuc, Stefan and Regenscheid, Andrew},
-  year = {2011},
-  edition = {Zeroth},
-  address = {{Gaithersburg, MD}},
-  institution = {{National Institute of Standards and Technology}},
-  doi = {10.6028/NIST.IR.7770},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/PYSPASK6/Hastings et al. - 2011 - Security considerations for remote electronic UOCA.pdf},
-  language = {en},
-  number = {NIST IR 7770}
-}
-
-@techreport{heibergTradeoffsApplyingBlock2018,
-  title = {On {{Trade}}-Offs of {{Applying Block Chains}} for {{Electronic Voting Bulletin Boards}}},
-  author = {Heiberg, Sven and Kubjas, Ivo and Siim, Janno and Willemson, Jan},
-  year = {2018},
-  abstract = {This paper takes a critical look at the recent trend of building electronic voting systems on top of block chain technology. Even though being very appealing from the election integrity perspective, block chains have numerous technical, economical and even political drawbacks that need to be taken into account. Selecting a good trade-off between desirable properties and restrictions imposed by different block chain implementations is a highly non-trivial task. This paper aims at bringing some clarity into performing this task. We will mostly be concentrating on public permissionless block chains and their applications as bulletin board implementations as these are the favourite choices in majority of the recent block chain based voting protocol proposals.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/3SRZ4K24/Heiberg et al. - 2018 - On Trade-offs of Applying Block Chains for Electro.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/CWL98VQM/685.html},
-  keywords = {applications,Block chains,bulletin boards,electronic voting},
-  number = {685}
-}
-
-@techreport{heilmanEclipseAttacksBitcoin2015,
-  title = {Eclipse {{Attacks}} on {{Bitcoin}}'s {{Peer}}-to-{{Peer Network}}},
-  author = {Heilman, Ethan and Kendler, Alison and Zohar, Aviv and Goldberg, Sharon},
-  year = {2015},
-  abstract = {We present eclipse attacks on bitcoin's peer-to-peer network. Our attack allows an adversary controlling a sufficient number of IP addresses to monopolize all connections to and from a victim bitcoin node. The attacker can then exploit the victim for attacks on bitcoin's mining and consensus system, including N-confirmation double spending, selfish mining, and adversarial forks in the blockchain. We take a detailed look at bitcoin's peer-to-peer network, and quantify the resources involved in our attack via probabilistic analysis, Monte Carlo simulations, measurements and experiments with live bitcoin nodes. Finally, we present countermeasures, inspired by botnet architectures, that are designed to raise the bar for eclipse attacks while preserving the openness and decentralization of bitcoin's current network architecture.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/RH5NELNE/Goldberg - 2015 - Eclipse Attacks on Bitcoin’s Peer-to-Peer Network.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/DCWEQGVD/263.html},
-  keywords = {applications,Bitcoin,Double-spend,Eclipse,Networking,P2P},
-  number = {263}
-}
-
-@misc{HeliosCryptographers2010,
-  title = {Helios for {{Cryptographers}}},
-  year = {2010},
-  month = sep,
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/8ARNXJFQ/finalReportHelios_2010-09-27.html},
-  howpublished = {https://iacr.org/elections/eVoting/finalReportHelios\_2010-09-27.html},
-  journal = {International Association for Cryptologic Research}
-}
-
-@misc{HeliosHeliosV3,
-  title = {Helios - {{Helios}} v3 {{Verification Specs}}},
-  abstract = {Introduction Helios is an open-audit voting system, which means that: Alice can verify that her vote was correctly captured, all captured votes are displayed (in encrypted form) for all to see, and anyone can verify that the captured votes were correctly tallied. This document specifies all data},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/N8L996XY/helios-v3-verification-specs.html},
-  howpublished = {https://documentation.heliosvoting.org/verification-specs/helios-v3-verification-specs},
-  language = {en-US}
-}
-
-@misc{HeliosHeliosV4,
-  title = {Helios - {{Helios}} V4},
-  abstract = {This page documents the Helios v4 data structures and specs. Contrary to previous ideas, Helios v4 will *not* support mixnets, but its data structures will be ready to eventually support them. NOT FINAL. THIS DOCUMENT IS IN PROGRESS AS OF August 29th 2012. Introduction Helios is a truly verifiable},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/TLL2D8C4/helios-v4.html},
-  howpublished = {https://documentation.heliosvoting.org/verification-specs/helios-v4},
-  language = {en-US}
-}
-
-@misc{HeliosVotingFAQ,
-  title = {Helios {{Voting}} - {{FAQ}}},
-  shorttitle = {Helios-Faq},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/HM2C886T/faq.html},
-  howpublished = {https://vote.heliosvoting.org/faq}
-}
-
-@inproceedings{karayumakUserStudyImproved2011,
-  title = {User Study of the Improved {{Helios}} Voting System Interfaces},
-  booktitle = {2011 1st {{Workshop}} on {{Socio}}-{{Technical Aspects}} in {{Security}} and {{Trust}} ({{STAST}})},
-  author = {Karayumak, F. and Kauer, M. and Olembo, M. M. and Volk, T. and Volkamer, M.},
-  year = {2011},
-  month = sep,
-  issn = {2325-1697},
-  doi = {10.1109/STAST.2011.6059254},
-  abstract = {There is increasing interest in cryptographic verifiability in remote electronic voting schemes. Helios is one example of an open-source implementation. In previous work, we proposed an improved version of the original Helios interface in version 3.1 for vote casting and individual verifiability. We now test this interface in a mock mayoral election set up with 34 users. Users are given instructions and fill out questionnaires before and after the vote casting process. Data on mouse movements and time is collected and a modified helmet with eye tracking lenses is used to capture eye movement data. The study shows that the interface is easy to use while people have difficulty understanding the motivation for and the concept of verifiability.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/G8T6496Q/Karayumak et al. - 2011 - User study of the improved Helios voting system in.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/GSJU7PNX/6059254.html},
-  keywords = {Casting,cryptographic verifiability,cryptography,Cryptography,Electronic voting,eye movement data,government data processing,Helios voting system interfaces,Internet,mock mayoral election,mouse movements,Nominations and elections,open source implementation,program verification,public domain software,remote electronic voting schemes,Usability,user interfaces,vote casting process}
-}
-
 @article{kubilayCertLedgerNewPKI2019,
-  title = {{{CertLedger}}: {{A}} New {{PKI}} Model with {{Certificate Transparency}} Based on Blockchain},
+  title      = {{{CertLedger}}: {{A}} New {{PKI}} Model with {{Certificate Transparency}} Based on Blockchain},
   shorttitle = {{{CertLedger}}},
-  author = {Kubilay, Murat Yasin and Kiraz, Mehmet Sabir and Mantar, Hac{\i} Ali},
-  year = {2019},
-  month = aug,
-  volume = {85},
-  issn = {0167-4048},
-  doi = {10.1016/j.cose.2019.05.013},
-  abstract = {In conventional PKI, CAs are assumed to be fully trusted. However, in practice, CAs' absolute responsibility for providing trustworthiness caused major security and privacy issues. To prevent such issues, Google introduced the concept of Certificate Transparency (CT) in 2013. Later, several new PKI models are proposed to reduce the level of trust to the CAs. However, all of these proposals are still vulnerable to split-world attacks if the adversary is capable of showing different views of the log to the targeted victims. In this paper, we propose a new PKI architecture with certificate transparency based on blockchain, what we called CertLedger, to eliminate the split-world attacks and to provide certificate/revocation transparency. All TLS certificates' validation, storage, and entire revocation process is conducted in CertLedger as well as Trusted CA certificate management. During a TLS connection, TLS clients get an efficient proof of existence of the certificate directly from its domain owners. Hence, privacy is now perfectly preserved by eliminating the traceability issue via OCSP servers. It also provides a unique, efficient, and trustworthy certificate validation process eliminating the conventional inadequate and incompatible certificate validation processes implemented by different software vendors. TLS clients in CertLedger also do not require to make certificate validation and store the trusted CA certificates anymore. We analyze the security and performance of CertLedger and provide a comparison with the previous proposals. Finally, we implement its protoype on Ethereum to demonstrate experimental results. The results show that the performance of the TLS handshake and certificate validation through CertLedger is significantly improved compared to the current TLS protocol.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/RVYKRR9B/Kubilay et al. - 2019 - CertLedger A new PKI model with Certificate Trans.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/R9WS4T37/S0167404818313014.html},
-  journal = {Computers \& Security},
-  keywords = {Blockchain;,Certificate Transparency,Certificate validation,PKI,Privacy,SSL/TLS},
-  language = {en}
+  author     = {Kubilay, Murat Yasin and Kiraz, Mehmet Sabir and Mantar, Hac{\i} Ali},
+  year       = {2019},
+  month      = aug,
+  volume     = {85},
+  issn       = {0167-4048},
+  doi        = {10.1016/j.cose.2019.05.013},
+  abstract   = {In conventional PKI, CAs are assumed to be fully trusted. However, in practice, CAs' absolute responsibility for providing trustworthiness caused major security and privacy issues. To prevent such issues, Google introduced the concept of Certificate Transparency (CT) in 2013. Later, several new PKI models are proposed to reduce the level of trust to the CAs. However, all of these proposals are still vulnerable to split-world attacks if the adversary is capable of showing different views of the log to the targeted victims. In this paper, we propose a new PKI architecture with certificate transparency based on blockchain, what we called CertLedger, to eliminate the split-world attacks and to provide certificate/revocation transparency. All TLS certificates' validation, storage, and entire revocation process is conducted in CertLedger as well as Trusted CA certificate management. During a TLS connection, TLS clients get an efficient proof of existence of the certificate directly from its domain owners. Hence, privacy is now perfectly preserved by eliminating the traceability issue via OCSP servers. It also provides a unique, efficient, and trustworthy certificate validation process eliminating the conventional inadequate and incompatible certificate validation processes implemented by different software vendors. TLS clients in CertLedger also do not require to make certificate validation and store the trusted CA certificates anymore. We analyze the security and performance of CertLedger and provide a comparison with the previous proposals. Finally, we implement its protoype on Ethereum to demonstrate experimental results. The results show that the performance of the TLS handshake and certificate validation through CertLedger is significantly improved compared to the current TLS protocol.},
+  file       = {/home/chris/data/syncthing/infosec/astris/zotero/storage/RVYKRR9B/Kubilay et al. - 2019 - CertLedger A new PKI model with Certificate Trans.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/R9WS4T37/S0167404818313014.html},
+  journal    = {Computers \& Security},
+  keywords   = {Blockchain;,Certificate Transparency,Certificate validation,PKI,Privacy,SSL/TLS},
+  language   = {en},
 }
 
-@inproceedings{langerFrameworkSecurityRequirements2009,
-  title = {Towards a {{Framework}} on the {{Security Requirements}} for {{Electronic Voting Protocols}}},
-  booktitle = {2009 {{First International Workshop}} on {{Requirements Engineering}} for E-{{Voting Systems}}},
-  author = {Langer, Lucie and Schmidt, Axel and Buchmann, Johannes and Volkamer, Melanie and Stolfik, Alexander},
-  year = {2009},
-  month = aug,
-  publisher = {{IEEE}},
-  address = {{Atlanta, GA, USA}},
-  doi = {10.1109/RE-VOTE.2009.9},
-  abstract = {Electronic voting schemes are expected to meet the basic security requirements for electronic voting. However, very different opinions about these requirements exist in the e-voting community. This is due to the fact that the security requirements comprise different levels at which they can be met. For example, universal verifiability may, or may not, include verifying eligibility of the voters who participated in the election.},
-  isbn = {978-1-4244-7698-5},
-  language = {en}
-}
-
-@techreport{leeSAVERSNARKfriendlyAdditivelyhomomorphic2019,
-  title = {{{SAVER}}: {{SNARK}}-Friendly, {{Additively}}-Homomorphic, and {{Verifiable Encryption}} and Decryption with {{Rerandomization}}},
-  shorttitle = {{{SAVER}}},
-  author = {Lee, Jiwon and Choi, Jaekyoung and Kim, Jihye and Oh, Hyunok},
-  year = {2019},
-  abstract = {In the pairing-based zero-knowledge succinct non-interactive arguments of knowledge (zk-SNARK), there often exists a requirement for the proof system to be combined with encryption. As a typical example, a blockchain-based voting system requires the vote to be confidential (using encryption), while verifying voting validity (using zk-SNARKs). In these combined applications, a typical solution is to extend the zk-SNARK circuit to include the encryption code. However, complex cryptographic operations in the encryption algorithm increase the circuit size, which leads to impractically large proving time and CRS size. In this paper, we propose SNARK-friendly, Additively-homomorphic, and Verifiable Encryption and decryption with Rerandomization or SAVER, which is a novel approach to detach the encryption from the SNARK circuit. The encryption in SAVER holds many useful properties. It is SNARK-friendly: the encryption is conjoined with an existing pairing-based SNARK, in a way that the encryptor can prove pre-defined properties while encrypting the message apart from the SNARK. It is additively-homomorphic: the ciphertext holds a homomorphic property from the ElGamal-based encryption. It is a verifiable encryption: one can verify arbitrary properties of encrypted messages by connecting with the SNARK system. It provides a verifiable decryption: anyone without the secret can still verify that the decrypted message is indeed from the given ciphertext. It provides rerandomization: the proof and the ciphertext can be rerandomized as independent objects so that even the encryptor (or prover) herself cannot identify the origin. For the representative application, we also propose a Vote-SAVER based on SAVER, which is a novel voting system where voter's secret key lies only with the voter himself. The Vote-SAVER satisfies receipt-freeness (which implies ballot privacy), individual verifiability (which implies non-repudiation), vote verifiability, tally uniqueness, and voter anonymity. The experimental results show that our SAVER with respect to the Vote-SAVER relation yields 0.7s for zk-SNARK proving time and 10ms for encryption, with the CRS size of 16MB.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/I2Q74NSJ/Lee et al. - 2019 - SAVER SNARK-friendly, Additively-homomorphic, and.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/DXR793VE/1270.html},
-  keywords = {additively-homomorphic encryption,cryptographic protocols,pairing-based zk-SNARK,public-key encryption,rerandomization,verifiable decryption,verifiable encryption},
-  number = {1270}
-}
-
-@inproceedings{liTaxonomyComparisonRemote2014,
-  title = {A Taxonomy and Comparison of Remote Voting Schemes},
-  booktitle = {2014 23rd {{International Conference}} on {{Computer Communication}} and {{Networks}} ({{ICCCN}})},
-  author = {Li, H. and Kankanala, A. R. and Zou, X.},
-  year = {2014},
-  month = aug,
-  issn = {1095-2055},
-  doi = {10.1109/ICCCN.2014.6911807},
-  abstract = {Remote voting has been an active research field for application of cryptographic techniques in the last two decades with many schemes and systems in publication. In this paper we present an overview of recent efforts in developing voting schemes and security models that involve a variety of real world constraints to ensure election integrity. We classify voting schemes based on their primary cryptographic techniques. We analyze recent typical schemes and systems against the basic and counter attack requirements with brief description. Such analysis shows difference among these security requirements and aids in design of future schemes. Our conclusion is provided regarding suitability of a particular voting system/scheme under various conditions.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/B7P7K4Z5/Li et al. - 2014 - A taxonomy and comparison of remote voting schemes.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/Q9MYRAYQ/6911807.html},
-  keywords = {counter attack requirements,cryptographic techniques,cryptography,Cryptography,election integrity,Electronic voting,Electronic voting scheme,Encryption,government data processing,Nominations and elections,primary cryptographic techniques,Privacy,Protocol,Protocols,Public key,real world constraints,Remote voting,remote voting schemes,security models,security requirements}
-}
-
-@techreport{liuEvotingProtocolBased2017,
-  title = {An {{E}}-Voting {{Protocol Based}} on {{Blockchain}}},
-  author = {Liu, Yi and Wang, Qi},
-  year = {2017},
-  abstract = {Because of the properties such as transparency, decentralization, irreversibility, nonrepudiation, etc., blockchain is not only a fundamental technology of great interest in its own right, but also has large potential when integrated into many other areas. In this paper, based on the blockchain technology, we propose a decentralized e-voting protocol, without the existence of a trusted third party. Furthermore, we provide several possible extensions and improvements that meet the requirements in some specific voting scenarios.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/XTKWPC6E/Liu and Wang - 2017 - An E-voting Protocol Based on Blockchain.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/NQZB6L84/1043.html},
-  keywords = {Blind signature,Blockchain,cryptographic protocols,E-voting},
-  number = {1043}
-}
-
-@inproceedings{luoVerifiableDecryptionFully2018,
-  title = {Verifiable {{Decryption}} for {{Fully Homomorphic Encryption}}},
-  booktitle = {Information {{Security}}},
-  author = {Luo, Fucai and Wang, Kunpeng},
-  editor = {Chen, Liqun and Manulis, Mark and Schneider, Steve},
-  year = {2018},
-  publisher = {{Springer International Publishing}},
-  address = {{Cham}},
-  doi = {10.1007/978-3-319-99136-8_19},
-  abstract = {Verifiable decryption allows one to prove the correct decryption of encrypted data. When the encrypted data is derived from homomorphic evaluations in the context of fully homomorphic encryption (FHE), verifiable decryption will be very useful in cloud computing or cryptographic protocols, e.g., secure medical computation, cryptographically verifiable election, etc. In this paper, we consider the problem of proving the correct decryption of an FHE ciphertext. Namely, we are interested in zero-knowledge proofs of knowledge of triples ({$\mathsl{m}$},{$\mathbf{s}$},{$\mathbf{c}$})(m,s,c)(m, \textbackslash mathbf \{s\}, \textbackslash mathbf \{c\}) such that the message m is the correct decryption of a ciphertext {$\mathbf{c}$}c\textbackslash mathbf \{c\} for a secret key {$\mathbf{s}$}s\textbackslash mathbf \{s\}. While analogous statements admit efficient zero-knowledge proof protocols in the discrete logarithm setting, they have never been addressed in FHE so far. We provide such verifiable decryption for Brakerski-Gentry-Vaikuntanathan (BGV) scheme, since this scheme was recognized as one of the most efficient leveled FHE schemes. Our solution is nearly ``one shot'', in the sense that a single instance of the proof already has negligible soundness error, yielding compact proofs even for individual ciphertexts. Furthermore, to illustrate the applicability of verifiable decryption, we also give two example instantiations.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/QRUSMR7V/Luo and Wang - 2018 - Verifiable Decryption for Fully Homomorphic Encryp.pdf},
-  isbn = {978-3-319-99136-8},
-  keywords = {Cryptographically verifiable election,FHE,Secure medical computation,Verifiable decryption,Zero-knowledge proofs},
-  language = {en},
-  series = {Lecture {{Notes}} in {{Computer Science}}}
+@misc{ENSEthereumName,
+  title        = {{{ENS}} - {{Ethereum Name Service}}},
+  abstract     = {Human readable names for the Ethereum network},
+  file         = {/home/chris/data/syncthing/infosec/astris/zotero/storage/ADNUWGCI/about.html},
+  howpublished = {https://ens.domains/about},
 }
 
 @techreport{matsumotoIKPTurningPKI2016,
-  title = {{{IKP}}: {{Turning}} a {{PKI Around}} with {{Blockchains}}},
+  title      = {{{IKP}}: {{Turning}} a {{PKI Around}} with {{Blockchains}}},
   shorttitle = {{{IKP}}},
-  author = {Matsumoto, Stephanos and Reischuk, Raphael M.},
-  year = {2016},
-  abstract = {Man-in-the-middle attacks in TLS due to compromised CAs have been mitigated by log-based PKI enhancements such as Certificate Transparency. However, these log-based schemes do not offer sufficient incentives to logs and monitors, and do not offer any actions that domains can take in response to CA misbehavior. We propose IKP, a blockchain-based PKI enhancement that offers automatic responses to CA misbehavior and incentives for those who help detect misbehavior. IKP's decentralized nature and smart contract system allows open participation, offers incentives for vigilance over CAs, and enables financial recourse against misbehavior. We demonstrate through a game theoretic model and through an Ethereum prototype implementation that the incentives and increased deterrence offered by IKP are technically and economically viable.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/WT6K3LCG/Matsumoto and Reischuk - 2016 - IKP Turning a PKI Around with Blockchains.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/XH6BQ2C7/1018.html},
-  keywords = {applications,blockchain,incentives,public-key infrastructures,smart contracts},
-  number = {1018}
-}
-
-@techreport{mccorrySmartContractBoardroom2017,
-  title = {A {{Smart Contract}} for {{Boardroom Voting}} with {{Maximum Voter Privacy}}},
-  author = {McCorry, Patrick and Shahandashti, Siamak F. and Hao, Feng},
-  year = {2017},
-  abstract = {We present the first implementation of a decentralised and self-tallying internet voting protocol with maximum voter privacy using the Blockchain. The Open Vote Network is suitable for boardroom elec- tions and is written as a smart contract for Ethereum. Unlike previously proposed Blockchain e-voting protocols, this is the first implementation that does not rely on any trusted authority to compute the tally or to protect the voter's privacy. Instead, the Open Vote Network is a self- tallying protocol, and each voter is in control of the privacy of their own vote such that it can only be breached by a full collusion involving all other voters. The execution of the protocol is enforced using the consensus mechanism that also secures the Ethereum blockchain. We tested the implementation on Ethereum's official test network to demonstrate its feasibility. Also, we provide a financial and computational breakdown of its execution cost.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/HKCWPF9D/McCorry et al. - 2017 - A Smart Contract for Boardroom Voting with Maximum.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/6I3BDXEX/110.html},
-  keywords = {evoting open vote network blockchain ethereum smart contracts cryptography,implementation},
-  number = {110}
-}
-
-@article{nakamotoBitcoinPeertoPeerElectronic2008,
-  title = {Bitcoin: {{A Peer}}-to-{{Peer Electronic Cash System}}},
-  author = {Nakamoto, Satoshi},
-  year = {2008},
-  month = oct,
-  abstract = {A purely peer-to-peer version of electronic cash would allow online payments to be sent directly from one party to another without going through a financial institution. Digital signatures provide part of the solution, but the main benefits are lost if a trusted third party is still required to prevent double-spending. We propose a solution to the double-spending problem using a peer-to-peer network. The network timestamps transactions by hashing them into an ongoing chain of hash-based proof-of-work, forming a record that cannot be changed without redoing the proof-of-work. The longest chain not only serves as proof of the sequence of events witnessed, but proof that it came from the largest pool of CPU power. As long as a majority of CPU power is controlled by nodes that are not cooperating to attack the network, they'll generate the longest chain and outpace attackers. The network itself requires minimal structure. Messages are broadcast on a best effort basis, and nodes can leave and rejoin the network at will, accepting the longest proof-of-work chain as proof of what happened while they were gone.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/6EP5WH3Z/Nakamoto - Bitcoin A Peer-to-Peer Electronic Cash System.pdf},
-  language = {en}
-}
-
-@techreport{panjaSecureEndtoendVerifiable2018,
-  title = {A Secure End-to-End Verifiable e-Voting System Using Zero Knowledge Based Blockchain},
-  author = {Panja, Somnath and Roy, Bimal Kumar},
-  year = {2018},
-  abstract = {In this paper, we present a cryptographic technique for an authenticated, end-to-end verifiable and secret ballot election. Voters should receive assurance that their vote is cast as intended, recorded as cast and tallied as recorded. The election system as a whole should ensure that voter coercion is unlikely, even when voters are willing to be influenced. Currently, almost all verifiable e-voting systems require trusted authorities to perform the tallying process. An exception is the DRE-i and DRE-ip system. The DRE-ip system removes the requirement of tallying authorities by encrypting ballot in such a way that the election tally can be publicly verified without decrypting cast ballots. However, the DRE-ip system necessitates a secure bulletin board (BB) for storing the encrypted ballot as without it the integrity of the system may be lost and the result can be compromised without detection during the audit phase. In this paper, we have modified the DRE-ip system so that if any recorded ballot is tampered by an adversary before the tallying phase, it will be detected during the tallying phase. In addition, we have described a method using zero knowledge based public blockchain to store these ballots so that it remains tamper proof. To the best of our knowledge, it is the first end-to-end verifiable Direct-recording electronic (DRE) based e-voting system using blockchain. In our case, we assume that the bulletin board is insecure and an adversary has read and write access to the bulletin board. We have also added a secure biometric with government provided identity card based authentication mechanism for voter authentication. The proposed system is able to encrypt ballot in such a way that the election tally can be publicly verified without decrypting cast ballots maintaining end-to-end verifiability and without requiring the secure bulletin board.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/9A7V6WIK/Panja and Roy - 2018 - A secure end-to-end verifiable e-voting system usi.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/UNG9KJFI/466.html},
-  keywords = {Authentication,Biometric,Blockchain,cryptographic protocols,Direct Record Electronic,E-voting,End-to-End verifiable.,Zero Knowledge},
-  number = {466}
-}
-
-@article{peckBlockchainWorldYou2017,
-  title = {Blockchain World - {{Do}} You Need a Blockchain? {{This}} Chart Will Tell You If the Technology Can Solve Your Problem},
-  shorttitle = {Blockchain World - {{Do}} You Need a Blockchain?},
-  author = {Peck, M. E.},
-  year = {2017},
-  month = oct,
-  volume = {54},
-  issn = {1939-9340},
-  doi = {10.1109/MSPEC.2017.8048838},
-  abstract = {According to a study released this July by Juniper Research, more than half the world's largest companies are now researching blockchain technologies with the goal of integrating them into their products. Projects are already under way that will disrupt the management of health care records, property titles, supply chains, and even our online identities. But before we remount the entire digital ecosystem on blockchain technology, it would be wise to take stock of what makes the approach unique and what costs are associated with it. Blockchain technology is, in essence, a novel way to manage data. As such, it competes with the data-management systems we already have. Relational databases, which orient information in updatable tables of columns and rows, are the technical foundation of many services we use today. Decades of market exposure and well-funded research by companies like Oracle Corp. have expanded the functionality and hardened the security of relational databases. However, they suffer from one major constraint: They put the task of storing and updating entries in the hands of one or a few entities, whom you have to trust won't mess with the data or get hacked.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/YN67RHNV/8048838.html},
-  journal = {IEEE Spectrum},
-  keywords = {Bitcoin,blockchain technology,Companies,Conferences,cryptography,data-management systems,Databases,digital ecosystem,electronic health records,health care,health care records management,Juniper Research,online identities,Oracle Corp,Packaging,Privacy,property titles,records management,relational databases,Software,supply chains},
-  number = {10}
-}
-
-@article{peckBlockchainWorldYou2017a,
-  title = {Blockchain World - {{Do}} You Need a Blockchain? {{This}} Chart Will Tell You If the Technology Can Solve Your Problem},
-  shorttitle = {Blockchain World - {{Do}} You Need a Blockchain?},
-  author = {Peck, M. E.},
-  year = {2017},
-  month = oct,
-  volume = {54},
-  issn = {1939-9340},
-  doi = {10.1109/MSPEC.2017.8048838},
-  abstract = {According to a study released this July by Juniper Research, more than half the world's largest companies are now researching blockchain technologies with the goal of integrating them into their products. Projects are already under way that will disrupt the management of health care records, property titles, supply chains, and even our online identities. But before we remount the entire digital ecosystem on blockchain technology, it would be wise to take stock of what makes the approach unique and what costs are associated with it. Blockchain technology is, in essence, a novel way to manage data. As such, it competes with the data-management systems we already have. Relational databases, which orient information in updatable tables of columns and rows, are the technical foundation of many services we use today. Decades of market exposure and well-funded research by companies like Oracle Corp. have expanded the functionality and hardened the security of relational databases. However, they suffer from one major constraint: They put the task of storing and updating entries in the hands of one or a few entities, whom you have to trust won't mess with the data or get hacked.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/P7BWYPDS/Peck - 2017 - Blockchain world - Do you need a blockchain This .pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/R8P537CI/8048838.html},
-  journal = {IEEE Spectrum},
-  keywords = {Bitcoin,blockchain technology,Companies,Conferences,cryptography,data-management systems,Databases,digital ecosystem,electronic health records,health care,health care records management,Juniper Research,online identities,Oracle Corp,Packaging,Privacy,property titles,records management,relational databases,Software,supply chains},
-  number = {10}
-}
-
-@article{petersenDistributedProversVerfiable1992,
-  title = {{Distributed Provers and Verfiable Secret Sharing Based on the Discrete Logarithm Problem}},
-  author = {Petersen, Torben Pryds},
-  year = {1992},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/XU86D99X/Petersen - Distributed Provers and Verﬁable Secret Sharing Ba.pdf},
-  language = {da}
-}
-
-@misc{petrideSecurityPropertiesElectronic,
-  title = {Security {{Properties}} for {{Electronic Voting}}},
-  author = {Petride, Sabina},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/WP2Y68EP/sp2580.html},
-  howpublished = {http://www.cs.cornell.edu/courses/cs513/2002SP/proj.00.StuSolns/sp2580.htm}
-}
-
-@phdthesis{romanoNatureTrustConceptual2003,
-  title = {The Nature of Trust: {{Conceptual}} and Operational Clarification},
-  shorttitle = {The Nature of Trust},
-  author = {Romano, Donna M.},
-  year = {2003},
-  address = {{United States -- Louisiana}},
-  abstract = {The importance of trust in working relationships is widely acknowledged among organizational researchers and practitioners. Unfortunately, trust is defined and measured differently across studies, making it difficult to integrate and compare research findings. Therefore, the purpose of this paper was to clarify the nature of trust as it exists across research and organizational settings. First, trust was conceptualized in terms of 10 defining characteristics based on a convergence and reconciliation of inconsistencies among existing definitions. These 10 characteristics of trust were incorporated into a single definition of trust to offer a more comprehensive description of the construct. Second, the Functional Trust Scale (FTS) was constructed to operationalize trust in terms of its 10 defining characteristics to provide a more complete and representative measure of trust that can be applied to a variety of situations. Third, empirical and statistical methods were employed to assess the structure and psychometric properties of the FTS. The results of this study provide initial evidence supporting the FTS and its underlying concept of trust. First, the hypothesized FTS measurement model resulted as the best fitting model among alternate models within two samples. Second, the FTS resulted in conceptual similarity across two applications, suggesting that it is applicable across multiple situations. Third, the internal consistency of the FTS and its sub-scales suggest that it is a reliable measure. Finally, the results provide initial support for the content, face, convergent, and divergent validity of the FTS.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/7CRYADQU/Romano - 2003 - The nature of trust Conceptual and operational cl.pdf},
-  keywords = {Attitudes,Functional Trust Scale,Psychology,Trust},
-  language = {English},
-  school = {Louisiana State University and Agricultural \& Mechanical College}
+  author     = {Matsumoto, Stephanos and Reischuk, Raphael M.},
+  year       = {2016},
+  abstract   = {Man-in-the-middle attacks in TLS due to compromised CAs have been mitigated by log-based PKI enhancements such as Certificate Transparency. However, these log-based schemes do not offer sufficient incentives to logs and monitors, and do not offer any actions that domains can take in response to CA misbehavior. We propose IKP, a blockchain-based PKI enhancement that offers automatic responses to CA misbehavior and incentives for those who help detect misbehavior. IKP's decentralized nature and smart contract system allows open participation, offers incentives for vigilance over CAs, and enables financial recourse against misbehavior. We demonstrate through a game theoretic model and through an Ethereum prototype implementation that the incentives and increased deterrence offered by IKP are technically and economically viable.},
+  file       = {/home/chris/data/syncthing/infosec/astris/zotero/storage/WT6K3LCG/Matsumoto and Reischuk - 2016 - IKP Turning a PKI Around with Blockchains.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/XH6BQ2C7/1018.html},
+  keywords   = {applications,blockchain,incentives,public-key infrastructures,smart contracts},
+  number     = {1018},
 }
 
 @article{ryanPrEtVoterVoterVerifiable2010,
-  title = {{{Pr\^Et \`A Voter}}: A {{Voter}}-{{Verifiable Voting System}}},
+  title      = {{{Pr\^Et \`A Voter}}: A {{Voter}}-{{Verifiable Voting System}}},
   shorttitle = {{{Pr\^Et \`A Voter}}},
-  author = {Ryan, Peter and Bismark, David and Heather, James and Schneider, Steve and Xia, Zhe},
-  year = {2010},
-  month = jan,
-  volume = {4},
-  doi = {10.1109/TIFS.2009.2033233},
-  abstract = {????????????Pre??t a?? Voter provides a practical approach to end-to-end verifiable elections with a simple, familiar voter-experience. It assures a high degree of transparency while preserving secrecy of the ballot. Assurance arises from the auditability of the election itself, rather than the need to place trust in the system components. The original idea has undergone several revisions and enhancements since its inception in 2004, driven by the identification of threats, the availability of improved cryptographic primitives, and the desire to make the scheme as flexible as possible. This paper presents the key elements of the approach and describes the evolution of the design and their suitability in various contexts. We also describe the voter experience, and the security properties that the schemes provide.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/C6D9A52Q/Ryan et al. - 2010 - PrÊt À Voter a Voter-Verifiable Voting System.pdf},
-  journal = {Information Forensics and Security, IEEE Transactions on}
+  author     = {Ryan, Peter and Bismark, David and Heather, James and Schneider, Steve and Xia, Zhe},
+  year       = {2010},
+  month      = jan,
+  volume     = {4},
+  doi        = {10.1109/TIFS.2009.2033233},
+  abstract   = {????????????Pre??t a?? Voter provides a practical approach to end-to-end verifiable elections with a simple, familiar voter-experience. It assures a high degree of transparency while preserving secrecy of the ballot. Assurance arises from the auditability of the election itself, rather than the need to place trust in the system components. The original idea has undergone several revisions and enhancements since its inception in 2004, driven by the identification of threats, the availability of improved cryptographic primitives, and the desire to make the scheme as flexible as possible. This paper presents the key elements of the approach and describes the evolution of the design and their suitability in various contexts. We also describe the voter experience, and the security properties that the schemes provide.},
+  file       = {/home/chris/data/syncthing/infosec/astris/zotero/storage/C6D9A52Q/Ryan et al. - 2010 - PrÊt À Voter a Voter-Verifiable Voting System.pdf},
+  journal    = {Information Forensics and Security, IEEE Transactions on},
 }
 
-@article{sabaterReviewComputationalTrust2005,
-  title = {Review on {{Computational Trust}} and {{Reputation Models}}},
-  author = {Sabater, Jordi and Sierra, Carles},
-  year = {2005},
-  month = sep,
-  volume = {24},
-  issn = {0269-2821},
-  doi = {10.1007/s10462-004-0041-5},
-  abstract = {The scientific research in the area of computational mechanisms for trust and reputation in virtual societies is a recent discipline oriented to increase the reliability and performance of electronic communities. Computer science has moved from the paradigm of isolated machines to the paradigm of networks and distributed computing. Likewise, artificial intelligence is quickly moving from the paradigm of isolated and non-situated intelligence to the paradigm of situated, social and collective intelligence. The new paradigm of the so called intelligent or autonomous agents and multi-agent systems (MAS) together with the spectacular emergence of the information society technologies (specially reflected by the popularization of electronic commerce) are responsible for the increasing interest on trust and reputation mechanisms applied to electronic societies. This review wants to offer a panoramic view on current computational trust and reputation models.},
-  journal = {Artificial Intelligence Review},
-  keywords = {reputation,trust},
-  number = {1}
+@techreport{leeSAVERSNARKfriendlyAdditivelyhomomorphic2019,
+  title      = {{{SAVER}}: {{SNARK}}-Friendly, {{Additively}}-Homomorphic, and {{Verifiable Encryption}} and Decryption with {{Rerandomization}}},
+  shorttitle = {{{SAVER}}},
+  author     = {Lee, Jiwon and Choi, Jaekyoung and Kim, Jihye and Oh, Hyunok},
+  year       = {2019},
+  abstract   = {In the pairing-based zero-knowledge succinct non-interactive arguments of knowledge (zk-SNARK), there often exists a requirement for the proof system to be combined with encryption. As a typical example, a blockchain-based voting system requires the vote to be confidential (using encryption), while verifying voting validity (using zk-SNARKs). In these combined applications, a typical solution is to extend the zk-SNARK circuit to include the encryption code. However, complex cryptographic operations in the encryption algorithm increase the circuit size, which leads to impractically large proving time and CRS size. In this paper, we propose SNARK-friendly, Additively-homomorphic, and Verifiable Encryption and decryption with Rerandomization or SAVER, which is a novel approach to detach the encryption from the SNARK circuit. The encryption in SAVER holds many useful properties. It is SNARK-friendly: the encryption is conjoined with an existing pairing-based SNARK, in a way that the encryptor can prove pre-defined properties while encrypting the message apart from the SNARK. It is additively-homomorphic: the ciphertext holds a homomorphic property from the ElGamal-based encryption. It is a verifiable encryption: one can verify arbitrary properties of encrypted messages by connecting with the SNARK system. It provides a verifiable decryption: anyone without the secret can still verify that the decrypted message is indeed from the given ciphertext. It provides rerandomization: the proof and the ciphertext can be rerandomized as independent objects so that even the encryptor (or prover) herself cannot identify the origin. For the representative application, we also propose a Vote-SAVER based on SAVER, which is a novel voting system where voter's secret key lies only with the voter himself. The Vote-SAVER satisfies receipt-freeness (which implies ballot privacy), individual verifiability (which implies non-repudiation), vote verifiability, tally uniqueness, and voter anonymity. The experimental results show that our SAVER with respect to the Vote-SAVER relation yields 0.7s for zk-SNARK proving time and 10ms for encryption, with the CRS size of 16MB.},
+  file       = {/home/chris/data/syncthing/infosec/astris/zotero/storage/I2Q74NSJ/Lee et al. - 2019 - SAVER SNARK-friendly, Additively-homomorphic, and.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/DXR793VE/1270.html},
+  keywords   = {additively-homomorphic encryption,cryptographic protocols,pairing-based zk-SNARK,public-key encryption,rerandomization,verifiable decryption,verifiable encryption},
+  number     = {1270},
 }
 
-@article{sandlerCastingVotesAuditorium,
-  title = {Casting {{Votes}} in the {{Auditorium}}},
-  author = {Sandler, Daniel and Wallach, Dan S},
-  abstract = {In elections employing electronic voting machines, we have observed that poor procedures, equipment failures, and honest mistakes pose a real threat to the accuracy of the final tally. The event logs kept by these machines can give auditors clues as to the causes of anomalies and inconsistencies; however, each voting machine is trusted to keep its own audit and ballot data, making the record unreliable. If a machine is damaged, accidentally erased, or otherwise compromised during the election, we have no way to detect tampering or loss of auditing records and cast votes.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/EVNEV45D/Sandler and Wallach - Casting Votes in the Auditorium.pdf},
-  language = {en}
-}
-
-@article{schoenmakersLectureNotesCryptographic,
-  title = {Lecture {{Notes Cryptographic Protocols}}},
-  author = {Schoenmakers, Berry},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/PD9SQ3CD/Schoenmakers - Lecture Notes Cryptographic Protocols.pdf},
-  language = {en}
-}
-
-@techreport{seifelnasrScalableOpenVoteNetwork2020,
-  title = {Scalable {{Open}}-{{Vote Network}} on {{Ethereum}}},
-  author = {Seifelnasr, Mohamed and Galal, Hisham S. and Youssef, Amr M.},
-  year = {2020},
-  abstract = {McCorry et al. (Financial Cryptography 2017) presented the first implementation of a decentralized self-tallying voting protocol on Ethereum. However, their implementation did not scale beyond 40 voters since all the computations were performed on the smart contract. In this paper, we tackle this problem by delegating the bulk computations to an off-chain untrusted administrator in a verifiable manner. Specifically, the administrator tallies the votes off-chain and publishes a Merkle tree that encodes the tallying computation trace. Then, the administrator submits the Merkle tree root and the tally result to the smart contract. Subsequently, the smart contract transits to an intermediate phase where at least a single honest voter can contend the administrator's claimed result if it was not computed correctly. Then, in the worst case, the smart contract verifies the dispute at the cost of an elliptic curve point addition and scalar multiplication, and two Merkle proofs of membership which are logarithmic in the number of voters. This allows our protocol to achieve higher scalability without sacrificing the public verifiability or voters' privacy. To assess our protocol, we implemented an open-source prototype on Ethereum and carried out multiple experiments for different numbers of voters. The results of our implementation confirm the scalability and efficiency of our proposed solution which does not exceed the current block gas limit for any practical number of voters.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/EKZ3CHB9/Seifelnasr et al. - 2020 - Scalable Open-Vote Network on Ethereum.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/3A586SLQ/033.html},
-  keywords = {applications,Ethereum,Smart Contract,Voting},
-  number = {033}
-}
-
-@techreport{spadaforaCoercionResistantBlockchainBasedEVoting2020,
-  title = {Coercion-{{Resistant Blockchain}}-{{Based E}}-{{Voting Protocol}}},
-  author = {Spadafora, Chiara and Longo, Riccardo and Sala, Massimiliano},
-  year = {2020},
-  abstract = {Coercion resistance is one of the most important features of a secure voting procedure. Because of the properties such as transparency, decentralization, and non-repudiation, blockchain is a fundamental technology of great interest in its own right, and it also has large potential when integrated into many other areas. Here we propose a decentralized e-voting protocol that is coercion-resistant and vote-selling resistant, while being also completely transparent and not receipt-free. We prove the security of the protocol under the standard DDH assumption.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/7SN9E9AR/Spadafora et al. - 2020 - Coercion-Resistant Blockchain-Based E-Voting Proto.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/AERA5TGM/674.html},
-  keywords = {blockchain,cryptographic protocols,DDH,e-voting,election schemes,zero knowledge},
-  number = {674}
-}
-
-@misc{SteveKremerFormalising,
-  title = {Steve {{Kremer}}: {{Formalising}} Security Properties in Electronic Voting Protocols},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/VXJ5X3YP/b2hd-avote-D12.html},
-  howpublished = {https://members.loria.fr/SKremer/files/Publications/b2hd-avote-D12.html}
-}
-
-@incollection{stevensFirstCollisionFull2017,
-  title = {The {{First Collision}} for {{Full SHA}}-1},
-  booktitle = {Advances in {{Cryptology}} \textendash{} {{CRYPTO}} 2017},
-  author = {Stevens, Marc and Bursztein, Elie and Karpman, Pierre and Albertini, Ange and Markov, Yarik},
-  editor = {Katz, Jonathan and Shacham, Hovav},
-  year = {2017},
-  volume = {10401},
-  publisher = {{Springer International Publishing}},
-  address = {{Cham}},
-  doi = {10.1007/978-3-319-63688-7_19},
-  abstract = {SHA-1 is a widely used 1995 NIST cryptographic hash function standard that was officially deprecated by NIST in 2011 due to fundamental security weaknesses demonstrated in various analyses and theoretical attacks.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/MPUS7KD6/Stevens et al. - 2017 - The First Collision for Full SHA-1.pdf},
-  isbn = {978-3-319-63687-0 978-3-319-63688-7},
-  language = {en}
-}
-
-@techreport{tarasovInternetVotingUsing2017,
-  title = {Internet {{Voting Using Zcash}}},
-  author = {Tarasov, Pavel and Tewari, Hitesh},
-  year = {2017},
-  abstract = {Voting systems have been around for hundreds of years and despite different views on their integrity, have always been deemed secure with some fundamental security and anonymity principles. Numerous electronic systems have been proposed and implemented but some suspicion has been raised regarding the integrity of elections due to detected security vulnerabilities within these systems. Electronic voting, to be successful, requires a more transparent and secure approach, than is offered by current protocols. The approach presented in this paper involves a protocol developed on blockchain technology. The underlying technology used in the voting system is a payment scheme, which offers anonymity of transactions, a trait not seen in blockchain protocols to date. The proposed protocol offers anonymity of voter transactions, while keeping the transactions private, and the election transparent and secure. The underlying payment protocol has not been modified in any way, the voting protocol merely offers an alternative use case.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/HGL2XNRK/Tarasov and Tewari - 2017 - Internet Voting Using Zcash.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/KMY7Z3C5/585.html},
-  keywords = {implementation,zero knowledge},
-  number = {585}
-}
-
-@article{tsoukalasHeliosZeus2013,
-  title = {From {{Helios}} to {{Zeus}}},
-  author = {Tsoukalas, Georgios and Papadimitriou, Kostas and Louridas, Panos},
-  year = {2013},
-  volume = {1},
-  issn = {2328-2797},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/MHRXAED2/Tsoukalas et al. - 2013 - From Helios to Zeus.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/PPLYMCLL/tsoukalas.html},
-  journal = {\{USENIX\} Journal of Election Technology and Systems (\{JETS\})},
+@article{colverSPEAKERCOMMISSIONDIGITAL,
+  title    = {{{SPEAKER}}'{{S COMMISSION ON DIGITAL DEMOCRACY WEDNESDAY}} 3 {{SEPTEMBER}} 2014},
+  author   = {Colver, Andrew},
+  file     = {/home/chris/data/syncthing/infosec/astris/zotero/storage/26G7YK58/Colver - SPEAKER’S COMMISSION ON DIGITAL DEMOCRACY WEDNESDA.pdf},
   language = {en},
-  number = {1}
 }
 
-@techreport{wustYouNeedBlockchain2017,
-  title = {Do You Need a {{Blockchain}}?},
-  author = {W{\"u}st, Karl and Gervais, Arthur},
-  year = {2017},
-  abstract = {Blockchain is being praised as a technological innovation which allows to revolutionize how society trades and interacts. This reputation is in particular attributable to its properties of allowing mutually mistrusting entities to exchange financial value and interact without relying on a trusted third party. A blockchain moreover provides an integrity protected data storage and allows to provide process transparency. In this article we critically analyze whether a blockchain is indeed the appropriate technical solution for a particular application scenario. We differentiate between permissionless (e.g., Bitcoin/Ethereum) and permissioned (e.g. Hyperledger/Corda) blockchains and contrast their properties to those of a centrally managed database. We provide a structured methodology to determine the appropriate technical solution to solve a particular application problem. Given our methodology, we analyze in depth three use cases --- Supply Chain Management, Interbank and International Payments, and Decentralized Autonomous Organizations and conclude the article with an outlook for further opportunities.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/RRVSFH6I/Wüst and Gervais - 2017 - Do you need a Blockchain.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/Z6QRPFSB/375.html},
-  keywords = {application scenario,applications,blockchain,central database,decision making,electronic commerce and payment,permissioned blockchain,permissionless blockchain},
-  number = {375}
-}
-
-@article{xiaVersatilePretVoter2010,
-  title = {Versatile {{Pr\^et}} \`a {{Voter}}: {{Handling}} Multiple Election Methods with a Unified Interface},
-  shorttitle = {Versatile {{Pr\^et}} \`a {{Voter}}},
-  author = {Xia, Zhe and Culnane, Chris and Heather, James and Jonker, Hugo and Ryan, Peter Y. A. and Schneider, Steve and Srinivasan, Sriramkrishnan},
-  year = {2010},
-  abstract = {Abstract. A number of end-to-end verifiable voting schemes have been introduced recently. These schemes aim to allow voters to verify that their votes have contributed in the way they intended to the tally and in addition allow anyone to verify that the tally has been generated correctly. These goals must be achieved while maintaining voter privacy and providing receipt-freeness. However, most of these end-to-end voting schemes are only designed to handle a single election method and the voter interface varies greatly between different schemes. In this paper, we introduce a scheme which handles many of the popular election methods that are currently used around the world. Our scheme not only ensures privacy, receipt-freeness and end-to-end verifiability, but also keeps the voter interface simple and consistent between various election methods},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/UWJ6PFZF/Xia et al. - Versatile Prˆet `a Voter Handling multiple electi.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/4HCEJ5VM/102308530.html},
-  language = {en-gb}
+@techreport{mccorrySmartContractBoardroom2017,
+  title    = {A {{Smart Contract}} for {{Boardroom Voting}} with {{Maximum Voter Privacy}}},
+  author   = {McCorry, Patrick and Shahandashti, Siamak F. and Hao, Feng},
+  year     = {2017},
+  abstract = {We present the first implementation of a decentralised and self-tallying internet voting protocol with maximum voter privacy using the Blockchain. The Open Vote Network is suitable for boardroom elec- tions and is written as a smart contract for Ethereum. Unlike previously proposed Blockchain e-voting protocols, this is the first implementation that does not rely on any trusted authority to compute the tally or to protect the voter's privacy. Instead, the Open Vote Network is a self- tallying protocol, and each voter is in control of the privacy of their own vote such that it can only be breached by a full collusion involving all other voters. The execution of the protocol is enforced using the consensus mechanism that also secures the Ethereum blockchain. We tested the implementation on Ethereum's official test network to demonstrate its feasibility. Also, we provide a financial and computational breakdown of its execution cost.},
+  file     = {/home/chris/data/syncthing/infosec/astris/zotero/storage/HKCWPF9D/McCorry et al. - 2017 - A Smart Contract for Boardroom Voting with Maximum.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/6I3BDXEX/110.html},
+  keywords = {evoting open vote network blockchain ethereum smart contracts cryptography,implementation},
+  number   = {110},
 }
 
 @inproceedings{yakubovBlockchainbasedPKIManagement2018,
-  title = {A Blockchain-Based {{PKI}} Management Framework},
+  title     = {A Blockchain-Based {{PKI}} Management Framework},
   booktitle = {{{NOMS}} 2018 - 2018 {{IEEE}}/{{IFIP Network Operations}} and {{Management Symposium}}},
-  author = {Yakubov, Alexander and Shbair, Wazen M. and Wallbom, Anders and Sanda, David and State, Radu},
-  year = {2018},
-  month = apr,
+  author    = {Yakubov, Alexander and Shbair, Wazen M. and Wallbom, Anders and Sanda, David and State, Radu},
+  year      = {2018},
+  month     = apr,
   publisher = {{IEEE}},
-  address = {{Taipei, Taiwan}},
-  doi = {10.1109/NOMS.2018.8406325},
-  abstract = {Public-Key Infrastructure (PKI) is the cornerstone technology that facilitates secure information exchange over the Internet. However, PKI is exposed to risks due to potential failures of Certificate Authorities (CAs) that may be used to issue unauthorized certificates for end-users. Many recent breaches show that if a CA is compromised, the security of the corresponding end-users will be in risk. As an emerging solution, Blockchain technology potentially resolves the problems of traditional PKI systems - in particular, elimination of single point-of-failure and rapid reaction to CAs shortcomings. Blockchain has the ability to store and manage digital certificates within a public and immutable ledger, resulting in a fully traceable history log. In this paper we designed and developed a blockchain-based PKI management framework for issuing, validating and revoking X.509 certificates. Evaluation and experimental results confirm that the proposed framework provides more reliable and robust PKI systems with modest maintenance costs.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/9KLVEMQE/Yakubov et al. - 2018 - A blockchain-based PKI management framework.pdf},
-  isbn = {978-1-5386-3416-5},
-  language = {en}
+  address   = {{Taipei, Taiwan}},
+  doi       = {10.1109/NOMS.2018.8406325},
+  abstract  = {Public-Key Infrastructure (PKI) is the cornerstone technology that facilitates secure information exchange over the Internet. However, PKI is exposed to risks due to potential failures of Certificate Authorities (CAs) that may be used to issue unauthorized certificates for end-users. Many recent breaches show that if a CA is compromised, the security of the corresponding end-users will be in risk. As an emerging solution, Blockchain technology potentially resolves the problems of traditional PKI systems - in particular, elimination of single point-of-failure and rapid reaction to CAs shortcomings. Blockchain has the ability to store and manage digital certificates within a public and immutable ledger, resulting in a fully traceable history log. In this paper we designed and developed a blockchain-based PKI management framework for issuing, validating and revoking X.509 certificates. Evaluation and experimental results confirm that the proposed framework provides more reliable and robust PKI systems with modest maintenance costs.},
+  file      = {/home/chris/data/syncthing/infosec/astris/zotero/storage/9KLVEMQE/Yakubov et al. - 2018 - A blockchain-based PKI management framework.pdf},
+  isbn      = {978-1-5386-3416-5},
+  language  = {en},
+}
+
+@techreport{panjaSecureEndtoendVerifiable2018,
+  title    = {A Secure End-to-End Verifiable e-Voting System Using Zero Knowledge Based Blockchain},
+  author   = {Panja, Somnath and Roy, Bimal Kumar},
+  year     = {2018},
+  abstract = {In this paper, we present a cryptographic technique for an authenticated, end-to-end verifiable and secret ballot election. Voters should receive assurance that their vote is cast as intended, recorded as cast and tallied as recorded. The election system as a whole should ensure that voter coercion is unlikely, even when voters are willing to be influenced. Currently, almost all verifiable e-voting systems require trusted authorities to perform the tallying process. An exception is the DRE-i and DRE-ip system. The DRE-ip system removes the requirement of tallying authorities by encrypting ballot in such a way that the election tally can be publicly verified without decrypting cast ballots. However, the DRE-ip system necessitates a secure bulletin board (BB) for storing the encrypted ballot as without it the integrity of the system may be lost and the result can be compromised without detection during the audit phase. In this paper, we have modified the DRE-ip system so that if any recorded ballot is tampered by an adversary before the tallying phase, it will be detected during the tallying phase. In addition, we have described a method using zero knowledge based public blockchain to store these ballots so that it remains tamper proof. To the best of our knowledge, it is the first end-to-end verifiable Direct-recording electronic (DRE) based e-voting system using blockchain. In our case, we assume that the bulletin board is insecure and an adversary has read and write access to the bulletin board. We have also added a secure biometric with government provided identity card based authentication mechanism for voter authentication. The proposed system is able to encrypt ballot in such a way that the election tally can be publicly verified without decrypting cast ballots maintaining end-to-end verifiability and without requiring the secure bulletin board.},
+  file     = {/home/chris/data/syncthing/infosec/astris/zotero/storage/9A7V6WIK/Panja and Roy - 2018 - A secure end-to-end verifiable e-voting system usi.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/UNG9KJFI/466.html},
+  keywords = {Authentication,Biometric,Blockchain,cryptographic protocols,Direct Record Electronic,E-voting,End-to-End verifiable.,Zero Knowledge},
+  number   = {466},
+}
+
+@inproceedings{liTaxonomyComparisonRemote2014,
+  title     = {A Taxonomy and Comparison of Remote Voting Schemes},
+  booktitle = {2014 23rd {{International Conference}} on {{Computer Communication}} and {{Networks}} ({{ICCCN}})},
+  author    = {Li, H. and Kankanala, A. R. and Zou, X.},
+  year      = {2014},
+  month     = aug,
+  issn      = {1095-2055},
+  doi       = {10.1109/ICCCN.2014.6911807},
+  abstract  = {Remote voting has been an active research field for application of cryptographic techniques in the last two decades with many schemes and systems in publication. In this paper we present an overview of recent efforts in developing voting schemes and security models that involve a variety of real world constraints to ensure election integrity. We classify voting schemes based on their primary cryptographic techniques. We analyze recent typical schemes and systems against the basic and counter attack requirements with brief description. Such analysis shows difference among these security requirements and aids in design of future schemes. Our conclusion is provided regarding suitability of a particular voting system/scheme under various conditions.},
+  file      = {/home/chris/data/syncthing/infosec/astris/zotero/storage/B7P7K4Z5/Li et al. - 2014 - A taxonomy and comparison of remote voting schemes.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/Q9MYRAYQ/6911807.html},
+  keywords  = {counter attack requirements,cryptographic techniques,cryptography,Cryptography,election integrity,Electronic voting,Electronic voting scheme,Encryption,government data processing,Nominations and elections,primary cryptographic techniques,Privacy,Protocol,Protocols,Public key,real world constraints,Remote voting,remote voting schemes,security models,security requirements},
+}
+
+@inproceedings{shorAlgorithmsQuantumComputation1994,
+  title      = {Algorithms for Quantum Computation: Discrete Logarithms and Factoring},
+  shorttitle = {Algorithms for Quantum Computation},
+  booktitle  = {Proceedings 35th {{Annual Symposium}} on {{Foundations}} of {{Computer Science}}},
+  author     = {Shor, P. W.},
+  year       = {1994},
+  month      = nov,
+  doi        = {10.1109/SFCS.1994.365700},
+  abstract   = {A computer is generally considered to be a universal computational device; i.e., it is believed able to simulate any physical computational device with a cost in computation time of at most a polynomial factor: It is not clear whether this is still true when quantum mechanics is taken into consideration. Several researchers, starting with David Deutsch, have developed models for quantum mechanical computers and have investigated their computational properties. This paper gives Las Vegas algorithms for finding discrete logarithms and factoring integers on a quantum computer that take a number of steps which is polynomial in the input size, e.g., the number of digits of the integer to be factored. These two problems are generally considered hard on a classical computer and have been used as the basis of several proposed cryptosystems. We thus give the first examples of quantum cryptanalysis.{$<>$}},
+  file       = {/home/chris/data/syncthing/infosec/astris/zotero/storage/JZ43LD6Y/365700.html},
+  keywords   = {Circuit simulation,computational complexity,Computational modeling,Computer simulation,Costs,Cryptography,cryptosystems,discrete logarithms,factoring,Las Vegas algorithms,Mechanical factors,parallel algorithms,physical computational device,Physics computing,polynomial factor,Polynomials,quantum computation algorithms,quantum computer,Quantum computing,Quantum mechanics},
+}
+
+@techreport{liuEvotingProtocolBased2017,
+  title    = {An {{E}}-Voting {{Protocol Based}} on {{Blockchain}}},
+  author   = {Liu, Yi and Wang, Qi},
+  year     = {2017},
+  abstract = {Because of the properties such as transparency, decentralization, irreversibility, nonrepudiation, etc., blockchain is not only a fundamental technology of great interest in its own right, but also has large potential when integrated into many other areas. In this paper, based on the blockchain technology, we propose a decentralized e-voting protocol, without the existence of a trusted third party. Furthermore, we provide several possible extensions and improvements that meet the requirements in some specific voting scenarios.},
+  file     = {/home/chris/data/syncthing/infosec/astris/zotero/storage/XTKWPC6E/Liu and Wang - 2017 - An E-voting Protocol Based on Blockchain.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/NQZB6L84/1043.html},
+  keywords = {Blind signature,Blockchain,cryptographic protocols,E-voting},
+  number   = {1043},
+}
+
+@article{chillottiHomomorphicLWEBased,
+  title    = {An Homomorphic {{LWE}} Based {{E}}-Voting {{Scheme}}},
+  author   = {Chillotti, Ilaria and Gama, Nicolas and Georgieva, Mariya and Izabachene, Malika},
+  abstract = {In this paper we present a new post-quantum electronicvoting protocol. Our construction is based on LWE fully homomorphic encryption and the protocol is inspired by existing e-voting schemes, in particular Helios. The strengths of our scheme are its simplicity and transparency, since it relies on public homomorphic operations. Furthermore, the use of lattice-based primitives greatly simplifies the proofs of correctness, privacy and verifiability, as no zero-knowledge proof are needed to prove the validity of individual ballots or the correctness of the final election result. The security of our scheme is based on classical SIS/LWE assumptions, which are asymptotically as hard as worstcase lattice problems and relies on the random oracle heuristic. We also propose a new procedure to distribute the decryption task, where each trustee provides an independent proof of correct decryption in the form of a publicly verifiable ciphertext trapdoor. In particular, our protocol requires only two trustees, unlike classical proposals using threshold decryption via Shamir's secret sharing.},
+  file     = {/home/chris/data/syncthing/infosec/astris/zotero/storage/ANNWKYL9/Chillotti et al. - An homomorphic LWE based E-voting Scheme.pdf},
+  language = {en},
+}
+
+@article{nakamotoBitcoinPeertoPeerElectronic2008,
+  title    = {Bitcoin: {{A Peer}}-to-{{Peer Electronic Cash System}}},
+  author   = {Nakamoto, Satoshi},
+  year     = {2008},
+  month    = oct,
+  abstract = {A purely peer-to-peer version of electronic cash would allow online payments to be sent directly from one party to another without going through a financial institution. Digital signatures provide part of the solution, but the main benefits are lost if a trusted third party is still required to prevent double-spending. We propose a solution to the double-spending problem using a peer-to-peer network. The network timestamps transactions by hashing them into an ongoing chain of hash-based proof-of-work, forming a record that cannot be changed without redoing the proof-of-work. The longest chain not only serves as proof of the sequence of events witnessed, but proof that it came from the largest pool of CPU power. As long as a majority of CPU power is controlled by nodes that are not cooperating to attack the network, they'll generate the longest chain and outpace attackers. The network itself requires minimal structure. Messages are broadcast on a best effort basis, and nodes can leave and rejoin the network at will, accepting the longest proof-of-work chain as proof of what happened while they were gone.},
+  file     = {/home/chris/data/syncthing/infosec/astris/zotero/storage/6EP5WH3Z/Nakamoto - Bitcoin A Peer-to-Peer Electronic Cash System.pdf},
+  language = {en},
 }
 
 @article{yangBlockchainVotingPublicly2020,
-  title = {Blockchain Voting: {{Publicly}} Verifiable Online Voting Protocol without Trusted Tallying Authorities},
+  title      = {Blockchain Voting: {{Publicly}} Verifiable Online Voting Protocol without Trusted Tallying Authorities},
   shorttitle = {Blockchain Voting},
-  author = {Yang, Xuechao and Yi, Xun and Nepal, Surya and Kelarev, Andrei and Han, Fengling},
-  year = {2020},
-  month = nov,
-  volume = {112},
-  issn = {0167-739X},
-  doi = {10.1016/j.future.2020.06.051},
-  abstract = {In organizing elections, a difficult problem is to achieve trust of all voters in the tallying process. Practical elections often lead to recounting of the submitted votes and raise questions about the validity of many submitted votes. There are even situations, when the opposition raises concerns about the validity of the whole election process due to insufficient transparency in the verification of the votes and in tallying. To solve this problem, the present paper proposes a new voting protocol based on the blockchain technology. There are several main advantages of the protocol. It does not rely on a trusted tallying authority. All votes are submitted with complete proofs of validity and are available for public access in an encrypted form. We propose a new encryption mechanism to guarantee that nobody can decrypt the votes, but everyone can verify the validity of the votes as well as the outcome of the tallying process by using the homomorphic property of the encryption. This makes the results of the election publicly verifiable. Our protocol enables all voters to store, verify, and tally all submitted votes which are added to a blockchain database. They allow every voter to rank each candidate by assigning different scores to them, rather than voting for only one candidate. Each vote is encrypted using a new encryption mechanism before submission. For each encrypted score in the vote, proofs are generated and stored. Everyone can use these proofs to verify the correctness and the eligibility of each submission without decrypting the content of the vote. This ensures the validity of the submitted votes in the counting process and at the same time maintains confidentiality. The security and performance analyses included in this paper demonstrate the feasibility of the proposed protocol for implementation in real elections.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/6746B7AB/Yang et al. - 2020 - Blockchain voting Publicly verifiable online voti.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/6ZVKQEVY/S0167739X17327656.html},
-  journal = {Future Generation Computer Systems},
-  keywords = {Blockchain voting,End-to-end voter verification,Homomorphic addition,Self-tallying},
-  language = {en}
+  author     = {Yang, Xuechao and Yi, Xun and Nepal, Surya and Kelarev, Andrei and Han, Fengling},
+  year       = {2020},
+  month      = nov,
+  volume     = {112},
+  issn       = {0167-739X},
+  doi        = {10.1016/j.future.2020.06.051},
+  abstract   = {In organizing elections, a difficult problem is to achieve trust of all voters in the tallying process. Practical elections often lead to recounting of the submitted votes and raise questions about the validity of many submitted votes. There are even situations, when the opposition raises concerns about the validity of the whole election process due to insufficient transparency in the verification of the votes and in tallying. To solve this problem, the present paper proposes a new voting protocol based on the blockchain technology. There are several main advantages of the protocol. It does not rely on a trusted tallying authority. All votes are submitted with complete proofs of validity and are available for public access in an encrypted form. We propose a new encryption mechanism to guarantee that nobody can decrypt the votes, but everyone can verify the validity of the votes as well as the outcome of the tallying process by using the homomorphic property of the encryption. This makes the results of the election publicly verifiable. Our protocol enables all voters to store, verify, and tally all submitted votes which are added to a blockchain database. They allow every voter to rank each candidate by assigning different scores to them, rather than voting for only one candidate. Each vote is encrypted using a new encryption mechanism before submission. For each encrypted score in the vote, proofs are generated and stored. Everyone can use these proofs to verify the correctness and the eligibility of each submission without decrypting the content of the vote. This ensures the validity of the submitted votes in the counting process and at the same time maintains confidentiality. The security and performance analyses included in this paper demonstrate the feasibility of the proposed protocol for implementation in real elections.},
+  file       = {/home/chris/data/syncthing/infosec/astris/zotero/storage/6746B7AB/Yang et al. - 2020 - Blockchain voting Publicly verifiable online voti.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/6ZVKQEVY/S0167739X17327656.html},
+  journal    = {Future Generation Computer Systems},
+  keywords   = {Blockchain voting,End-to-end voter verification,Homomorphic addition,Self-tallying},
+  language   = {en},
 }
 
-@techreport{yuPlatformindependentSecureBlockchainBased2018,
-  title = {Platform-Independent {{Secure Blockchain}}-{{Based Voting System}}},
-  author = {Yu, Bin and Liu, Joseph and Sakzad, Amin and Nepal, Surya and Rimba, Paul and Steinfeld, Ron and Au, Man Ho},
-  year = {2018},
-  abstract = {Cryptographic techniques are employed to ensure the security of voting systems in order to increase its wide adoption. However, in such electronic voting systems, the public bulletin board that is hosted by the third party for publishing and auditing the voting results should be trusted by all participants. Recently a number of blockchain-based solutions have been proposed to address this issue. However, these systems are impractical to use due to the limitations on the voter and candidate numbers supported, and their security framework, which highly depends on the underlying blockchain protocol and suffers from potential attacks (e.g., force-abstention attacks). To deal with two aforementioned issues, we propose a practical platform-independent secure and verifiable voting system that can be deployed on any blockchain that supports an execution of a smart contract. Verifiability is inherently provided by the underlying blockchain platform, whereas cryptographic techniques like Paillier encryption, proof-of-knowledge, and linkable ring signature are employed to provide a framework for system security and user-privacy that are independent from the security and privacy features of the blockchain platform. We analyse the correctness and coercion-resistance of our proposed voting system. We employ Hyperledger Fabric to deploy our voting system and analyse the performance of our deployed scheme numerically.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/XGPI9WVJ/Yu et al. - 2018 - Platform-independent Secure Blockchain-Based Votin.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/ZCT77XZ4/657.html},
-  keywords = {blockchain,ring signature,voting},
-  number = {657}
+@article{peckBlockchainWorldYou2017,
+  title      = {Blockchain World - {{Do}} You Need a Blockchain? {{This}} Chart Will Tell You If the Technology Can Solve Your Problem},
+  shorttitle = {Blockchain World - {{Do}} You Need a Blockchain?},
+  author     = {Peck, M. E.},
+  year       = {2017},
+  month      = oct,
+  volume     = {54},
+  issn       = {1939-9340},
+  doi        = {10.1109/MSPEC.2017.8048838},
+  abstract   = {According to a study released this July by Juniper Research, more than half the world's largest companies are now researching blockchain technologies with the goal of integrating them into their products. Projects are already under way that will disrupt the management of health care records, property titles, supply chains, and even our online identities. But before we remount the entire digital ecosystem on blockchain technology, it would be wise to take stock of what makes the approach unique and what costs are associated with it. Blockchain technology is, in essence, a novel way to manage data. As such, it competes with the data-management systems we already have. Relational databases, which orient information in updatable tables of columns and rows, are the technical foundation of many services we use today. Decades of market exposure and well-funded research by companies like Oracle Corp. have expanded the functionality and hardened the security of relational databases. However, they suffer from one major constraint: They put the task of storing and updating entries in the hands of one or a few entities, whom you have to trust won't mess with the data or get hacked.},
+  file       = {/home/chris/data/syncthing/infosec/astris/zotero/storage/YN67RHNV/8048838.html},
+  journal    = {IEEE Spectrum},
+  keywords   = {Bitcoin,blockchain technology,Companies,Conferences,cryptography,data-management systems,Databases,digital ecosystem,electronic health records,health care,health care records management,Juniper Research,online identities,Oracle Corp,Packaging,Privacy,property titles,records management,relational databases,Software,supply chains},
+  number     = {10},
+}
+
+@article{peckBlockchainWorldYou2017a,
+  title      = {Blockchain World - {{Do}} You Need a Blockchain? {{This}} Chart Will Tell You If the Technology Can Solve Your Problem},
+  shorttitle = {Blockchain World - {{Do}} You Need a Blockchain?},
+  author     = {Peck, M. E.},
+  year       = {2017},
+  month      = oct,
+  volume     = {54},
+  issn       = {1939-9340},
+  doi        = {10.1109/MSPEC.2017.8048838},
+  abstract   = {According to a study released this July by Juniper Research, more than half the world's largest companies are now researching blockchain technologies with the goal of integrating them into their products. Projects are already under way that will disrupt the management of health care records, property titles, supply chains, and even our online identities. But before we remount the entire digital ecosystem on blockchain technology, it would be wise to take stock of what makes the approach unique and what costs are associated with it. Blockchain technology is, in essence, a novel way to manage data. As such, it competes with the data-management systems we already have. Relational databases, which orient information in updatable tables of columns and rows, are the technical foundation of many services we use today. Decades of market exposure and well-funded research by companies like Oracle Corp. have expanded the functionality and hardened the security of relational databases. However, they suffer from one major constraint: They put the task of storing and updating entries in the hands of one or a few entities, whom you have to trust won't mess with the data or get hacked.},
+  file       = {/home/chris/data/syncthing/infosec/astris/zotero/storage/P7BWYPDS/Peck - 2017 - Blockchain world - Do you need a blockchain This .pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/R8P537CI/8048838.html},
+  journal    = {IEEE Spectrum},
+  keywords   = {Bitcoin,blockchain technology,Companies,Conferences,cryptography,data-management systems,Databases,digital ecosystem,electronic health records,health care,health care records management,Juniper Research,online identities,Oracle Corp,Packaging,Privacy,property titles,records management,relational databases,Software,supply chains},
+  number     = {10},
+}
+
+@article{sandlerCastingVotesAuditorium,
+  title    = {Casting {{Votes}} in the {{Auditorium}}},
+  author   = {Sandler, Daniel and Wallach, Dan S},
+  abstract = {In elections employing electronic voting machines, we have observed that poor procedures, equipment failures, and honest mistakes pose a real threat to the accuracy of the final tally. The event logs kept by these machines can give auditors clues as to the causes of anomalies and inconsistencies; however, each voting machine is trusted to keep its own audit and ballot data, making the record unreliable. If a machine is damaged, accidentally erased, or otherwise compromised during the election, we have no way to detect tampering or loss of auditing records and cast votes.},
+  file     = {/home/chris/data/syncthing/infosec/astris/zotero/storage/EVNEV45D/Sandler and Wallach - Casting Votes in the Auditorium.pdf},
+  language = {en},
+}
+
+@techreport{spadaforaCoercionResistantBlockchainBasedEVoting2020,
+  title    = {Coercion-{{Resistant Blockchain}}-{{Based E}}-{{Voting Protocol}}},
+  author   = {Spadafora, Chiara and Longo, Riccardo and Sala, Massimiliano},
+  year     = {2020},
+  abstract = {Coercion resistance is one of the most important features of a secure voting procedure. Because of the properties such as transparency, decentralization, and non-repudiation, blockchain is a fundamental technology of great interest in its own right, and it also has large potential when integrated into many other areas. Here we propose a decentralized e-voting protocol that is coercion-resistant and vote-selling resistant, while being also completely transparent and not receipt-free. We prove the security of the protocol under the standard DDH assumption.},
+  file     = {/home/chris/data/syncthing/infosec/astris/zotero/storage/7SN9E9AR/Spadafora et al. - 2020 - Coercion-Resistant Blockchain-Based E-Voting Proto.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/AERA5TGM/674.html},
+  keywords = {blockchain,cryptographic protocols,DDH,e-voting,election schemes,zero knowledge},
+  number   = {674},
+}
+
+@article{cortierDistributedElGamalPedersen,
+  title    = {Distributed {{ElGamal}} `a La {{Pedersen}} - {{Application}} to {{Helios}}},
+  author   = {Cortier, V{\'e}ronique and Glondu, St{\'e}phane and Galindo, David and Izabach{\`e}ne, Malika},
+  abstract = {Real-world elections often require threshold cryptosystems so that any t out of trustees can proceed to tallying. This is required to protect the confidentiality of the voters' votes against curious authorities (at least t + 1 trustees must collude to learn individual votes) as well as to increase the robustness of the election (in case some trustees become unavailable, t + 1 trustees suffice to compute the election result). We describe a fully distributed (with no dealer) threshold cryptosystem suitable for the Helios voting system (in particular, suitable to partial decryption), and prove it secure under the Decisional Diffie-Hellman assumption. Secondly, we propose a fully distributed variant of Helios, that allows for arbitrary threshold parameters , t, together with a proof of ballot privacy when used for suffrage elections. Our modification of Helios can be seen as revision of the seminal multi-authority election system from Cramer, Gennaro and Schoenmakers, upon which the original Helios system is based. As such, our work implies, to our knowledge, the first formal proof of ballot privacy for the scheme by Cramer et al. Thirdly, we provide the first open-source implementation of Helios with a fully distributed key generation setup.},
+  file     = {/home/chris/data/syncthing/infosec/astris/zotero/storage/A3S9AHFM/Cortier et al. - Distributed ElGamal `a la Pedersen - Application t.pdf},
+  language = {en},
+}
+
+@article{petersenDistributedProversVerfiable1992,
+  title    = {{Distributed Provers and Verfiable Secret Sharing Based on the Discrete Logarithm Problem}},
+  author   = {Petersen, Torben Pryds},
+  year     = {1992},
+  file     = {/home/chris/data/syncthing/infosec/astris/zotero/storage/XU86D99X/Petersen - Distributed Provers and Verﬁable Secret Sharing Ba.pdf},
+  language = {da},
+}
+
+@techreport{wustYouNeedBlockchain2017,
+  title    = {Do You Need a {{Blockchain}}?},
+  author   = {W{\"u}st, Karl and Gervais, Arthur},
+  year     = {2017},
+  abstract = {Blockchain is being praised as a technological innovation which allows to revolutionize how society trades and interacts. This reputation is in particular attributable to its properties of allowing mutually mistrusting entities to exchange financial value and interact without relying on a trusted third party. A blockchain moreover provides an integrity protected data storage and allows to provide process transparency. In this article we critically analyze whether a blockchain is indeed the appropriate technical solution for a particular application scenario. We differentiate between permissionless (e.g., Bitcoin/Ethereum) and permissioned (e.g. Hyperledger/Corda) blockchains and contrast their properties to those of a centrally managed database. We provide a structured methodology to determine the appropriate technical solution to solve a particular application problem. Given our methodology, we analyze in depth three use cases --- Supply Chain Management, Interbank and International Payments, and Decentralized Autonomous Organizations and conclude the article with an outlook for further opportunities.},
+  file     = {/home/chris/data/syncthing/infosec/astris/zotero/storage/RRVSFH6I/Wüst and Gervais - 2017 - Do you need a Blockchain.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/Z6QRPFSB/375.html},
+  keywords = {application scenario,applications,blockchain,central database,decision making,electronic commerce and payment,permissioned blockchain,permissionless blockchain},
+  number   = {375},
+}
+
+@techreport{heilmanEclipseAttacksBitcoin2015,
+  title    = {Eclipse {{Attacks}} on {{Bitcoin}}'s {{Peer}}-to-{{Peer Network}}},
+  author   = {Heilman, Ethan and Kendler, Alison and Zohar, Aviv and Goldberg, Sharon},
+  year     = {2015},
+  abstract = {We present eclipse attacks on bitcoin's peer-to-peer network. Our attack allows an adversary controlling a sufficient number of IP addresses to monopolize all connections to and from a victim bitcoin node. The attacker can then exploit the victim for attacks on bitcoin's mining and consensus system, including N-confirmation double spending, selfish mining, and adversarial forks in the blockchain. We take a detailed look at bitcoin's peer-to-peer network, and quantify the resources involved in our attack via probabilistic analysis, Monte Carlo simulations, measurements and experiments with live bitcoin nodes. Finally, we present countermeasures, inspired by botnet architectures, that are designed to raise the bar for eclipse attacks while preserving the openness and decentralization of bitcoin's current network architecture.},
+  file     = {/home/chris/data/syncthing/infosec/astris/zotero/storage/RH5NELNE/Goldberg - 2015 - Eclipse Attacks on Bitcoin’s Peer-to-Peer Network.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/DCWEQGVD/263.html},
+  keywords = {applications,Bitcoin,Double-spend,Eclipse,Networking,P2P},
+  number   = {263},
+}
+
+@incollection{boudotEfficientProofsThat2000,
+  title     = {Efficient {{Proofs}} That a {{Committed Number Lies}} in an {{Interval}}},
+  booktitle = {Advances in {{Cryptology}} \textemdash{} {{EUROCRYPT}} 2000},
+  author    = {Boudot, Fabrice},
+  editor    = {Goos, Gerhard and Hartmanis, Juris and {van Leeuwen}, Jan and Preneel, Bart},
+  year      = {2000},
+  volume    = {1807},
+  publisher = {{Springer Berlin Heidelberg}},
+  address   = {{Berlin, Heidelberg}},
+  doi       = {10.1007/3-540-45539-6_31},
+  abstract  = {Alice wants to prove that she is young enough to borrow money from her bank, without revealing her age. She therefore needs a tool for proving that a committed number lies in a specific interval. Up to now, such tools were either inefficient (too many bits to compute and to transmit) or inexact (i.e. proved membership to a much larger interval). This paper presents a new proof, which is both efficient and exact. Here, ``efficient'' means that there are less than 20 exponentiations to perform and less than 2 Kbytes to transmit. The potential areas of application of this proof are numerous (electronic cash, group signatures, publicly verifiable secret encryption, etc. . . ).},
+  file      = {/home/chris/data/syncthing/infosec/astris/zotero/storage/NSVRPZ9K/Boudot - 2000 - Efficient Proofs that a Committed Number Lies in a.pdf},
+  isbn      = {978-3-540-67517-4 978-3-540-45539-4},
+  language  = {en},
+}
+
+@techreport{dimtiriouEfficientCoercionfreeUniversally2019,
+  title    = {Efficient, {{Coercion}}-Free and {{Universally Verifiable Blockchain}}-Based {{Voting}}},
+  author   = {Dimtiriou, Tassos},
+  year     = {2019},
+  abstract = {Most electronic voting systems today satisfy the basic requirements of privacy, unreusability, eligibility and fairness in a natural and rather straightforward way. However, receipt-freeness, incoercibility and universal verifiability are much harder to implement and in many cases they require a large amount of computation and communication overhead. In this work, we propose a blockchain-based voting system which achieves all the properties expected from secure elections without requiring too much from the voter. Coercion resistance and receipt-freeness are ensured by means of a randomizer token -- a tamper-resistance source of randomness which acts as a black box in constructing the ballot for the user. Universal verifiability is ensured by the append-only structure of the blockchain, thus minimizing the trust placed in election authorities. Additionally, the system has linear overhead when tallying the votes, hence it is scalable and practical for large scale elections.},
+  file     = {/home/chris/data/syncthing/infosec/astris/zotero/storage/SBZAXLY2/Dimtiriou - 2019 - Efficient, Coercion-free and Universally Verifiabl.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/DSEZW9NC/1406.html},
+  keywords = {applications,blockchains,coercion resistance,commitments,Internet voting,receipt-freeness,universal verifiability,zkSNARKs},
+  number   = {1406},
+}
+
+@article{epsteinElectronicVoting2007,
+  title    = {Electronic {{Voting}}},
+  author   = {Epstein, J.},
+  year     = {2007},
+  month    = aug,
+  volume   = {40},
+  issn     = {1558-0814},
+  doi      = {10.1109/MC.2007.271},
+  abstract = {In the wake of the contested results from the 2000 US presidential election, the US Congress passed the Help America Vote Act, which banned certain voting technologies, provided federal funds for purchasing new voting equipment, and required handicapped accessibility for voting systems. Thus began a rapid migration of US voting systems from technologies such as punch cards, paper ballots, and first-generation electronic voting systems to second-generation electronic voting systems, typically known as direct recording electronic (DRE) systems.},
+  file     = {/home/chris/data/syncthing/infosec/astris/zotero/storage/HNSRZZRB/Epstein - 2007 - Electronic Voting.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/2FZMTJLH/4292024.html},
+  journal  = {Computer},
+  keywords = {anonymity,cost effectiveness,Costs,data privacy,direct recording electronic system,electronic voting,Electronic voting,electronic voting system,Electronic voting systems,government data processing,Guidelines,Help America Vote Act,how things work,legislation,Local government,Management training,Nominations and elections,paper ballots,politics,punch cards,Safety,secrecy,security,Security,security of data,Transportation,US Congress,US presidential election,verifiability,voting equipment},
+  number   = {8},
+}
+
+@incollection{martinEverydayCryptography2017,
+  title     = {Everyday {{Cryptography}}},
+  booktitle = {Everyday {{Cryptography}}},
+  author    = {Martin, Keith},
+  year      = {2017},
+  edition   = {Second},
+  publisher = {{Oxford Unioversity Press}},
+  isbn      = {978-0-19-878801-0},
+}
+
+@book{delauneFormalisingSecurityProperties2010,
+  title      = {Formalising Security Properties in Electronic Voting Protocols},
+  author     = {Delaune, St{\'e}phanie and Kremer, Steve},
+  year       = {2010},
+  month      = apr,
+  abstract   = {While electronic elections promise the possibility of convenient, efficient and secure facilities for recording and tallying votes, recent studies have highlighted inadequacies in implemented systems. These inadequacies provide additional motivation for applying formal methods to the validation of electronic voting protocols.\textbackslash par In this paper we report on some of our recent efforts in using the applied pi calculus to model security properties of electronic elections. We particularly focus on privacy and verifiability properties. Our definitions allow us to specify and easily change which authorities are supposed to be trustworthy and are compatible with a large class of electronic voting schemes, including those based on blind signatures, homomorphic encryptions, and mixnets.\textbackslash par We distinguish three notions of privacy: vote-privacy, receipt-freeness and coercion-resistance. These properties are expressed using observational equivalence and we show in accordance with intuition that coercion-resistance implies receipt-freeness which implies vote-privacy. Concerning verifiability, we distinguish three aspects of verifiability, which we call individual verifiability, universal verifiability, and eligibility verifiability.},
+  annotation = {Published: Deliverable AVOTE 1.2, (ANR-07-SESU-002)},
+  file       = {/home/chris/data/syncthing/infosec/astris/zotero/storage/ZFPJ7AIN/Delaune and Kremer - Formalising security properties in electronic voti.pdf},
+  type       = {Contract {{Report}}},
+}
+
+@article{tsoukalasHeliosZeus2013,
+  title    = {From {{Helios}} to {{Zeus}}},
+  author   = {Tsoukalas, Georgios and Papadimitriou, Kostas and Louridas, Panos},
+  year     = {2013},
+  volume   = {1},
+  issn     = {2328-2797},
+  file     = {/home/chris/data/syncthing/infosec/astris/zotero/storage/MHRXAED2/Tsoukalas et al. - 2013 - From Helios to Zeus.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/PPLYMCLL/tsoukalas.html},
+  journal  = {\{USENIX\} Journal of Election Technology and Systems (\{JETS\})},
+  language = {en},
+  number   = {1},
+}
+
+@article{backHashcashDenialService2002,
+  title    = {Hashcash - {{A Denial}} of {{Service Counter}}-{{Measure}}},
+  author   = {Back, Adam},
+  year     = {2002},
+  month    = aug,
+  abstract = {Hashcash was originally proposed as a mechanism to throttle systematic abuse of un-metered internet resources such as email, and anonymous remailers in May 1997. Five years on, this paper captures in one place the various applications, improvements suggested and related subsequent publications, and describes initial experience from experiments using hashcash.},
+  file     = {/home/chris/data/syncthing/infosec/astris/zotero/storage/N6PCAG2C/Back - Hashcash - A Denial of Service Counter-Measure.pdf},
+  journal  = {Tech Report},
+  language = {en},
+}
+
+@misc{HeliosHeliosV3,
+  title        = {Helios - {{Helios}} v3 {{Verification Specs}}},
+  abstract     = {Introduction Helios is an open-audit voting system, which means that: Alice can verify that her vote was correctly captured, all captured votes are displayed (in encrypted form) for all to see, and anyone can verify that the captured votes were correctly tallied. This document specifies all data},
+  file         = {/home/chris/data/syncthing/infosec/astris/zotero/storage/N8L996XY/helios-v3-verification-specs.html},
+  howpublished = {https://documentation.heliosvoting.org/verification-specs/helios-v3-verification-specs},
+  language     = {en-US},
+}
+
+@misc{HeliosHeliosV4,
+  title        = {Helios - {{Helios}} V4},
+  abstract     = {This page documents the Helios v4 data structures and specs. Contrary to previous ideas, Helios v4 will *not* support mixnets, but its data structures will be ready to eventually support them. NOT FINAL. THIS DOCUMENT IS IN PROGRESS AS OF August 29th 2012. Introduction Helios is a truly verifiable},
+  file         = {/home/chris/data/syncthing/infosec/astris/zotero/storage/TLL2D8C4/helios-v4.html},
+  howpublished = {https://documentation.heliosvoting.org/verification-specs/helios-v4},
+  language     = {en-US},
+}
+
+@misc{HeliosVotingFAQ,
+  title        = {Helios {{Voting}} - {{FAQ}}},
+  shorttitle   = {Helios-Faq},
+  file         = {/home/chris/data/syncthing/infosec/astris/zotero/storage/HM2C886T/faq.html},
+  howpublished = {https://vote.heliosvoting.org/faq},
+}
+
+@misc{HeliosCryptographers2010,
+  title        = {Helios for {{Cryptographers}}},
+  year         = {2010},
+  month        = sep,
+  file         = {/home/chris/data/syncthing/infosec/astris/zotero/storage/8ARNXJFQ/finalReportHelios_2010-09-27.html},
+  howpublished = {https://iacr.org/elections/eVoting/finalReportHelios\_2010-09-27.html},
+  journal      = {International Association for Cryptologic Research},
+}
+
+@techreport{albrechtHomomorphicEncryptionSecurity2018,
+  title       = {Homomorphic {{Encryption Security Standard}}},
+  author      = {Albrecht, Martin and Chase, Melissa and Chen, Hao and Ding, Jintai and Goldwasser, Shafi and Gorbunov, Sergey and Halevi, Shai and Hoffstein, Jeffrey and Laine, Kim and Lauter, Kristin and Lokam, Satya and Micciancio, Daniele and Moody, Dustin and Morrison, Travis and Sahai, Amit and Vaikuntanathan, Vinod},
+  year        = {2018},
+  month       = nov,
+  address     = {{Toronto, Canada}},
+  institution = {{HomomorphicEncryption.org}},
+  annotation  = {Backup Publisher: HomomorphicEncryption.org},
+  file        = {/home/chris/data/syncthing/infosec/astris/zotero/storage/N84L8J3E/Albrecht et al. - Homomorphic Encryption Standard.pdf},
 }
 
 @inproceedings{zhaoHowVotePrivately2016,
-  title = {How to {{Vote Privately Using Bitcoin}}},
+  title     = {How to {{Vote Privately Using Bitcoin}}},
   booktitle = {Information and {{Communications Security}}},
-  author = {Zhao, Zhichao and Chan, T.-H. Hubert},
-  editor = {Qing, Sihan and Okamoto, Eiji and Kim, Kwangjo and Liu, Dongmei},
-  year = {2016},
+  author    = {Zhao, Zhichao and Chan, T.-H. Hubert},
+  editor    = {Qing, Sihan and Okamoto, Eiji and Kim, Kwangjo and Liu, Dongmei},
+  year      = {2016},
   publisher = {{Springer International Publishing}},
-  address = {{Cham}},
-  doi = {10.1007/978-3-319-29814-6_8},
-  abstract = {Bitcoin is the first decentralized crypto-currency that is currently by far the most popular one in use. The bitcoin transaction syntax is expressive enough to setup digital contracts whose fund transfer can be enforced automatically.In this paper, we design protocols for the bitcoin voting problem, in which there are n voters, each of which wishes to fund exactly one of two candidates A and B. The winning candidate is determined by majority voting, while the privacy of individual vote is preserved. Moreover, the decision is irrevocable in the sense that once the outcome is revealed, the winning candidate is guaranteed to have the funding from all n voters. As in previous works, each voter is incentivized to follow the protocol by being required to put a deposit in the system, which will be used as compensation if he deviates from the protocol. Our solution is similar to previous protocols used for lottery, but needs an additional phase to distribute secret random numbers via zero-knowledge-proofs. Moreover, we have resolved a security issue in previous protocols that could prevent compensation from being paid.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/KA366S33/Zhao and Chan - 2016 - How to Vote Privately Using Bitcoin.pdf},
-  isbn = {978-3-319-29814-6},
-  keywords = {Commitment Scheme,Full Paper,Individual Vote,Money Transfer,Previous Protocol},
+  address   = {{Cham}},
+  doi       = {10.1007/978-3-319-29814-6_8},
+  abstract  = {Bitcoin is the first decentralized crypto-currency that is currently by far the most popular one in use. The bitcoin transaction syntax is expressive enough to setup digital contracts whose fund transfer can be enforced automatically.In this paper, we design protocols for the bitcoin voting problem, in which there are n voters, each of which wishes to fund exactly one of two candidates A and B. The winning candidate is determined by majority voting, while the privacy of individual vote is preserved. Moreover, the decision is irrevocable in the sense that once the outcome is revealed, the winning candidate is guaranteed to have the funding from all n voters. As in previous works, each voter is incentivized to follow the protocol by being required to put a deposit in the system, which will be used as compensation if he deviates from the protocol. Our solution is similar to previous protocols used for lottery, but needs an additional phase to distribute secret random numbers via zero-knowledge-proofs. Moreover, we have resolved a security issue in previous protocols that could prevent compensation from being paid.},
+  file      = {/home/chris/data/syncthing/infosec/astris/zotero/storage/KA366S33/Zhao and Chan - 2016 - How to Vote Privately Using Bitcoin.pdf},
+  isbn      = {978-3-319-29814-6},
+  keywords  = {Commitment Scheme,Full Paper,Individual Vote,Money Transfer,Previous Protocol},
+  language  = {en},
+  series    = {Lecture {{Notes}} in {{Computer Science}}},
+}
+
+@techreport{tarasovInternetVotingUsing2017,
+  title    = {Internet {{Voting Using Zcash}}},
+  author   = {Tarasov, Pavel and Tewari, Hitesh},
+  year     = {2017},
+  abstract = {Voting systems have been around for hundreds of years and despite different views on their integrity, have always been deemed secure with some fundamental security and anonymity principles. Numerous electronic systems have been proposed and implemented but some suspicion has been raised regarding the integrity of elections due to detected security vulnerabilities within these systems. Electronic voting, to be successful, requires a more transparent and secure approach, than is offered by current protocols. The approach presented in this paper involves a protocol developed on blockchain technology. The underlying technology used in the voting system is a payment scheme, which offers anonymity of transactions, a trait not seen in blockchain protocols to date. The proposed protocol offers anonymity of voter transactions, while keeping the transactions private, and the election transparent and secure. The underlying payment protocol has not been modified in any way, the voting protocol merely offers an alternative use case.},
+  file     = {/home/chris/data/syncthing/infosec/astris/zotero/storage/HGL2XNRK/Tarasov and Tewari - 2017 - Internet Voting Using Zcash.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/KMY7Z3C5/585.html},
+  keywords = {implementation,zero knowledge},
+  number   = {585},
+}
+
+@article{schoenmakersLectureNotesCryptographic,
+  title    = {Lecture {{Notes Cryptographic Protocols}}},
+  author   = {Schoenmakers, Berry},
+  file     = {/home/chris/data/syncthing/infosec/astris/zotero/storage/PD9SQ3CD/Schoenmakers - Lecture Notes Cryptographic Protocols.pdf},
   language = {en},
-  series = {Lecture {{Notes}} in {{Computer Science}}}
+}
+
+@misc{Namecoin,
+  title        = {Namecoin},
+  file         = {/home/chris/data/syncthing/infosec/astris/zotero/storage/N4QJ8RFC/whitepaper.html},
+  howpublished = {https://www.namecoin.org/resources/whitepaper/},
+}
+
+@techreport{heibergTradeoffsApplyingBlock2018,
+  title    = {On {{Trade}}-Offs of {{Applying Block Chains}} for {{Electronic Voting Bulletin Boards}}},
+  author   = {Heiberg, Sven and Kubjas, Ivo and Siim, Janno and Willemson, Jan},
+  year     = {2018},
+  abstract = {This paper takes a critical look at the recent trend of building electronic voting systems on top of block chain technology. Even though being very appealing from the election integrity perspective, block chains have numerous technical, economical and even political drawbacks that need to be taken into account. Selecting a good trade-off between desirable properties and restrictions imposed by different block chain implementations is a highly non-trivial task. This paper aims at bringing some clarity into performing this task. We will mostly be concentrating on public permissionless block chains and their applications as bulletin board implementations as these are the favourite choices in majority of the recent block chain based voting protocol proposals.},
+  file     = {/home/chris/data/syncthing/infosec/astris/zotero/storage/3SRZ4K24/Heiberg et al. - 2018 - On Trade-offs of Applying Block Chains for Electro.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/CWL98VQM/685.html},
+  keywords = {applications,Block chains,bulletin boards,electronic voting},
+  number   = {685},
+}
+
+@misc{OngoingTimBray,
+  title        = {Ongoing by {{Tim Bray}} {$\cdot$} {{UCI}}},
+  file         = {/home/chris/data/syncthing/infosec/astris/zotero/storage/392DBEJW/UPI.html},
+  howpublished = {http://www.tbray.org/ongoing/When/200x/2005/12/23/UPI},
+}
+
+@techreport{yuPlatformindependentSecureBlockchainBased2018,
+  title    = {Platform-Independent {{Secure Blockchain}}-{{Based Voting System}}},
+  author   = {Yu, Bin and Liu, Joseph and Sakzad, Amin and Nepal, Surya and Rimba, Paul and Steinfeld, Ron and Au, Man Ho},
+  year     = {2018},
+  abstract = {Cryptographic techniques are employed to ensure the security of voting systems in order to increase its wide adoption. However, in such electronic voting systems, the public bulletin board that is hosted by the third party for publishing and auditing the voting results should be trusted by all participants. Recently a number of blockchain-based solutions have been proposed to address this issue. However, these systems are impractical to use due to the limitations on the voter and candidate numbers supported, and their security framework, which highly depends on the underlying blockchain protocol and suffers from potential attacks (e.g., force-abstention attacks). To deal with two aforementioned issues, we propose a practical platform-independent secure and verifiable voting system that can be deployed on any blockchain that supports an execution of a smart contract. Verifiability is inherently provided by the underlying blockchain platform, whereas cryptographic techniques like Paillier encryption, proof-of-knowledge, and linkable ring signature are employed to provide a framework for system security and user-privacy that are independent from the security and privacy features of the blockchain platform. We analyse the correctness and coercion-resistance of our proposed voting system. We employ Hyperledger Fabric to deploy our voting system and analyse the performance of our deployed scheme numerically.},
+  file     = {/home/chris/data/syncthing/infosec/astris/zotero/storage/XGPI9WVJ/Yu et al. - 2018 - Platform-independent Secure Blockchain-Based Votin.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/ZCT77XZ4/657.html},
+  keywords = {blockchain,ring signature,voting},
+  number   = {657},
+}
+
+@incollection{andersonProgrammingSatanComputer1995,
+  title     = {Programming {{Satan}}'s Computer},
+  booktitle = {Computer {{Science Today}}},
+  author    = {Anderson, Ross and Needham, Roger},
+  editor    = {Goos, Gerhard and Hartmanis, Juris and {van Leeuwen}, Jan and {van Leeuwen}, Jan},
+  year      = {1995},
+  volume    = {1000},
+  publisher = {{Springer Berlin Heidelberg}},
+  address   = {{Berlin, Heidelberg}},
+  doi       = {10.1007/BFb0015258},
+  abstract  = {Cryptographic protocols are used in distributed systems to identify users and authenticate transactions. They may involve the exchange of about 2\textendash 5 messages, and one might think that a program of this size would be fairly easy to get right. However, this is absolutely not the case: bugs are routinely found in well known protocols, and years after they were first published. The problem is the presence of a hostile opponent, who can alter messages at will. In effect, our task is to program a computer which gives answers which are subtly and maliciously wrong at the most inconvenient possible moment. This is a fascinating problem; and we hope that the lessons learned from programming Satan's computer may be helpful in tackling the more common problem of programming Murphy's.},
+  file      = {/home/chris/data/syncthing/infosec/astris/zotero/storage/VDZMH3KS/Anderson and Needham - 1995 - Programming Satan's computer.pdf},
+  isbn      = {978-3-540-60105-0 978-3-540-49435-5},
+  language  = {en},
+}
+
+@article{sabaterReviewComputationalTrust2005,
+  title    = {Review on {{Computational Trust}} and {{Reputation Models}}},
+  author   = {Sabater, Jordi and Sierra, Carles},
+  year     = {2005},
+  month    = sep,
+  volume   = {24},
+  issn     = {0269-2821},
+  doi      = {10.1007/s10462-004-0041-5},
+  abstract = {The scientific research in the area of computational mechanisms for trust and reputation in virtual societies is a recent discipline oriented to increase the reliability and performance of electronic communities. Computer science has moved from the paradigm of isolated machines to the paradigm of networks and distributed computing. Likewise, artificial intelligence is quickly moving from the paradigm of isolated and non-situated intelligence to the paradigm of situated, social and collective intelligence. The new paradigm of the so called intelligent or autonomous agents and multi-agent systems (MAS) together with the spectacular emergence of the information society technologies (specially reflected by the popularization of electronic commerce) are responsible for the increasing interest on trust and reputation mechanisms applied to electronic societies. This review wants to offer a panoramic view on current computational trust and reputation models.},
+  journal  = {Artificial Intelligence Review},
+  keywords = {reputation,trust},
+  number   = {1},
+}
+
+@techreport{seifelnasrScalableOpenVoteNetwork2020,
+  title    = {Scalable {{Open}}-{{Vote Network}} on {{Ethereum}}},
+  author   = {Seifelnasr, Mohamed and Galal, Hisham S. and Youssef, Amr M.},
+  year     = {2020},
+  abstract = {McCorry et al. (Financial Cryptography 2017) presented the first implementation of a decentralized self-tallying voting protocol on Ethereum. However, their implementation did not scale beyond 40 voters since all the computations were performed on the smart contract. In this paper, we tackle this problem by delegating the bulk computations to an off-chain untrusted administrator in a verifiable manner. Specifically, the administrator tallies the votes off-chain and publishes a Merkle tree that encodes the tallying computation trace. Then, the administrator submits the Merkle tree root and the tally result to the smart contract. Subsequently, the smart contract transits to an intermediate phase where at least a single honest voter can contend the administrator's claimed result if it was not computed correctly. Then, in the worst case, the smart contract verifies the dispute at the cost of an elliptic curve point addition and scalar multiplication, and two Merkle proofs of membership which are logarithmic in the number of voters. This allows our protocol to achieve higher scalability without sacrificing the public verifiability or voters' privacy. To assess our protocol, we implemented an open-source prototype on Ethereum and carried out multiple experiments for different numbers of voters. The results of our implementation confirm the scalability and efficiency of our proposed solution which does not exceed the current block gas limit for any practical number of voters.},
+  file     = {/home/chris/data/syncthing/infosec/astris/zotero/storage/EKZ3CHB9/Seifelnasr et al. - 2020 - Scalable Open-Vote Network on Ethereum.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/3A586SLQ/033.html},
+  keywords = {applications,Ethereum,Smart Contract,Voting},
+  number   = {033},
+}
+
+@misc{petrideSecurityPropertiesElectronic,
+  title        = {Security {{Properties}} for {{Electronic Voting}}},
+  author       = {Petride, Sabina},
+  file         = {/home/chris/data/syncthing/infosec/astris/zotero/storage/WP2Y68EP/sp2580.html},
+  howpublished = {http://www.cs.cornell.edu/courses/cs513/2002SP/proj.00.StuSolns/sp2580.htm},
+}
+
+@techreport{hastingsSecurityConsiderationsRemote2011,
+  title       = {Security Considerations for Remote Electronic {{UOCAVA}} Voting},
+  author      = {Hastings, Nelson and Peralta, Rene and Popoveniuc, Stefan and Regenscheid, Andrew},
+  year        = {2011},
+  edition     = {Zeroth},
+  address     = {{Gaithersburg, MD}},
+  institution = {{National Institute of Standards and Technology}},
+  doi         = {10.6028/NIST.IR.7770},
+  file        = {/home/chris/data/syncthing/infosec/astris/zotero/storage/PYSPASK6/Hastings et al. - 2011 - Security considerations for remote electronic UOCA.pdf},
+  language    = {en},
+  number      = {NIST IR 7770},
+}
+
+@misc{SteveKremerFormalising,
+  title        = {Steve {{Kremer}}: {{Formalising}} Security Properties in Electronic Voting Protocols},
+  file         = {/home/chris/data/syncthing/infosec/astris/zotero/storage/VXJ5X3YP/b2hd-avote-D12.html},
+  howpublished = {https://members.loria.fr/SKremer/files/Publications/b2hd-avote-D12.html},
+}
+
+@incollection{stevensFirstCollisionFull2017,
+  title     = {The {{First Collision}} for {{Full SHA}}-1},
+  booktitle = {Advances in {{Cryptology}} \textendash{} {{CRYPTO}} 2017},
+  author    = {Stevens, Marc and Bursztein, Elie and Karpman, Pierre and Albertini, Ange and Markov, Yarik},
+  editor    = {Katz, Jonathan and Shacham, Hovav},
+  year      = {2017},
+  volume    = {10401},
+  publisher = {{Springer International Publishing}},
+  address   = {{Cham}},
+  doi       = {10.1007/978-3-319-63688-7_19},
+  abstract  = {SHA-1 is a widely used 1995 NIST cryptographic hash function standard that was officially deprecated by NIST in 2011 due to fundamental security weaknesses demonstrated in various analyses and theoretical attacks.},
+  file      = {/home/chris/data/syncthing/infosec/astris/zotero/storage/MPUS7KD6/Stevens et al. - 2017 - The First Collision for Full SHA-1.pdf},
+  isbn      = {978-3-319-63687-0 978-3-319-63688-7},
+  language  = {en},
+}
+
+@inproceedings{douceurSybilAttack2002,
+  title     = {The {{Sybil Attack}}},
+  booktitle = {Peer-to-{{Peer Systems}}},
+  author    = {Douceur, John R.},
+  editor    = {Druschel, Peter and Kaashoek, Frans and Rowstron, Antony},
+  year      = {2002},
+  publisher = {{Springer}},
+  address   = {{Berlin, Heidelberg}},
+  abstract  = {Large-scale peer-to-peer systems face security threats from faulty or hostile remote computing elements. To resist these threats, many such systems employ redundancy. However, if a single faulty entity can present multiple identities, it can control a substantial fraction of the system, thereby undermining this redundancy. One approach to preventing these ``Sybil attacks'' is to have a trusted agency certify identities. This paper shows that, without a logically centralized authority, Sybil attacks are always possible except under extreme and unrealistic assumptions of resource parity and coordination among entities.},
+  isbn      = {978-3-540-45748-0},
+  keywords  = {Distinct Identity,Hash Function,Local Entity,Multiple Identity,Random Oracle},
+  language  = {en},
+  series    = {Lecture {{Notes}} in {{Computer Science}}},
+}
+
+@phdthesis{romanoNatureTrustConceptual2003,
+  title      = {The Nature of Trust: {{Conceptual}} and Operational Clarification},
+  shorttitle = {The Nature of Trust},
+  author     = {Romano, Donna M.},
+  year       = {2003},
+  address    = {{United States -- Louisiana}},
+  abstract   = {The importance of trust in working relationships is widely acknowledged among organizational researchers and practitioners. Unfortunately, trust is defined and measured differently across studies, making it difficult to integrate and compare research findings. Therefore, the purpose of this paper was to clarify the nature of trust as it exists across research and organizational settings. First, trust was conceptualized in terms of 10 defining characteristics based on a convergence and reconciliation of inconsistencies among existing definitions. These 10 characteristics of trust were incorporated into a single definition of trust to offer a more comprehensive description of the construct. Second, the Functional Trust Scale (FTS) was constructed to operationalize trust in terms of its 10 defining characteristics to provide a more complete and representative measure of trust that can be applied to a variety of situations. Third, empirical and statistical methods were employed to assess the structure and psychometric properties of the FTS. The results of this study provide initial evidence supporting the FTS and its underlying concept of trust. First, the hypothesized FTS measurement model resulted as the best fitting model among alternate models within two samples. Second, the FTS resulted in conceptual similarity across two applications, suggesting that it is applicable across multiple situations. Third, the internal consistency of the FTS and its sub-scales suggest that it is a reliable measure. Finally, the results provide initial support for the content, face, convergent, and divergent validity of the FTS.},
+  file       = {/home/chris/data/syncthing/infosec/astris/zotero/storage/7CRYADQU/Romano - 2003 - The nature of trust Conceptual and operational cl.pdf},
+  keywords   = {Attitudes,Functional Trust Scale,Psychology,Trust},
+  language   = {English},
+  school     = {Louisiana State University and Agricultural \& Mechanical College},
+}
+
+@article{harzSaferSmartContracts2018,
+  title         = {Towards {{Safer Smart Contracts}}: {{A Survey}} of {{Languages}} and {{Verification Methods}}},
+  shorttitle    = {Towards {{Safer Smart Contracts}}},
+  author        = {Harz, Dominik and Knottenbelt, William},
+  year          = {2018},
+  month         = oct,
+  abstract      = {With a market capitalisation of over USD 205 billion in just under ten years, public distributed ledgers have experienced significant adoption. Apart from novel consensus mechanisms, their success is also accountable to smart contracts. These programs allow distrusting parties to enter agreements that are executed autonomously. However, implementation issues in smart contracts caused severe losses to the users of such contracts. Significant efforts are taken to improve their security by introducing new programming languages and advance verification methods. We provide a survey of those efforts in two parts. First, we introduce several smart contract languages focussing on security features. To that end, we present an overview concerning paradigm, type, instruction set, semantics, and metering. Second, we examine verification tools and methods for smart contract and distributed ledgers. Accordingly, we introduce their verification approach, level of automation, coverage, and supported languages. Last, we present future research directions including formal semantics, verified compilers, and automated verification.},
+  archiveprefix = {arXiv},
+  eprint        = {1809.09805},
+  eprinttype    = {arxiv},
+  file          = {/home/chris/data/syncthing/infosec/astris/zotero/storage/LDE8IBPP/Harz and Knottenbelt - 2018 - Towards Safer Smart Contracts A Survey of Languag.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/HV3PP2IT/1809.html},
+  journal       = {arXiv:1809.09805 [cs]},
+  keywords      = {Computer Science - Cryptography and Security},
+  primaryclass  = {cs},
+}
+
+@inproceedings{langerFrameworkSecurityRequirements2009,
+  title     = {Towards a {{Framework}} on the {{Security Requirements}} for {{Electronic Voting Protocols}}},
+  booktitle = {2009 {{First International Workshop}} on {{Requirements Engineering}} for E-{{Voting Systems}}},
+  author    = {Langer, Lucie and Schmidt, Axel and Buchmann, Johannes and Volkamer, Melanie and Stolfik, Alexander},
+  year      = {2009},
+  month     = aug,
+  publisher = {{IEEE}},
+  address   = {{Atlanta, GA, USA}},
+  doi       = {10.1109/RE-VOTE.2009.9},
+  abstract  = {Electronic voting schemes are expected to meet the basic security requirements for electronic voting. However, very different opinions about these requirements exist in the e-voting community. This is due to the fact that the security requirements comprise different levels at which they can be met. For example, universal verifiability may, or may not, include verifying eligibility of the voters who participated in the election.},
+  isbn      = {978-1-4244-7698-5},
+  language  = {en},
+}
+
+@techreport{gajekTrustlessCensorshipResilientScalable2019,
+  title    = {Trustless, {{Censorship}}-{{Resilient}} and {{Scalable Votings}} in the {{Permission}}-Based {{Blockchain Model}}},
+  author   = {Gajek, Sebastian and Lewandowsky, Marco},
+  year     = {2019},
+  abstract = {Voting systems are the tool of choice when it comes to settle an agreement of different opinions. We propose a solution for a trustless, censorship-resilient and scalable electronic voting platform. By leveraging the blockchain together with the functional encryption paradigm, we fully decentralize the system and reduce the risks that a voting provider, like a corrupt government, does censor or manipulate the outcome.},
+  file     = {/home/chris/data/syncthing/infosec/astris/zotero/storage/XAY7KG5W/Gajek and Lewandowsky - 2019 - Trustless, Censorship-Resilient and Scalable Votin.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/GVSEJDNX/617.html},
+  keywords = {applications,blockchain,DAO,functional encryption,Hyperledger,voting},
+  number   = {617},
+}
+
+@misc{UnstoppableDomainsDocumentation,
+  title        = {Unstoppable {{Domains}} - {{Documentation}}},
+  file         = {/home/chris/data/syncthing/infosec/astris/zotero/storage/SG7CCU56/docs.unstoppabledomains.com.html},
+  howpublished = {https://docs.unstoppabledomains.com/},
+}
+
+@inproceedings{karayumakUserStudyImproved2011,
+  title     = {User Study of the Improved {{Helios}} Voting System Interfaces},
+  booktitle = {2011 1st {{Workshop}} on {{Socio}}-{{Technical Aspects}} in {{Security}} and {{Trust}} ({{STAST}})},
+  author    = {Karayumak, F. and Kauer, M. and Olembo, M. M. and Volk, T. and Volkamer, M.},
+  year      = {2011},
+  month     = sep,
+  issn      = {2325-1697},
+  doi       = {10.1109/STAST.2011.6059254},
+  abstract  = {There is increasing interest in cryptographic verifiability in remote electronic voting schemes. Helios is one example of an open-source implementation. In previous work, we proposed an improved version of the original Helios interface in version 3.1 for vote casting and individual verifiability. We now test this interface in a mock mayoral election set up with 34 users. Users are given instructions and fill out questionnaires before and after the vote casting process. Data on mouse movements and time is collected and a modified helmet with eye tracking lenses is used to capture eye movement data. The study shows that the interface is easy to use while people have difficulty understanding the motivation for and the concept of verifiability.},
+  file      = {/home/chris/data/syncthing/infosec/astris/zotero/storage/G8T6496Q/Karayumak et al. - 2011 - User study of the improved Helios voting system in.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/GSJU7PNX/6059254.html},
+  keywords  = {Casting,cryptographic verifiability,cryptography,Cryptography,Electronic voting,eye movement data,government data processing,Helios voting system interfaces,Internet,mock mayoral election,mouse movements,Nominations and elections,open source implementation,program verification,public domain software,remote electronic voting schemes,Usability,user interfaces,vote casting process},
+}
+
+@inproceedings{luoVerifiableDecryptionFully2018,
+  title     = {Verifiable {{Decryption}} for {{Fully Homomorphic Encryption}}},
+  booktitle = {Information {{Security}}},
+  author    = {Luo, Fucai and Wang, Kunpeng},
+  editor    = {Chen, Liqun and Manulis, Mark and Schneider, Steve},
+  year      = {2018},
+  publisher = {{Springer International Publishing}},
+  address   = {{Cham}},
+  doi       = {10.1007/978-3-319-99136-8_19},
+  abstract  = {Verifiable decryption allows one to prove the correct decryption of encrypted data. When the encrypted data is derived from homomorphic evaluations in the context of fully homomorphic encryption (FHE), verifiable decryption will be very useful in cloud computing or cryptographic protocols, e.g., secure medical computation, cryptographically verifiable election, etc. In this paper, we consider the problem of proving the correct decryption of an FHE ciphertext. Namely, we are interested in zero-knowledge proofs of knowledge of triples ({$\mathsl{m}$},{$\mathbf{s}$},{$\mathbf{c}$})(m,s,c)(m, \textbackslash mathbf \{s\}, \textbackslash mathbf \{c\}) such that the message m is the correct decryption of a ciphertext {$\mathbf{c}$}c\textbackslash mathbf \{c\} for a secret key {$\mathbf{s}$}s\textbackslash mathbf \{s\}. While analogous statements admit efficient zero-knowledge proof protocols in the discrete logarithm setting, they have never been addressed in FHE so far. We provide such verifiable decryption for Brakerski-Gentry-Vaikuntanathan (BGV) scheme, since this scheme was recognized as one of the most efficient leveled FHE schemes. Our solution is nearly ``one shot'', in the sense that a single instance of the proof already has negligible soundness error, yielding compact proofs even for individual ciphertexts. Furthermore, to illustrate the applicability of verifiable decryption, we also give two example instantiations.},
+  file      = {/home/chris/data/syncthing/infosec/astris/zotero/storage/QRUSMR7V/Luo and Wang - 2018 - Verifiable Decryption for Fully Homomorphic Encryp.pdf},
+  isbn      = {978-3-319-99136-8},
+  keywords  = {Cryptographically verifiable election,FHE,Secure medical computation,Verifiable decryption,Zero-knowledge proofs},
+  language  = {en},
+  series    = {Lecture {{Notes}} in {{Computer Science}}},
+}
+
+@article{xiaVersatilePretVoter2010,
+  title      = {Versatile {{Pr\^et}} \`a {{Voter}}: {{Handling}} Multiple Election Methods with a Unified Interface},
+  shorttitle = {Versatile {{Pr\^et}} \`a {{Voter}}},
+  author     = {Xia, Zhe and Culnane, Chris and Heather, James and Jonker, Hugo and Ryan, Peter Y. A. and Schneider, Steve and Srinivasan, Sriramkrishnan},
+  year       = {2010},
+  abstract   = {Abstract. A number of end-to-end verifiable voting schemes have been introduced recently. These schemes aim to allow voters to verify that their votes have contributed in the way they intended to the tally and in addition allow anyone to verify that the tally has been generated correctly. These goals must be achieved while maintaining voter privacy and providing receipt-freeness. However, most of these end-to-end voting schemes are only designed to handle a single election method and the voter interface varies greatly between different schemes. In this paper, we introduce a scheme which handles many of the popular election methods that are currently used around the world. Our scheme not only ensures privacy, receipt-freeness and end-to-end verifiability, but also keeps the voter interface simple and consistent between various election methods},
+  file       = {/home/chris/data/syncthing/infosec/astris/zotero/storage/UWJ6PFZF/Xia et al. - Versatile Prˆet `a Voter Handling multiple electi.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/4HCEJ5VM/102308530.html},
+  language   = {en-gb},
 }
 
 

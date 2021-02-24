@@ -21,3 +21,6 @@
 
 # the inscape plugin converts to png
 svg-inkscape
+
+# this file is generated from the mermaid doc
+figures/astris-protocol.svg
