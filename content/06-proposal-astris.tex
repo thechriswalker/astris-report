@@ -27,7 +27,7 @@
 
     The protocol bears a distinct resemblance to the Helios v4 protocol. This is because Helios already contained a good amount of the privacy goals and the encryption protocols are far simpler than alternatives, whilst still being extensible into multi-party setups for shared-nothing initialization.
 
-    We begin with the trustees mutually defining the parameters for the election, candidates, time periods, etc. The trustees also each generate their part of the multi-party key setup based on \cite{petersen_distributed_1992}.
+    We begin with the trustees mutually defining the parameters for the election, candidates, time periods, etc. The trustees also each generate their part of the multi-party key setup based on \cite{petersenDistributedProversVerfiable1992}.
 
     This means no entity has the private key and dependent on the setup $K$ of $N$ (where $K <= N$) trustees are required for decryption. $K = N$ gives at least one honest trustee keeps the whole thing honest, but one lost key ruins the entire election. The appropriate trade-off between security and robustness must be made on a case by case basis.
 

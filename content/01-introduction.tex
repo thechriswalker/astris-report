@@ -4,9 +4,26 @@
 \section{Motivation}
 \label{ch:intro:motiv}
 
-The author is a software engineer and very interested in the role of trust in systems. This report is the culmination of my exploration of that space combined with the unique and interesting properties required from e-voting systems.
+The author is a software engineer and very interested in both cryptography and the role of trust in software systems. Trust in the democratic process and hence election systems is also of great importance, as evidenced by the amount of contestation around the results of the 2020 US presidential elections. There has been a large amount of prior research into voting systems (e.g. \cite{
+    panjaSecureEndtoendVerifiable2018,
+    mccorrySmartContractBoardroom2017,
+    liuEvotingProtocolBased2017,
+    yangBlockchainVotingPublicly2020,
+    spadaforaCoercionResistantBlockchainBasedEVoting2020,
+    dimtiriouEfficientCoercionfreeUniversally2019,
+    tsoukalasHeliosZeus2013,
+    xiaVersatilePretVoter2010,
+    ryanPrEtVoterVoterVerifiable2010,
+    yuPlatformindependentSecureBlockchainBased2018,
+    seifelnasrScalableOpenVoteNetwork2020,
+    gajekTrustlessCensorshipResilientScalable2019,
+    chillottiHomomorphicLWEBased}) and properties of voting systems yet no large scale elections are run using electronic systems. Could a lack of trust in the technology be the reason for the low adoption? Or are there more fundamental technical or societal reasons that these systems are not in place. It seems that a voting system with \emph{universal verifiability} (see \autoref{ch:req:sec}) would make any contestation to the outcome provably false.
 
-\todo{Is this what I should have in the motivation section? It seems a bit flimsy}
+The trust aspect seems especially relevant. How many entities must we trust? How many must be honest before the system falls down? What are the probabilities of an adversary being able to manipulate the voters, the votes or the tally? Although the average voter may not ask themselves these exact questions, they will likely make an intuition based judgement on how much they trust the voting process. Whether this lack of trust in the system will lead them to protest, abstain, or simply accept and continue is another question and not discussed here. However, the author would speculate that for an electronic voting system to be acceptable for an electorate its trustworthiness must be sufficiently high and reducing trust requirements increases that.
+
+Therefore, this report was an opportunity to investigate the trust requirements in various electronic voting systems and how those requirements might be minimized.
+
+%\todo{Is this what I should have in the motivation section? It seems a bit flimsy}
 
 \section{Objectives}
 \label{ch:intro:object}
@@ -26,15 +43,24 @@ This report aims to:
 \section{Structure of the Report and Methodology}
 \label{ch:intro:method}
 
-The is structured as shown in the following diagram:
+The compilation of this report was done in a number of stages. The first was a literature review to ascertain the status quo. As mentioned, there is a lot of work published regarding voting systems and the first step was to find relevant material to get a picture of the current state of the art. The literature review also surfaced the common vocabulary for discussing the security properties of voting and e-voting systems and highlighted the common threads in the different technologies used.
 
-\todo{
-    Structure could probably do with a graphic, I like the tree (DAG) diagram
-}
+The second stage was to take all the data from the literature and evaluate the different systems with respect to the security properties and also with respect to the trust requirements they imposed on their users. In this stage Helios was chosen as for deeper analysis in the most part due to its maturity, real-world use and open source codebase. This stage led to an understanding of the core of electronic votings systems and how the security properties relate to trust and how the technologies involved despite being wildly different all operate towards similar goals.
 
-In order to compile this report\dots
+The third stage was to build a picture for how a system with minimal trust requirements might be constructed. This stage introduced the cryptographic primitives that would be useful and the exploration blockchain technology as a tool for operating with transparency to reduce trust requirements. Once the system had shape, a software implementation of the system was created to demonstrate its feasibility. The process of creating a software implementation in turn provided feedback into the design and the final proposal and implementation where created concurrently.
 
-\todo{ what did I do, literature search, find protocols, security properties and then design a system with the best of each? Oh and build all the stuff in software}
+The fourth stage was to analyse the success of the protocol, given the aims of providing desired security properties whilst minimizing trust requirements in a practical solution that could scale up to state-level elections. The conclusion then covers the main objectives of the report in light of the analysis, proposal, and success of implementation.
+
+The report is intended to be read in order, and as such introduces concepts as needed. It covers the principles behind the voting systems, moves on to the technologies, introduces \gls{dlt} and finally moves on to the proposal of a voting system.
+
+\begin{itemize}
+    \item \textbf{Introduction:} This section (\autoref{ch:intro}) introduces the concepts, methodology and motivation for the report.
+    \item \textbf{Voting Systems:} The systems, their security properties and the further analysis of the Helios protocol are covered by \autoref{ch:req}, \autoref{ch:ev} and \autoref{ch:helios}.
+    \item \textbf{Distributed Ledger Technology:} Blockchain technology and its applications in voting systems is covered by \autoref{ch:blockchain}.
+    \item \textbf{Proposal:} A proposal for a voting system, its implementation and the anaylsis are covered by \autoref{ch:astris}, \autoref{ch:sw} and \autoref{ch:analysis}.
+    \item \textbf{Conclusion:} The concise summary of findings is performed in \autoref{ch:conclusion}.
+\end{itemize}
+
 
 
 

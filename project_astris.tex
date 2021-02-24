@@ -10,6 +10,10 @@
 \usepackage{xcolor}
 \usepackage{babel}
 \usepackage[autostyle]{csquotes}
+\usepackage[nottoc]{tocbibind}
+\usepackage[math]{cellspace}
+\cellspacetoplimit 0.6em
+\cellspacebottomlimit 0.6em
 
 \svgsetup{inkscapeformat=png}
 
@@ -29,6 +33,11 @@
 
 \newcommand{\needcite}[1]{{\color{magenta} \textbf{\{NeedCite }#1\textbf{\}} }}
 
+\renewcommand{\lstlistoflistings}{\begingroup
+\tocfile{\lstlistingname}{lol}
+\endgroup}
+
+
 \include{glossary}
 
 \begin{document}
@@ -37,8 +46,6 @@
 \include{content/00-cover}
 
 \frontmatter
-
-\include{content/00-abstract}
 
 % \include{content/00-acknowledgments}
 
@@ -49,6 +56,11 @@
 \listoftables
 
 \printglossary[type=\acronymtype,title=List of Abbreviations,nonumberlist]
+\addcontentsline{toc}{chapter}{List of Abbreviations}
+
+
+\include{content/00-abstract}
+
 
 % This is the start of the project "for-real"
 \mainmatter
@@ -72,6 +84,6 @@
 \include{content/09-conclusion}
 
 \bibliographystyle{lib/ieeetran}
-\bibliography{library}
+\bibliography{library}{References}
 
 \end{document}
