@@ -71,7 +71,7 @@ The Astris protocol is split into distinct stages. There is a setup stage where 
 
 One section of the election parameters governs the timing of the phases, which will be used throughout the rest of the protocol.
 
-The second stage is the parameter confirmation stage which is a timed stage. During this all the external parties --- the registrar and each of the trustees --- sign an acknowledgement that they agree with the data in the genesis block. Each signed payload is added to the chain. All confirmations but be added within the time bounds or the protocol is deemed failed and must be restarted. We note that at this stage we require \emph{all} parties to confirm, and the protocol can collapse due to a single failure. However, we have not involved the public yet, except early auditors, and so there is little problem in restarting the process, generating a new election ID.
+The second stage is the parameter confirmation stage which is a timed stage. During this all the external parties --- the registrar and each of the trustees --- sign an acknowledgement that they agree with the data in the genesis block. Any further stages of the distributed key setup will happen here, so this may be a multi-step phase. Each signed payload is added to the chain. All confirmations but be added within the time bounds or the protocol is deemed failed and must be restarted. We note that at this stage we require \emph{all} parties to confirm, and the protocol can collapse due to a single failure. However, we have not involved the public yet, except early auditors, and so there is little problem in restarting the process, generating a new election ID.
 
 After the parameter confirmation, we have the voter registration phase which is also a timed phase. During this phase, the voters must authenticate with the registrar and have the registrar sign their public key and voter id. The voter may then add this block to the chain, to show that their vote may be allowed and that it will be signed with their secret key. If eligible voters do not register to vote during this period, they may not cast a vote in the later vote casting stage.
 
@@ -81,7 +81,6 @@ The last stage is the tally decryption stage, also timed. This poses the most th
 
 This process is visualized in \autoref{fig:astris-sequence}.
 
-
 \begin{figure}[H]
     \centering
     \includesvg[width=\columnwidth]{figures/astris-protocol}
@@ -89,7 +88,7 @@ This process is visualized in \autoref{fig:astris-sequence}.
     \label{fig:astris-sequence}
 \end{figure}
 
-\section{Protocol Detail}
+\section{Protocol Detail - V1}
 \label{ch:astris:detail}
 
 \todo{This is the fine detail - I will likely write up this bit once the software is finished in case of feedback\dots}

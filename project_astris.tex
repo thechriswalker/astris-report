@@ -31,12 +31,25 @@
 \setlength{\parindent}{1em}
 \setlength{\parskip}{0.5em}
 
+% for vertical table headers
+\newcommand*\rot{\rotatebox{90}}
+% for the checks on the table
+\newcommand*\YES{y}
+\newcommand*\NO{n}
+
+
+% block todo
 \newcommand{\todo}[1]{
   {
     \color{magenta}
     \setlength\parindent{0pt}
     \hspace{-5em} \textbf{@TODO} #1
   }
+}
+
+% inline todo
+\newcommand{\itodo}[1]{%
+  {\color{magenta}\textbf{@TODO} #1}%
 }
 
 \newcommand{\needcite}[1]{%

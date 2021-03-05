@@ -13,18 +13,23 @@ sequenceDiagram
 
     A->>A: Initial Election Parameters
     A->>+T: Send Params
-    T-->>-A: Send VerifyKey,<br />PublicKeyShard and ZKP
+    T-->>-A: Send Keys and ZKPs<br/>as required for setup
     A->>+R: Send Params
-    R-->>-A: Send VoterList, VerifyKey,<br />ZKP, RegURL
+    R-->>-A: Send VoterList, RegURL, Keys and ZKP<br />as required for setup
 
     A-->>+BC: Create Genesis Block
     BC-->+AD: Auditor Watches Chain
-    Note over BC, V: Parameter Confirmation Phase
 
-    BC->>+T: Check Genesis Block
-    T-->>-BC: Confirm with Signature
-    BC->>+R: Check Genesis Block
-    R-->>-BC: Confirm with Signature
+    Note over BC, V: Parameter Confirmation Phases
+
+    loop Each Phase
+
+    BC->>+T: Check BlockChain for data
+    T-->>-BC: Confirm with Signature and next Phase data
+    BC->>+R: Check BlockChain for data
+    R-->>-BC: Confirm with Signature and next Phase data
+
+    end
 
     Note over BC,V: Voter Registration Phase
 

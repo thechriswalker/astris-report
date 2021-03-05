@@ -2,26 +2,121 @@
 \chapter{E-Voting}
 \label{ch:ev}
 
-\todo{
-    I this think chapter deserves a short intro on remote voting
-}
+Electronic Voting by definition covers any electronically assisted form of voting. This could be electronically counted paper votes, or electronic voting machines at a voting booth. However, we will be considering another option, of fully electronic voting where the systems are accessible over the Internet --- similar to the general usage of the term \emph{email}.
 
 \section{Specific Requirements for E-Voting}
 \label{ch:ev:specific}
 
-\todo{
-    Why e-voting is different.
+The main difference between in-person voting and remote voting from the point of view of security is the lack of a secure voting booth. Such a booth is often listed as a requirement of in-person voting systems, as an assumption to allow enforcement of the eligibility and secrecy properties. That is a secure voting booth is one where the voter is authenticated on the way in and then their privacy whilst inside casting their vote is guaranteed. While a remote voting system does not preclude the use of such a booth, such a system loses a lot of it's perceived benefits by mandating the use of one. Indeed, it may not be immediately obvious why such a system would have any benefits over a traditional in-person election.
 
-    It is remote by definition, although voting booths are not precluded, can we trust the computer system at the booth? (can we trust our own device - programming satan's computer and all that...)
+It could be argued that a seemingly obvious benefit --- that people can vote without having to travel to a secure booth --- is not really a benefit at all as we lose the security properties guaranteed by such a booth and the trade off of convenience over security is not worth it. On the other hand remote voting does indeed have some beneficial implications. It would lower the cost of an election as there would be no need to hire a secure location or the people to run it. There would be no need for transportation of the ballots for tallying, and no manual tallying process --- both lowering costs and reducing the likelihood of human error in the tallying. Furthermore, the convenience of not having to travel to a booth is also an enabler for those who would otherwise be unable to make to a booth, potentially increasing the election turnout.
 
-    Remote voting makes a difference. No coercion-resistence is possible as a coercer can stand over you with a gun to your head throughout the entire process and the authorities will not know the difference.
+These benefits need to be weighed against the potential security downsides. It is worth noting that there is one insurmountable problem with remote voting which is that there is no possibility to satisfy the coercion-resistance property without a secure booth. That is, no matter how secure the voting scheme is from a technical point of view, allowing voting from an arbitrary location via the Internet means that a coercer could stand over the voter during the casting process, a situation which technically indistinguishable from the voter voting alone. This alone may make remote voting unsuitable for large scale national elections.
 
-    As coercion resistance is not possible, what other properties become more relevant\dots
+Due to these trade-offs we consider how some security properties mentioned in \autoref{ch:req:sec} that take on more or less importance in a remote system and some new security properties that can enhance a remote voting system.
 
-}
+The \textbf{Secrecy} property in a remote voting system becomes more important as now the cast ballot must be sent over a public channel from the voter to the trustees counting the votes. In some respects this is the similar to a paper ballot where, despite the ballot being placed in the ballot box by the voter, the ballot itself must not reveal the voter's identity or the trustees could match votes to voters. However, given that the vote is created by the voter remotely, there is also the transmission of the vote from the voter to the trustees --- analogous to putting a paper vote into a ballot box --- which is now performed over the public Internet, rather than within a secure voting booth.
+
+The \textbf{Robustness} property in a remote voting system becomes more important as by definition the system will have computer systems at various boundaries which by necessity will be accessible over the public Internet. \Gls{dos} attacks against parts of the system will become a valid threat against the system continuing to function correctly. The more entities are in play in the system --- e.g. the Authority, Registrar, Trustees, Voter, Bulletin Board --- the more opportunity for an adversary to disrupt the communication channels between them. This works both ways as with fewer single entities responsible for each function in the system, the more work an adversary will have to disrupt \emph{all} of them. Therefore, remote voting systems must consider single points of failure and the public accessible nature of the system very carefully.
+
+The \textbf{Eligibility} property is vital in all voting systems. Great care must be taken in remote voting systems to ensure eligibility, as we must authenticate the voters remotely and the protocol used must be secure. A failure in the authentication protocol would undermine the entire system. \itodo{I need more in this paragraph.}
+
+The \textbf{Receipt-Freeness} property is primarily a factor adding to \emph{coercion-resistance} and a protection against vote-buying. With the fact that coercion-resistance is impossible for remote voting systems, it might be tempting to write-off receipt-freeness as unimportant. However, we can still counter all forms of vote-buying and coercion that do not involve physical presence --- which is expensive and logistically difficult on a large scale --- by ensuring receipt-freeness. If there was no receipt-freeness then a voter could use that receipt to prove to a coercer or vote-buyer the way they voted, or make such a proof public. With receipt-freeness this is not possible and without proof, it is unlikely that a coercer or vote-buyer would be willing to believe the voter. Due to this I believe that receipt-freeness is just as important in a remote system as in an in-person system.
+
+\textbf{Real-Time Universal Verifiability} is the property of a system that allows the property of universal verifiability to be conducted in real-time during the election. That is the bulletin board can be monitored in real-time and modifications observed. This would allow an external Auditor to be sure that the data on the bulletin board are not changed in a way that the voting system disallows, and such illegal modifications could be proven to have been made. This property enhances the universal verifiability property with time constraints. No party would be able to, with sufficient ability to break any cryptographic protocols, rewrite the bulletin board data to meet their goals while still validating under the rules of the voting system. They could only attack the system during the election itself, with all data making it onto the bulletin board.
+
+\textbf{Eternal Secrecy} is a property that states that the connection between the voters identity and the vote they cast should never be able to be revealed. This means that any data released on the bulletin board, or during the voting process, should never reveal the link between the voter and their vote even if all the cryptographic protocols used are broken. This means, for example, that a voting system relying on a cryptosystem that can be broken with a quantum computing algorithm while secure today, would not be secure in a future where such quantum computers exist. In that future, all the protections from the cryptosystem will be void. We need to ensure that the link between voter and vote is not compromised even then. Note that such a break before or during an election would break the \emph{fairness} property, as the broken cryptosystem would reveal the state of the election before all votes were cast. So we will assume that this property is concerned with the future, after the end of the election.
+
 
 \section{Existing Systems and Weaknesses}
 \label{ch:ev:existing}
+
+There are many practical and theoretical remote voting systems, here we will look at some that use a variety of technologies and techniques to achieve their goals and investigate the security properties they have. See \autoref{table:voting-system-props} for a table of comparison of the various systems and the properties they achieve.
+
+\todo{should I subsection these or exclude from the ToC?}
+
+\todo{more to the point, should I make a section of each property and discuss the systems or the section per system and discuss the properties...?}
+
+\subsection{Helios}
+
+Helios Voting \cite{HeliosVotingFAQ} is discussed in more detail in \autoref{ch:helios}. So here we will cover the security properties like the other systems. Helios provides \itodo{...}
+
+\subsection{Belenios}
+
+Belenios was heavy influenced by Helios, and the original implementation was indeed a fork of the Helios source code adding a distributed key setup for the trustees \cite{cortierBeleniosSimplePrivate2019}. It was subsequently re-implemented from scratch, but the protocol shows many similarities.
+
+A variant, BeleniosRF, enhances the protocol to provide receipt-freeness by use of a re-randomization step. The votes are encrypted and signed using the ElGamal cryptosystem, and a random number is required for each encryption. The knowledge of that number can prove your vote and so provide a receipt. The randomness is generated by the client, and so could be kept to provide that receipt to the voter. In BeleniosRF the encrypted vote and signature can be re-randomized at the voting server and a new valid signature created without the signing key. The voting server does not know the original vote as it is encrypted and the final cast vote is encrypted with randomness that the voter does not know, hence the protocol is reciept-free.
+
+A second variant, BeleniosVS goes further and provides a mechanism by which the vote does not even need to trust their own client. This is achieved by the vote being provided with a voting sheet ahead of time with the encrypted and signed votes already prepared. This sheet would also contain the randomness used for each encryption, so the voter can verify the encrypted values are correct. Combined with the BeleniosRF system for re-randomization, the vote is receipt-free and the user does not have to trust their own device. This system seems like it would be an excellent fit for an election with a secure voting booth. The booth provides the guaranteed isolation and the use of pre-prepared encryptions of votes means the voter need not trust the devices used for the voting.
+
+\subsection{Estonian i-Voting}
+
+\needcite{estonia ivoting}
+
+Estonia has embraced remote voting and is the only example of full state level parliamentary elections being run with an electronic remote voting option.
+
+\todo{
+    The i-Voting system is documented, it relies on eligibility via the smart cards and the estonian national PKI. These cards are used for all governmental actions, except marriage, divorce and real-estate
+
+    The system uses asymetic encryption with the smart card and uses a 2-level encryption and mix-net. The vote is encrypted with the public key for the election (provided as part of the PKI) and the encrypted vote is signed with the key of the user. The vote server recieves the user's vote and check the signature, unpacks the vote and then submits it into the wider system.
+
+    questions: secrecy? probably, but in the system the voter->vote may still be accessible. maybe the vote server holds the votes until time to release (catching double votes - the system is last vote wins).
+
+    All the data is in the paper...
+}
+
+\subsection{Bitcoin voting proposal - Zhao}
+
+\cite{zhaoHowVotePrivately2016}
+
+\subsection{ZCash voting proposal - Tarasov}
+
+\cite{tarasovInternetVotingUsing2017}
+
+\subsection{Ethereum voting proposal - Seiflelnasr}
+
+\cite{seifelnasrScalableOpenVoteNetwork2020}
+
+\todo{Can't remember the detail, probably lots of smart contracts}
+
+\subsection{LWE Based proposal - Chillotti}
+
+\cite{chillottiHomomorphicLWEBased}
+
+\todo{Post-Quantum, but otherwise, the voting is basically the same model as any homomorphic encryption based system}
+
+\subsection{Vote-SAVER - Lee}
+
+\cite{leeSAVERSNARKfriendlyAdditivelyhomomorphic2019}
+
+\todo{This is interesting. based on a zkSNARK and smart contracts}
+
+\subsection{Generic Cryptocurrency Based Voting - Yu}
+
+\cite{yuPlatformindependentSecureBlockchainBased2018}
+
+\todo{Is this the one with the Linkable Ring Signatures or the pre-populated crypto cards?}
+
+\subsection{Trustless - Gajek}
+
+\cite{gajekTrustlessCensorshipResilientScalable2019}
+
+\todo{Maybe this is the linkable ring signatures}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{c c c c c c c c c c c c c}
+        \hline
+        System          & \rot{Correctness} & \rot{Secrecy} & \rot{Eligibility} & \rot{Fairness} & \rot{Robustness} & \rot{Receipt Freeness} & \rot{Coercion Resistance} & \rot{Individual Verifiability} & \rot{Universal Verifiability} & \rot{Auditability} & \rot{Real-time Universal Verifiability } & \rot{Eternal Secrecy} \\
+
+        \hline\hline
+
+        \textbf{Helios} & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES                                                                                  \\
+        \hline
+    \end{tabular}
+    \caption{Table of Voting Systems and their Security Properties}
+    \label{table:voting-system-props}
+\end{table}
 
 \todo{
     Import data from the google doc.
