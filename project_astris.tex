@@ -1,19 +1,20 @@
 \documentclass[oneside]{scrbook}
 \usepackage{graphicx}
+\usepackage[dvipsnames]{xcolor}
 \usepackage{svg}
 \usepackage{url}
 \usepackage{float}
 \usepackage{verbatim}
 \usepackage[symbol]{footmisc}
 \usepackage{listings}
-\usepackage[acronym, nomain]{glossaries}
+\usepackage[acronym, nomain, nogroupskip]{glossaries}
 \usepackage[onehalfspacing]{setspace}
 \usepackage[top=2.7cm, left=2.7cm, bottom=2.7cm, right=2.6cm]{geometry}
-\usepackage{xcolor}
 \usepackage[english]{babel}
 \usepackage[autostyle]{csquotes}
 \usepackage[nottoc]{tocbibind}
 \usepackage[math]{cellspace}
+\usepackage{tocloft}
 \usepackage{hyperref}
 
 \addto{\captionsenglish}{%
@@ -41,7 +42,7 @@
 % block todo
 \newcommand{\todo}[1]{
   {
-    \color{magenta}
+    \color{OrangeRed}
     \setlength\parindent{0pt}
     \hspace{-5em} \textbf{@TODO} #1
   }
@@ -49,11 +50,20 @@
 
 % inline todo
 \newcommand{\itodo}[1]{%
-  {\color{magenta}\textbf{@TODO} #1}%
+  {\color{OrangeRed}\textbf{@TODO} #1}%
 }
 
+\newcommand{\KM}[1]{
+  {
+    \color{MidnightBlue}
+    \setlength\parindent{0pt}
+    \hspace{-5em} \textbf{Kostas} #1
+  }
+}
+
+
 \newcommand{\needcite}[1]{%
-  {\color{magenta} \textbf{\{NeedCite }#1\textbf{\}}}%
+  {\color{Magenta} \textbf{\{NeedCite }#1\textbf{\}}}%
 }
 
 \renewcommand{\lstlistoflistings}{\begingroup
@@ -78,9 +88,17 @@
 
 \tableofcontents
 
-\listoffigures
+\clearpage
 
+% Took me ages to find this:  https://ftp.snt.utwente.nl/pub/software/tex/macros/latex/contrib/tocloft/tocloft.pdf
+% page 12 (first instance in doc of `addvspace`)
+%
+% To remove the space inserted between table and figure caption entries between chapters:
+\begingroup
+\renewcommand*{\addvspace}[1]{}
 \listoftables
+\listoffigures
+\endgroup
 
 \printglossary[type=\acronymtype,title=List of Abbreviations,nonumberlist]
 \addcontentsline{toc}{chapter}{List of Abbreviations}

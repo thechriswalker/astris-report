@@ -11,9 +11,9 @@ This forms the basis of cryptocurrencies where the transactions in the currency 
 
 I believe it was this lack of trust requirements that really allowed \gls{dlt} to become popular. The first well known use of a blockchain was in the cryptocurrency Bitcoin which has gone from interesting experiment to a global buzzword. One of the key factors in its success was the lack of central authority. There was no way to regulate trade in the coins and no restrictions on who could send or receive them. This would not have been possible without the trust-less distributed immutable ledger provided by the blockchain backbone of Bitcoin.
 
-Blockchains can also be used without the public consensus rules in what is know as a Permissioned Blockchain. In this case the data are public, but only authorized entities may write to it. The key feature here is that the public data are tamper-evident. Such systems can be used as public audit logs with a high trust from the public as entries cannot be retroactively altered.
+Blockchains can also be used without the public consensus rules in what is known as a Permissioned Blockchain. In this case the data are public, but only authorized entities may write to it. The key feature here is that the public data are tamper-evident. Such systems can be used as public audit logs with a high trust from the public as entries cannot be retroactively altered.
 
-Whilst cryptocurrencies were the first major application of blockchain technology there are other problems that can benefit from the decentralized nature and immutability. The two properties together imply a form of censorship resistance that centralized systems can never have --- that is, there is no authority that can intercede to perform the censorship, every node in the network has equal rites. Two examples where this is a desirable property are  the attempts to create decentralized alternatives to the most common \gls{dns} used on the Internet \cite{Namecoin,ENSEthereumName,UnstoppableDomainsDocumentation} and the central \gls{pki} root(s) of trust used in many Operating Systems for certificate validation in \gls{tls} \cite{yakubovBlockchainbasedPKIManagement2018,kubilayCertLedgerNewPKI2019,matsumotoIKPTurningPKI2016}.
+Whilst cryptocurrencies were the first major application of blockchain technology there are other problems \needcite{KM suggests refs} that can benefit from the decentralized nature and immutability. The two properties together imply a form of censorship resistance that centralized systems can never have --- that is, there is no authority that can intercede to perform the censorship, every node in the network has equal rites. Two examples where this is a desirable property are  the attempts to create decentralized alternatives to the most common \gls{dns} used on the Internet \cite{Namecoin,ENSEthereumName,UnstoppableDomainsDocumentation} and the central \gls{pki} root(s) of trust used in many Operating Systems for certificate validation in \gls{tls} \cite{yakubovBlockchainbasedPKIManagement2018,kubilayCertLedgerNewPKI2019,matsumotoIKPTurningPKI2016}.
 
 Blockchains have a major disadvantage to centralized ledgers in that the speed of transactions is often prohibitively slow for many applications. Using the Ethereum blockchain network as an example, at the time of writing the largest transaction volume in a single day was 1,406,016 on Thursday, September 17 2020 \footnote{Ethereum transaction rate data from \url{https://etherscan.io}} which equates to ~16.2 transactions per second compared to the Visa payment network which claims greater than 56,000 messages per second \footnote{Visa transaction rates as advertised at \url{https://visanet.co.uk}}.
 
@@ -60,6 +60,8 @@ We see in \autoref{fig:basic-blockchain} the data we want to ensure are immutabl
 There is a single exception for the first block in the chain --- known as a \emph{genesis} block --- which by definition cannot have a previous block to reference. Most blockchain implementations prefer to keep the genesis block as similar to any other block as possible and simply use a zero value for the previous block hash.
 
 \todo{ Perhaps there is more that could go in this section. It feels short, but I have covered the main points.}
+
+\KM{feels ok although it looks brief. Maybe "what can go wrong"}
 
 \subsection{Consensus}
 \label{ch:blockchain:structure:consensus}
@@ -137,9 +139,11 @@ These transactions give a blockchain value, either by simply allowing it to func
 \section{Trust in DLT and their use in e-Voting}
 \label{ch:blockchain:trust}
 
+\KM{could benefit from more extensive coverage of other solutions using DLT and evoting}
+
 Trust is important in decentralized systems. With no authority to control access to the system, it is important to understand that nodes must be able to operate \emph{without} trusting each other. All nodes in the system are considered untrusted, but the consensus algorithm will ensure that the rules are followed. This does mean that all honest nodes need to be adhering to the same rules, but the dishonest parties cannot break them or the honest nodes will notice and ignore them.
 
-This does not mean that a blockchain network is implicitly secure in the presence of adversarial nodes. There are known attacks on blockchain networks and their consensus mechanisms. For example any peer to peer network is susceptible to an eclipse attack \cite{heilmanEclipseAttacksBitcoin2015} in which the adversary gains control over which peers a node is able to connect to. As the targetted node can only connect to adversarial nodes, who can all lie about the state of the network, they can keep the target behind the main chain or trick it into accepting a shorter chain of their own devising. Similarly, a Sybil attack \cite{douceurSybilAttack2002} is when the adversary floods the network with adversarial nodes to the point that they wield influence over the network.
+This does not mean that a blockchain network is implicitly secure in the presence of adversarial nodes. There are known attacks \needcite{blockchain attacks} on blockchain networks and their consensus mechanisms. For example any peer to peer network is susceptible to an eclipse attack \cite{heilmanEclipseAttacksBitcoin2015} in which the adversary gains control over which peers a node is able to connect to. As the targetted node can only connect to adversarial nodes, who can all lie about the state of the network, they can keep the target behind the main chain or trick it into accepting a shorter chain of their own devising. Similarly, a Sybil attack \cite{douceurSybilAttack2002} is when the adversary floods the network with adversarial nodes to the point that they wield influence over the network.
 
 The Eclipse and Sybil attacks are generic to any peer-to-peer network. In terms of trust, we as participants in a blockchain network must trust that the network is sufficiently robust against these attacks and that there exists a sufficient number of honest nodes. In a cryptocurrency, the block miners are financially incentivized to behave correctly which amplifies the network effect. The more popular blockchain networks see the most miners and users and therefore become the most trustworthy.
 
@@ -147,3 +151,5 @@ In our use case, an electronic voting system, there are a number of ways we can 
 
 
 How might we encourage good behaviour in a voting system without a reward mechanism system? The simple answer is that we do not need to as our requirements from the chain are quite different from that of a cryptocurrency. The requirements we have are that of a public audit log, very similar to a concept of a permissioned blockchain, where only certain entities can write to the chain.
+
+\KM{maybe more refs on attacks and their significance}

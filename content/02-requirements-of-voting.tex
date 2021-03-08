@@ -5,11 +5,11 @@
 \section{Security Requirements}
 \label{ch:req:sec}
 
-There are a number of desirable properties for a voting system to have, some of which could be considered required for a voting system given the assumption that the system aspires to be fair and honest. There have been many papers outlining the security requirements specific to voting \cite{epsteinElectronicVoting2007,delauneFormalisingSecurityProperties2010,liTaxonomyComparisonRemote2014,hastingsSecurityConsiderationsRemote2011}, and they tend to agree on the majority. First we make some definitions of the primary entities involved:
+There are a number of desirable properties for a voting system to have, some of which could be considered required for a voting system given the assumption that the system aspires to be fair and honest. There have been many papers outlining the security requirements specific to voting and e-voting \cite{epsteinElectronicVoting2007,delauneFormalisingSecurityProperties2010,liTaxonomyComparisonRemote2014,hastingsSecurityConsiderationsRemote2011}, and they tend to agree on the majority. First we make some definitions of the primary entities involved:
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{Sr S{p{0.666\textwidth}}}
+    \begin{tabular}{|Sr S{p{0.666\textwidth}}|}
         \hline
         \textbf{Entity}         & \textbf{Definition}                                                                                                                                                                                                                                                                             \\
         \hline\hline
@@ -52,7 +52,7 @@ The next set of properties are desirable, and indeed should be present in any se
     \item[Robustness] The scheme should be resilient against an adversary attempting to influence the outcome. The influence could be arbitrary, simply attempting to create errors in the process or to create a denial of service stopping the election from happening at all. The influence could be specific, attempting to sway the results in a pre-determined way. The scheme must also be resilient to errors occurring for any other reason; malignant or benign.
     \item[Receipt-Freeness] After casting a vote, the voter should not be able to prove their choices to any entity. This prevents the voter from being able to prove their vote to a 3rd party in a vote buying or selling scheme, or in the case of coercion. This property is similar to \emph{secrecy} but stronger, as not even the voter can prove how they voted.
     \item[Coercion-Resistance] The scheme should prevent an adversary from being able to manipulate a voter into either abstention, or to coerce the voter into voting a certain way. The adversary should not be able to impersonate the user and place a vote on the voter's behalf.
-    \item[Individual Verifiability] Any vote may verify that their vote has be counted in the tally.
+    \item[Individual Verifiability] Any voter may verify that their vote has be counted in the tally.
     \item[Universal Verifiability] Anyone may verify that the final outcome is calculated correctly. The scheme provides enough public evidence to prove the truth of the outcome.
     \item[Auditability] The scheme provides evidence of its behaviour before, during and after an election.
 \end{description}

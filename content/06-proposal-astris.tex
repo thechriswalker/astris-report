@@ -2,6 +2,8 @@
 \chapter{Proposal for an Improved Protocol: Astris}
 \label{ch:astris}
 
+This chapter looks at a proposal for new e-voting protocol. The focus of the new protocol will be minimizing the trust requirements of the user. It will achieve this by distributing single points of trust as far as practical and ensuring real-time universal verifiability.
+
 \begin{quote}
     ``There are only two hard things in Computer Science: cache invalidation and naming things.''
 
@@ -9,7 +11,7 @@
 
 \end{quote}
 
-Fortunately our protocol description does not touch on cache invalidation. However, the protocol bears a distinct resemblance to the Helios v4 protocol. This is due to the fact that many constructs within Helios are perfectly suited to the application in this protocol. There are also significant differences in both the way elections are set up, voters registered and how the public bulletin board is constructed. Therefore, \emph{Astris} --- one of the daughters of Helios in Greek mythology --- seemed a fitting name.
+Fortunately our protocol description does not touch on cache invalidation. However, the protocol bears a distinct resemblance to the Helios v4 protocol. This is due to the fact that many constructs within Helios are perfectly suited to application in this protocol. There are also significant differences in both the way elections are set up, voters registered and how the public bulletin board is constructed. Therefore, \emph{Astris} --- one of the daughters of Helios in Greek mythology --- seemed a fitting name.
 
 \section{Objectives and Non-Objectives}
 \label{ch:astris:aims}
@@ -33,13 +35,25 @@ We must make some assumptions about the environment in which this protocol will 
     \item We assume the existence of a private communication channel that can be established as needed between any to entities in the system.
 \end{itemize}
 
-With this in mind, the aims of the Astris protocol are:
+With this in mind, the aims of the Astris protocol are defined in \autoref{table:astris:aims}
 
-\begin{itemize}
-    \item Create a voting protocol that is correct, secret, fair, robust, receipt-free, individually and universally verifiable, universally auditable and honours eligibility.
-    \item Create a voting protocol with no single points of trust, minimizing trust requirements.
-    \item Create a voting protocol which maximizes auditability and transparency.
-\end{itemize}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|Sr S{p{0.9\textwidth}}|}
+        \hline
+        \textbf{\#} & \textbf{Objective}                                                                                                                                                    \\
+        \hline\hline
+        \textbf{1}  & Create a voting protocol that is correct, secret, fair, robust, receipt-free, individually and universally verifiable, universally auditable and honours eligibility. \\
+        \hline
+        \textbf{2}  & Create a voting protocol with no single points of trust, minimizing trust requirements.                                                                               \\
+        \hline
+        \textbf{3}  & Create a voting protocol which maximizes auditability and transparency.                                                                                               \\
+        \hline
+    \end{tabular}
+    \caption{Table of Objectives for the Astris Protocol}
+    \label{table:astris:aims}
+\end{table}
+
 
 The non-goals of the protocol are:
 
@@ -71,7 +85,7 @@ The Astris protocol is split into distinct stages. There is a setup stage where 
 
 One section of the election parameters governs the timing of the phases, which will be used throughout the rest of the protocol.
 
-The second stage is the parameter confirmation stage which is a timed stage. During this all the external parties --- the registrar and each of the trustees --- sign an acknowledgement that they agree with the data in the genesis block. Any further stages of the distributed key setup will happen here, so this may be a multi-step phase. Each signed payload is added to the chain. All confirmations but be added within the time bounds or the protocol is deemed failed and must be restarted. We note that at this stage we require \emph{all} parties to confirm, and the protocol can collapse due to a single failure. However, we have not involved the public yet, except early auditors, and so there is little problem in restarting the process, generating a new election ID.
+The second stage is the parameter confirmation stage which is a timed stage. During this all the external parties --- the registrar and each of the trustees --- sign an acknowledgement that they agree with the data in the genesis block. Any further stages of the distributed key setup will happen here, so this may be a multi-step phase. Each signed payload is added to the chain. All confirmations must be added within the time bounds or the protocol is deemed failed and must be restarted. We note that at this stage we require \emph{all} parties to confirm, and the protocol can collapse due to a single failure. However, we have not involved the public yet, except early auditors, and so there is little problem in restarting the process, generating a new election ID.
 
 After the parameter confirmation, we have the voter registration phase which is also a timed phase. During this phase, the voters must authenticate with the registrar and have the registrar sign their public key and voter id. The voter may then add this block to the chain, to show that their vote may be allowed and that it will be signed with their secret key. If eligible voters do not register to vote during this period, they may not cast a vote in the later vote casting stage.
 
