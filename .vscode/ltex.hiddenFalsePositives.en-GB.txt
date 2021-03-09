@@ -1,2 +1,4 @@
 {"rule":"COMMA_COMPOUND_SENTENCE","sentence":"^\\QThe amount of functionality these smart contract contain is dependent on the chain and it's rules.\\E$"}
 {"rule":"ENGLISH_WORD_REPEAT_BEGINNING_RULE","sentence":"^\\QCreate a voting protocol which maximizes auditability and transparency.\\E$"}
+{"rule":"THE_NN_AND_THE_NN","sentence":"^\\QProvided the link between the voter and the alias is removed after the tallying, the\\E$"}
+{"rule":"THE_NN_AND_THE_NN","sentence":"^\\QProvided the link between the voter and the alias is removed after the tallying, the eventual breaking of the cryptography would still not reveal the identity of the voter.\\E$"}

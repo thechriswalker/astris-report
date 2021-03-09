@@ -1,4 +1,19 @@
 
+@inproceedings{adidaHeliosWebBasedOpenAudit2008,
+  title = {Helios: {{Web}}-{{Based Open}}-{{Audit Voting}}},
+  shorttitle = {Helios},
+  booktitle = {Proceedings of the 17th Conference on {{Security}} Symposium},
+  author = {Adida, Ben},
+  year = {2008},
+  month = jul,
+  pages = {335--348},
+  publisher = {{USENIX Association}},
+  address = {{USA}},
+  abstract = {Voting with cryptographic auditing, sometimes called open-audit voting, has remained, for the most part, a theoretical endeavor. In spite of dozens of fascinating protocols and recent ground-breaking advances in the field, there exist only a handful of specialized implementations that few people have experienced directly. As a result, the benefits of cryptographically audited elections have remained elusive. We present Helios, the first web-based, open-audit voting system. Helios is publicly accessible today: anyone can create and run an election, and any willing observer can audit the entire process. Helios is ideal for on-line software communities, local clubs, student government, and other environments where trustworthy, secret-ballot elections are required but coercion is not a serious concern. With Helios, we hope to expose many to the power of open-audit elections.},
+  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/4VYY8NT8/Adida - 2008 - Helios Web-Based Open-Audit Voting.pdf},
+  series = {{{SS}}'08}
+}
+
 @techreport{albrechtHomomorphicEncryptionSecurity2018,
   title = {Homomorphic {{Encryption Security Standard}}},
   author = {Albrecht, Martin and Chase, Melissa and Chen, Hao and Ding, Jintai and Goldwasser, Shafi and Gorbunov, Sergey and Halevi, Shai and Hoffstein, Jeffrey and Laine, Kim and Lauter, Kristin and Lokam, Satya and Micciancio, Daniele and Moody, Dustin and Morrison, Travis and Sahai, Amit and Vaikuntanathan, Vinod},
@@ -36,6 +51,23 @@
   abstract = {Hashcash was originally proposed as a mechanism to throttle systematic abuse of un-metered internet resources such as email, and anonymous remailers in May 1997. Five years on, this paper captures in one place the various applications, improvements suggested and related subsequent publications, and describes initial experience from experiments using hashcash.},
   file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/N6PCAG2C/Back - Hashcash - A Denial of Service Counter-Measure.pdf},
   journal = {Tech Report},
+  language = {en}
+}
+
+@incollection{blazySignaturesRandomizableCiphertexts2011,
+  title = {Signatures on {{Randomizable Ciphertexts}}},
+  booktitle = {Public {{Key Cryptography}} \textendash{} {{PKC}} 2011},
+  author = {Blazy, Olivier and Fuchsbauer, Georg and Pointcheval, David and Vergnaud, Damien},
+  editor = {Hutchison, David and Kanade, Takeo and Kittler, Josef and Kleinberg, Jon M. and Mattern, Friedemann and Mitchell, John C. and Naor, Moni and Nierstrasz, Oscar and Pandu Rangan, C. and Steffen, Bernhard and Sudan, Madhu and Terzopoulos, Demetri and Tygar, Doug and Vardi, Moshe Y. and Weikum, Gerhard and Catalano, Dario and Fazio, Nelly and Gennaro, Rosario and Nicolosi, Antonio},
+  year = {2011},
+  volume = {6571},
+  pages = {403--422},
+  publisher = {{Springer Berlin Heidelberg}},
+  address = {{Berlin, Heidelberg}},
+  doi = {10.1007/978-3-642-19379-8_25},
+  abstract = {Randomizable encryption allows anyone to transform a ciphertext into a fresh ciphertext of the same message. Analogously, a randomizable signature can be transformed into a new signature on the same message. We combine randomizable encryption and signatures to a new primitive as follows: given a signature on a ciphertext, anyone, knowing neither the signing key nor the encrypted message, can randomize the ciphertext and adapt the signature to the fresh encryption, thus maintaining public verifiability. Moreover, given the decryption key and a signature on a ciphertext, one can compute (``extract'') a signature on the encrypted plaintext. As adapting a signature to a randomized encryption contradicts the standard notion of unforgeability, we introduce a weaker notion stating that no adversary can, after querying signatures on ciphertexts of its choice, output a signature on an encryption of a new message. This is reasonable since, due to extractability, a signature on an encrypted message can be interpreted as an encrypted signature on the message.},
+  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/TYC7NHC5/Blazy et al. - 2011 - Signatures on Randomizable Ciphertexts.pdf},
+  isbn = {978-3-642-19378-1 978-3-642-19379-8},
   language = {en}
 }
 
@@ -250,6 +282,24 @@
   shorttitle = {Helios-Faq},
   file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/HM2C886T/faq.html},
   howpublished = {https://vote.heliosvoting.org/faq}
+}
+
+@techreport{juelsCoercionResistantElectronicElections2002,
+  title = {Coercion-{{Resistant Electronic Elections}}},
+  author = {Juels, Ari and Catalano, Dario and Jakobsson, Markus},
+  year = {2002},
+  abstract = {We introduce a model for electronic election schemes that involves a more powerful adversary than in previous work. In particular, we allow the adversary to demand of coerced voters that they vote in a particular manner, abstain from voting, or even disclose their secret keys. We define a scheme to be \_coercion-resistant\_ if it is infeasible for the adversary to determine whether a coerced voter complies with the demands. A first contribution of this paper is to describe and characterize a new and strengthened adversary for coercion in elections. (In doing so, we additionally present what we believe to be the first formal security definitions for electronic elections of \_any\_ type.) A second contribution is to demonstrate a protocol that is secure against this adversary. While it is clear that a strengthening of attack models is of theoretical relevance, it is important to note that our results lie close to practicality. This is true both in that we model real-life threats (such as vote-buying and vote-cancelling), and in that our proposed protocol combines a fair degree of efficiency with an unusual lack of structural complexity. Furthermore, while previous schemes have required use of an untappable channel, ours only carries the much more practical requirement of an anonymous channel.},
+  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/85YQBPIH/Juels et al. - 2002 - Coercion-Resistant Electronic Elections.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/MCTX9ZHR/165.html},
+  keywords = {coercion-resistance,electronic voting,mix networks,receipt-free},
+  number = {165}
+}
+
+@article{juvonenFrameworkComparingSecurity,
+  title = {A Framework for Comparing the Security of Voting Schemes},
+  author = {Juvonen, Atte},
+  pages = {135},
+  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/JPJKELRF/Juvonen - A framework for comparing the security of voting s.pdf},
+  language = {en}
 }
 
 @inproceedings{karayumakUserStudyImproved2011,
