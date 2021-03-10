@@ -31,7 +31,7 @@ The \textbf{Receipt-Freeness} property is primarily a factor adding to \emph{coe
 \section{Existing Systems Analysis}
 \label{ch:ev:existing}
 
-There are many practical and theoretical remote voting systems, more than could be covered here. So we look at a selection that use a variety of technologies and techniques to achieve their goals, investigate the security properties they have and discuss the trust implication of their structue. See \autoref{table:voting-system-props} for a table of comparison of the various systems and the properties they achieve.
+There are many practical and theoretical remote voting systems, more than could be covered here. So we look at a selection that use a variety of technologies and techniques to achieve their goals, investigate the security properties they have and discuss the trust implication of their structure. See \autoref{table:voting-system-props} for a table of comparison of the various systems and the properties they achieve. This is not as binary as it may appear, as many of the properties are satisfied with a given assumption of trust. Therefore, the table shows an indication of the level of trust required to achieve the property, if it can be achieved at all.
 
 \subsection{Helios}
 
@@ -39,13 +39,17 @@ Helios Voting is an open-source software implementation of a voting system desig
 
 The current version of the Helios protocol is V3 and this is the version we shall consider. The system is created as a Python program accessible via a web interface using the PostgreSQL database for data storage. The system is shared tenancy, so all users' data are stored in a single, shared database --- except of course that being open-source, anyway is free to run their own private server.
 
-The basic flow of an election is that the creator lists candidates and defines the number of candidates that may be voted for. Additionally, a list of eligible voters may be created or the system may allow anyone to vote. A public/secret keypair is generated for the election and the election can have a number of trustees who each receive a portion of a private key enabling the decryption of votes to be a group operation. Voters cast a vote for each candidate where each is either a 0 or 1 and there are only a predetermined number of 1's allowed. The vote is encrypted with the public key, and the cryptosystem used (Exponential ElGamal) is additively homomorphic. In this way votes may be tallied while still encrypted and the final tally decrypted separately by the group of trustees. This is a simplification for brevity, the full protocol spec is available \cite{HeliosHeliosV3}. Notably it misses out the digital signatures and \glsplural{zkp} used in the protocol.
+The basic flow of an election is that the creator lists candidates and defines the number of candidates that may be voted for. Additionally, a list of eligible voters may be created or the system may allow anyone to vote. A public/secret keypair is generated for the election and the election can have a number of trustees who each receive a portion of a private key enabling the decryption of votes to be a group operation. Voters cast a vote for each candidate where each is either a 0 or 1 and there are only a predetermined number of 1's allowed. The vote is encrypted with the public key, and the cryptosystem used (Exponential ElGamal) is additively homomorphic. In this way votes may be tallied while still encrypted and the final tally decrypted separately by the group of trustees. This is a simplification for brevity, the full protocol spec is available \cite{HeliosHeliosV3}. Notably this misses out the digital signatures and \glsplural{zkp} used in the protocol.
 
-Helios provides individual and universal verifiability through the publishing of the encrypted votes, along with enough proof to show that voters has voted within the bounds set in the election. The use of \glsplural{zkp} ensures that the votes conform to the correct structure and the homomorphic nature allows them to be tallied without decryption. This allows the encrypted vote data to be published in such a way that anyone can verify a specific vote is present and that the tally is correct. The decryption of the tally also uses proof based on verifiable decryption, so without the key we can still be sure the tally was decrypted correctly providing the full universal verifiability. Note that this does not satisfy our definition of auditability which enforces that we must be able to discern the correct behaviour during and after the election and detect tampering. During the election the cast votes may be listed, but the onus is on the observer to prove that the list has been tampered with, Helios does not provide such. Once the result is published, the individual and universal verifiability properties combined allow any voter to check that their vote was included in that tally. Therefore, it stands to reason that an adversary, even with full access to the server running the election, could not remove votes without chance of detection. However, the Helios protocol does not forbid such an adversary the ability to create simulated votes for the absentee voters before calculating the totals. This implies that a high level of trust is required in the authority running the Helios server.
+Helios provides individual and universal verifiability through the publishing of the encrypted votes, along with enough proof to show that voters have voted within the bounds set in the election. The use of \glsplural{zkp} ensures that the votes conform to the correct structure and the homomorphic nature allows them to be tallied without decryption. This allows the encrypted vote data to be published in such a way that anyone can verify a specific vote is present and that the tally is correct. The vote data is available throughout the election process, so real-time universal verifiability is possible. The decryption of the tally also uses proof based on verifiable decryption, so without the key we can still be sure the tally was decrypted correctly providing the full universal verifiability. Note that this does not satisfy our definition of auditability which enforces that we must be able to discern the correct behaviour during and after the election and detect tampering. During the election the cast votes may be listed, but the onus is on the observer to prove that the list has been tampered with, Helios does not provide such. Once the result is published, the individual and universal verifiability properties combined allow any voter to check that their vote was included in that tally. Therefore, it stands to reason that an adversary, even with full access to the server running the election, could not remove votes without chance of detection. However, the Helios protocol does not forbid such an adversary the ability to create simulated votes for the absentee voters before calculating the totals. This implies that a high level of trust is required in the authority running the Helios server.
 
-By default, the Helios elections name voters by \gls{pii} --- in this case their email address. While this does not directly break the secrecy property directly, eternal secrecy is broken. Helios does have the ability to only identity voters by an alias which is a unique identifier not related to the individual and unique in each election. Provided the link between the voter and the alias is removed after the tallying, the eventual breaking of the cryptography would still not reveal the identity of the voter. Again, a dishonest server administrator could obtain that information from the server before it was removed, which implies a level of trust in the authority running the server, but not more so than already existed.
+By default, the Helios elections name voters by \gls{pii} --- in this case their email address. While this does not break the secrecy property directly, eternal secrecy is broken. Helios does have the ability to only identity voters by an alias which is a unique identifier not related to the individual and unique in each election. Provided the link between the voter and the alias is removed after the tallying, the eventual breaking of the cryptography would still not reveal the identity of the voter. Again, a dishonest server administrator could obtain that information from the server before it was removed, which implies a level of trust in the authority running the server, but not more so than already existed.
+
+The voters are authenticated either by a password which the Helios system knows, or via an external authentication solution such as OpenID Connect. The exact method of authentication is configurable per election. This enforces the eligibility property with the exceptions of dishonest authentication providers --- registrars --- or dishonest server administrators. The result of the authentication of the user is not propagated into the vote, so with direct access to the database spurious votes could be cast.
 
 The votes in Helios are encrypted by the client, before posting to the server. This means we do not need to trust the server with unencrypted votes. The encryption process itself however requires the client to generate some randomness to use during encryption and subsequently destroy it. This randomness could be used to prove which candidate the vote was for and so breaks the receipt-freeness property.
+
+In summary, Helios' main weakness from a trust perspective is that much of its security is based on the security of the server running the software. This is often an acceptable assumption, under the threat model for the election.
 
 \subsection{Belenios}
 
@@ -54,6 +58,9 @@ Belenios was heavy influenced by Helios, and the original implementation was ind
 A variant, BeleniosRF, enhances the protocol to provide receipt-freeness by use of a re-randomization step. The votes are encrypted and signed using the ElGamal cryptosystem, and a random number is required for each encryption. The knowledge of that number can prove your vote and so provide a receipt. The randomness is generated by the client, and so could be kept to provide that receipt to the voter. In BeleniosRF the encrypted vote and signature can be re-randomized at the voting server and a new valid signature created without the signing key. The voting server does not know the original vote as it is encrypted and the final cast vote is encrypted with randomness that the voter does not know, hence the protocol is reciept-free.
 
 A second variant, BeleniosVS goes further and provides a mechanism by which the vote does not even need to trust their own client. This is achieved by the vote being provided with a voting sheet ahead of time with the encrypted and signed votes already prepared. This sheet would also contain the randomness used for each encryption, so the voter can verify the encrypted values are correct. Combined with the BeleniosRF system for re-randomization, the vote is receipt-free and the user does not have to trust their own device. This system seems like it would be an excellent fit for an election with a secure voting booth. The booth provides the guaranteed isolation and the use of pre-prepared encryptions of votes means the voter need not trust the devices used for the voting.
+
+We will consider this second variant, BeleniosVS, as it appears to be an evolution of the original. Being based on Helios, we will focus on the differences. BeleniosVS uses distributed key setup for the trustee keys that ensure that no entity ever sees the full decryption key at any point during the process. The key setup is also a threshold based system, meaning that only a subset of $M$ out of the $N$ trustees are required to perform the decryption. This has two effects. Firstly, given that $<M$ trustees are dishonest, the cast votes will remain secret, irrespective of the security of the server running the software or its database.
+
 
 \subsection{Estonian i-Voting}
 
@@ -75,39 +82,79 @@ Estonia has embraced remote voting and has been used to run state level parliame
 
 \cite{zhaoHowVotePrivately2016}
 
+\todo{
+    Has a novel incentive for good behaviour in charging a refundable bitcoin spend to vote \\
+    Also costs bitcoin to vote at all and requires a lot of co-operation between voters. \\
+    Interesting, but given the current volatility in the value of bitcoin (the paper suggests using 5BTC for vote - ~£200,000!) perhaps it is fundamentally flawed
+
+}
+
 \subsection{ZCash voting proposal - Tarasov}
 
 \cite{tarasovInternetVotingUsing2017}
 
-\subsection{Ethereum voting proposal - Seiflelnasr}
+\todo{
+    Runs on unmodified ZCash \\
+    pre-paid cards suggested \\
+    anonymity provided by the ZCash addressing scheme. \\
+}
+
+\subsection{Scalable Open Vote Network}
 
 \cite{seifelnasrScalableOpenVoteNetwork2020}
 
-\todo{Can't remember the detail, probably lots of smart contracts}
+\todo{
+    Ethereum, base on prior work. \\
+    Smart contracts control all \\
+    Tally Computation off-chain with published evidence \\
+}
 
 \subsection{LWE Based proposal - Chillotti}
 
 \cite{chillottiHomomorphicLWEBased}
 
-\todo{Post-Quantum, but otherwise, the voting is basically the same model as any homomorphic encryption based system}
+\todo{
+    Post-Quantum, but otherwise, the voting is basically the same model as any homomorphic encryption based system.
+}
 
 \subsection{Vote-SAVER - Lee}
 
 \cite{leeSAVERSNARKfriendlyAdditivelyhomomorphic2019}
 
-\todo{This is interesting. based on a zkSNARK and smart contracts}
+\todo{
+    This is interesting. based on a zkSNARK and smart contracts \\
+    another Ethereum based system.
+}
 
 \subsection{Generic Cryptocurrency Based Voting - Yu}
 
 \cite{yuPlatformindependentSecureBlockchainBased2018}
 
-\todo{Is this the one with the Linkable Ring Signatures or the pre-populated crypto cards?}
+\todo{
+    Use of Linkable Ring Signatures for scalability (keeping signatures short)
+}
 
 \subsection{Trustless - Gajek}
 
 \cite{gajekTrustlessCensorshipResilientScalable2019}
 
-\todo{Maybe this is the linkable ring signatures}
+\todo{
+    High claims of zero-trust \\
+    Solves the privacy/eligibility in zero trust with a distributed "off-chain oracle" system. \\
+    proptyped on HyperLedger
+}
+
+% for the trust on the table.
+\newcommand*\YES{}
+\newcommand*\NO{}
+
+\newcommand*\NP{$n$}
+\newcommand*\ALL{$Y$}
+\newcommand*\SERVER{$Y_s$}
+\newcommand*\REG{$Y_r$}
+\newcommand*\SERVERREG{$Y_{rs}$}
+\newcommand*\AUTH{$Y_a$}
+
 
 \begin{table}[h]
     \centering
@@ -117,7 +164,7 @@ Estonia has embraced remote voting and has been used to run state level parliame
 
         \hline\hline
 
-        \textbf{Helios}               & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+        \textbf{Helios}               & \ALL              & \SERVER       & \SERVERREG        & \SERVER        & \NP              & \NP                    & \NP                       & \ALL                           & \ALL                          & \NP                & \ALL                                     & \SERVER               \\
         \hline
         \textbf{Belenios}             & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
         \hline
@@ -136,13 +183,23 @@ Estonia has embraced remote voting and has been used to run state level parliame
         \textbf{Trustless-Gajek}      & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
         \hline
     \end{tabular}
-    \caption{Table of Voting Systems and their Security Properties}
+
+
+
+    {\raggedright
+    \vspace{0.25em}
+    \footnotesize{
+        \begin{tabular}{r l}
+            \textbf{\NP}     & Not provided.                                            \\
+            \textbf{\ALL}    & Provided under all trust assumptions.                    \\
+            \textbf{\SERVER} & Provided assuming the server operator is trustworthy.    \\
+            \textbf{\AUTH}   & Provided assuming the election Authority is trustworthy. \\
+            \textbf{\REG}    & Provided assuming the Registrar is trustworthy.          \\
+        \end{tabular}
+    }
+    }
+
+    \caption{Table of Voting Systems, Security Properties and Trust Requirements}
     \label{table:voting-system-props}
 \end{table}
-
-\todo{
-    Import data from the google doc.
-    Create a table.
-    Discuss the systems.
-}
 

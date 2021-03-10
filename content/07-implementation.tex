@@ -17,14 +17,14 @@ The objective of the implementation is to create a software service that can adh
     \item \textbf{Auditor:} a member of the network simply validating all blocks on the chain, and therefore all workings of the election.
 \end{itemize}
 
-The \textbf{Auditor} is actually performed by an of the other roles when they connect to the blockchain, they will all validate all the blocks.
+The \textbf{Auditor} is actually performed by any of the other roles, as when they connect to the blockchain they will all validate all the blocks.
 
 The software should show that these functions can each be run independently, with no collusion and that the privacy of the voter is maintained.
 
 \section{Architecture of the Software}
 \label{ch:sw:architecture}
 
-I have chosen Go (\url{https://golang.org/}) as the implementation language. This choice was for a few main reasons not least of which is that I am already familiar with the language and have implemented several small projects in it. Another good reason for the choice is that the simplicity and enforced formatting make most Go projects easily accessible to new contributors. Finally, the next biggest reason was that Go code can be compiled to \gls{wasm} easily, meaning the same cryptographic code could be used in the browser as natively.
+I have chosen Go (\url{https://golang.org/}) as the implementation language. This choice was for a few main reasons not least of which is that I am already familiar with the language and have implemented several small projects in it. Another good reason for the choice is that the simplicity and enforced formatting make most Go projects easily accessible to new contributors. Finally, the next biggest reason was that Go code can be trivially compiled to \gls{wasm} easily, meaning the same cryptographic code could be used in the browser as natively.
 
 I have chosen to use gRPC (\url{https://grpc.io}) as the inter-node communication protocol as hopefully it should make third party implementations more straightforward as they can share the protobuf definitions.
 
@@ -39,10 +39,9 @@ The code for this project is versioned with the Git version control software and
 \section{Notes on Implementation}
 \label{ch:sw:notes}
 
-\todo{
-    What I learned during the implementation phase. What was challenging. \\
-    What was easy. How well it went. etc ... \\
+As with any software project, pinning down the scope of the work and the requirements is essential. However, in a project such as this, the implementation itself fed back practicality information to the design and the final output of both have been mutually influential. Initially, it was intended to be a more complete software application, but as the implementation itself took a considerable amount of time, some of the more user-experience focused features where dropped in favour of providing the core functionality correctly.
 
-    Mainly that there is an enormous amount of work involved, the blockchain and crypto are a small part of the overall project, the finer grained detail of the peer-to-peer gossiping and managing the chain where much more difficult than anticipated.
+A notable example of a feature that would be almost essential in a production-ready implementation of Astris is the automated peer-to-peer discovery methods (as mentioned earlier) and \gls{nat} traversal. Both of these problems have common solutions: DHT \needcite{DHT} for discovery and STUN/TURN \needcite{stun/turn} for \gls{nat} traversal and could be added to this implementation in the future. The lack of these feature does not prevent the software from working, but instead the software requires more complex configuration.
 
-}
+It turns out that the peer-to-peer networking code was tricky to get working correctly, as it has many failure models that must be taken into account: slow/unresponsive nodes, badly behaved nodes, intermittent node connection. In contrast, the cryptographic code --- which I had expected to be more complex --- was fairly straightforward to implement from the papers \needcite{cortierDistributedElGamalPedersen, elgamal} describing the constructs. This code will require scrutiny as although it functions correctly, such code is can be insecure due to side-channel or timing-attack vulnerabilities rather than bugs in the encryption processes directly \needcite{crypto vulns}.
+

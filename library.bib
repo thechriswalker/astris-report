@@ -42,6 +42,21 @@
   language = {en}
 }
 
+@inproceedings{apostolakiHijackingBitcoinRouting2017,
+  title = {Hijacking {{Bitcoin}}: {{Routing Attacks}} on {{Cryptocurrencies}}},
+  shorttitle = {Hijacking {{Bitcoin}}},
+  booktitle = {2017 {{IEEE Symposium}} on {{Security}} and {{Privacy}} ({{SP}})},
+  author = {Apostolaki, M. and Zohar, A. and Vanbever, L.},
+  year = {2017},
+  month = may,
+  pages = {375--392},
+  issn = {2375-1207},
+  doi = {10.1109/SP.2017.29},
+  abstract = {As the most successful cryptocurrency to date, Bitcoin constitutes a target of choice for attackers. While many attack vectors have already been uncovered, one important vector has been left out though: attacking the currency via the Internet routing infrastructure itself. Indeed, by manipulating routing advertisements (BGP hijacks) or by naturally intercepting traffic, Autonomous Systems (ASes) can intercept and manipulate a large fraction of Bitcoin traffic. This paper presents the first taxonomy of routing attacks and their impact on Bitcoin, considering both small-scale attacks, targeting individual nodes, and large-scale attacks, targeting the network as a whole. While challenging, we show that two key properties make routing attacks practical: (i) the efficiency of routing manipulation; and (ii) the significant centralization of Bitcoin in terms of mining and routing. Specifically, we find that any network attacker can hijack few ({$<$};100) BGP prefixes to isolate 50\% of the mining power-even when considering that mining pools are heavily multi-homed. We also show that on-path network attackers can considerably slow down block propagation by interfering with few key Bitcoin messages. We demonstrate the feasibility of each attack against the deployed Bitcoin software. We also quantify their effectiveness on the current Bitcoin topology using data collected from a Bitcoin supernode combined with BGP routing data. The potential damage to Bitcoin is worrying. By isolating parts of the network or delaying block propagation, attackers can cause a significant amount of mining power to be wasted, leading to revenue losses and enabling a wide range of exploits such as double spending. To prevent such effects in practice, we provide both short and long-term countermeasures, some of which can be deployed immediately.},
+  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/WFIF9PRA/Apostolaki et al. - 2017 - Hijacking Bitcoin Routing Attacks on Cryptocurren.pdf},
+  keywords = {ASes,authorisation,autonomous systems,BGP,BGP hijack,BGP hijacks,BGP routing data,bitcoin,Bitcoin,Bitcoin hijacking,Bitcoin topology,Bitcoin traffic manipulation,computer crime,cryptocurrencies,cryptocurrency,cryptography,data mining,Delays,electronic money,Internet,Internet routing infrastructure,IP networks,mining pools,P2P networks,Peer-to-peer computing,routing,Routing,routing advertisements,routing attacks,routing manipulation,Routing protocols,telecommunication network routing}
+}
+
 @article{backHashcashDenialService2002,
   title = {Hashcash - {{A Denial}} of {{Service Counter}}-{{Measure}}},
   author = {Back, Adam},
@@ -123,13 +138,17 @@
   language = {en}
 }
 
-@article{cortierDistributedElGamalPedersen,
-  title = {Distributed {{ElGamal}} `a La {{Pedersen}} - {{Application}} to {{Helios}}},
-  author = {Cortier, V{\'e}ronique and Glondu, St{\'e}phane and Galindo, David and Izabach{\`e}ne, Malika},
-  pages = {11},
-  abstract = {Real-world elections often require threshold cryptosystems so that any t out of trustees can proceed to tallying. This is required to protect the confidentiality of the voters' votes against curious authorities (at least t + 1 trustees must collude to learn individual votes) as well as to increase the robustness of the election (in case some trustees become unavailable, t + 1 trustees suffice to compute the election result). We describe a fully distributed (with no dealer) threshold cryptosystem suitable for the Helios voting system (in particular, suitable to partial decryption), and prove it secure under the Decisional Diffie-Hellman assumption. Secondly, we propose a fully distributed variant of Helios, that allows for arbitrary threshold parameters , t, together with a proof of ballot privacy when used for suffrage elections. Our modification of Helios can be seen as revision of the seminal multi-authority election system from Cramer, Gennaro and Schoenmakers, upon which the original Helios system is based. As such, our work implies, to our knowledge, the first formal proof of ballot privacy for the scheme by Cramer et al. Thirdly, we provide the first open-source implementation of Helios with a fully distributed key generation setup.},
-  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/A3S9AHFM/Cortier et al. - Distributed ElGamal `a la Pedersen - Application t.pdf},
-  language = {en}
+@incollection{cortierBeleniosSimplePrivate2019a,
+  title = {Belenios: {{A}} Simple Private and Verifiable Electronic Voting System},
+  booktitle = {Foundations of Security, Protocols, and Equational Reasoning: {{Essays}} Dedicated to Catherine a. {{Meadows}}},
+  author = {Cortier, V{\'e}ronique and Gaudry, Pierrick and Glondu, St{\'e}phane},
+  editor = {Guttman, Joshua D. and Landwehr, Carl E. and Meseguer, Jos{\'e} and Pavlovic, Dusko},
+  year = {2019},
+  pages = {214--238},
+  publisher = {{Springer International Publishing}},
+  address = {{Cham}},
+  abstract = {We present the electronic voting protocol Belenios together with its associated voting platform. Belenios guarantees vote privacy and full verifiability, even against a compromised voting server. While the core of the voting protocol was already described and formally proved secure, we detail here the complete voting system from the setup to the tally and the recovery procedures.},
+  isbn = {978-3-030-19052-1}
 }
 
 @book{delauneFormalisingSecurityProperties2010,
@@ -190,6 +209,25 @@
   journal = {Computer},
   keywords = {anonymity,cost effectiveness,Costs,data privacy,direct recording electronic system,electronic voting,Electronic voting,electronic voting system,Electronic voting systems,government data processing,Guidelines,Help America Vote Act,how things work,legislation,Local government,Management training,Nominations and elections,paper ballots,politics,punch cards,Safety,secrecy,security,Security,security of data,Transportation,US Congress,US presidential election,verifiability,voting equipment},
   number = {8}
+}
+
+@inproceedings{eyalMajorityNotEnough2014,
+  title = {Majority {{Is Not Enough}}: {{Bitcoin Mining Is Vulnerable}}},
+  shorttitle = {Majority {{Is Not Enough}}},
+  booktitle = {Financial {{Cryptography}} and {{Data Security}}},
+  author = {Eyal, Ittay and Sirer, Emin G{\"u}n},
+  editor = {Christin, Nicolas and {Safavi-Naini}, Reihaneh},
+  year = {2014},
+  pages = {436--454},
+  publisher = {{Springer}},
+  address = {{Berlin, Heidelberg}},
+  doi = {10.1007/978-3-662-45472-5_28},
+  abstract = {The Bitcoin cryptocurrency records its transactions in a public log called the blockchain. Its security rests critically on the distributed protocol that maintains the blockchain, run by participants called miners. Conventional wisdom asserts that the mining protocol is incentive-compatible and secure against colluding minority groups, that is, it incentivizes miners to follow the protocol as prescribed.We show that the Bitcoin mining protocol is not incentive-compatible. We present an attack with which colluding miners obtain a revenue larger than their fair share. This attack can have significant consequences for Bitcoin: Rational miners will prefer to join the selfish miners, and the colluding group will increase in size until it becomes a majority. At this point, the Bitcoin system ceases to be a decentralized currency.Unless certain assumptions are made, selfish mining may be feasible for any group size of colluding miners. We propose a practical modification to the Bitcoin protocol that protects Bitcoin in the general case. It prohibits selfish mining by pools that command less than 1/41/41/4 of the resources. This threshold is lower than the wrongly assumed 1/21/21/2 bound, but better than the current reality where a group of any size can compromise the system.},
+  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/KX8A3JIF/Eyal and Sirer - 2014 - Majority Is Not Enough Bitcoin Mining Is Vulnerab.pdf},
+  isbn = {978-3-662-45472-5},
+  keywords = {Honest Node,Mining Pool,Mining Power,Overlay Network,Sybil Attack},
+  language = {en},
+  series = {Lecture {{Notes}} in {{Computer Science}}}
 }
 
 @techreport{gajekTrustlessCensorshipResilientScalable2019,
@@ -302,6 +340,22 @@
   language = {en}
 }
 
+@inproceedings{karameDoublespendingFastPayments2012,
+  title = {Double-Spending Fast Payments in Bitcoin},
+  booktitle = {Proceedings of the 2012 {{ACM}} Conference on {{Computer}} and Communications Security},
+  author = {Karame, Ghassan O. and Androulaki, Elli and Capkun, Srdjan},
+  year = {2012},
+  month = oct,
+  pages = {906--917},
+  publisher = {{Association for Computing Machinery}},
+  address = {{New York, NY, USA}},
+  doi = {10.1145/2382196.2382292},
+  abstract = {Bitcoin is a decentralized payment system that relies on Proof-of-Work (PoW) to verify payments. Nowadays, Bitcoin is increasingly used in a number of fast payment scenarios, where the time between the exchange of currency and goods is short (in the order of few seconds). While the Bitcoin payment verification scheme is designed to prevent double-spending, our results show that the system requires tens of minutes to verify a transaction and is therefore inappropriate for fast payments. An example of this use of Bitcoin was recently reported in the media: Bitcoins were used as a form of \textbackslash emph\{fast\} payment in a local fast-food restaurant. Until now, the security of fast Bitcoin payments has not been studied. In this paper, we analyze the security of using Bitcoin for fast payments. We show that, unless appropriate detection techniques are integrated in the current Bitcoin implementation, double-spending attacks on fast payments succeed with overwhelming probability and can be mounted at low cost. We further show that the measures recommended by Bitcoin developers for the use of Bitcoin in fast payments are not always effective in detecting double-spending; we show that if those recommendations are integrated in future Bitcoin implementations, double-spending attacks on Bitcoin will still be possible. Finally, we propose and implement a modification to the existing Bitcoin implementation that ensures the detection of double-spending attacks against fast payments.},
+  isbn = {978-1-4503-1651-4},
+  keywords = {bitcoin,countermeasures,double-spending,fast payments},
+  series = {{{CCS}} '12}
+}
+
 @inproceedings{karayumakUserStudyImproved2011,
   title = {User Study of the Improved {{Helios}} Voting System Interfaces},
   booktitle = {2011 1st {{Workshop}} on {{Socio}}-{{Technical Aspects}} in {{Security}} and {{Trust}} ({{STAST}})},
@@ -345,6 +399,15 @@
   doi = {10.1109/RE-VOTE.2009.9},
   abstract = {Electronic voting schemes are expected to meet the basic security requirements for electronic voting. However, very different opinions about these requirements exist in the e-voting community. This is due to the fact that the security requirements comprise different levels at which they can be met. For example, universal verifiability may, or may not, include verifying eligibility of the voters who participated in the election.},
   isbn = {978-1-4244-7698-5},
+  language = {en}
+}
+
+@article{lazarWhyDoesCryptographic,
+  title = {Why Does Cryptographic Software Fail? {{A}} Case Study and Open Problems},
+  author = {Lazar, David and Chen, Haogang and Wang, Xi and Zeldovich, Nickolai},
+  pages = {7},
+  abstract = {Mistakes in cryptographic software implementations often undermine the strong security guarantees offered by cryptography. This paper presents a systematic study of cryptographic vulnerabilities in practice, an examination of state-of-the-art techniques to prevent such vulnerabilities, and a discussion of open problems and possible future research directions. Our study covers 269 cryptographic vulnerabilities reported in the CVE database from January 2011 to May 2014. The results show that just 17\% of the bugs are in cryptographic libraries (which often have devastating consequences), and the remaining 83\% are misuses of cryptographic libraries by individual applications. We observe that preventing bugs in different parts of a system requires different techniques, and that no effective techniques exist to deal with certain classes of mistakes, such as weak key generation.},
+  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/N525572E/Lazar et al. - Why does cryptographic software fail A case study.pdf},
   language = {en}
 }
 
@@ -567,6 +630,24 @@
   language = {en}
 }
 
+@inproceedings{sapirshteinOptimalSelfishMining2017,
+  title = {Optimal {{Selfish Mining Strategies}} in {{Bitcoin}}},
+  booktitle = {Financial {{Cryptography}} and {{Data Security}}},
+  author = {Sapirshtein, Ayelet and Sompolinsky, Yonatan and Zohar, Aviv},
+  editor = {Grossklags, Jens and Preneel, Bart},
+  year = {2017},
+  pages = {515--532},
+  publisher = {{Springer}},
+  address = {{Berlin, Heidelberg}},
+  doi = {10.1007/978-3-662-54970-4_30},
+  abstract = {The Bitcoin protocol requires nodes to quickly distribute newly created blocks. Strong nodes can, however, gain higher payoffs by withholding blocks they create and selectively postponing their publication. The existence of such selfish mining attacks was first reported by Eyal and Sirer, who have demonstrated a specific deviation from the standard protocol (a strategy that we name SM1).In this paper we investigate the profit threshold \textendash{} the minimal fraction of resources required for a profitable attack. Our analysis provides a bound under which the system can be considered secure against such attacks. Our techniques can be adapted to protocol modifications to assess their susceptibility to selfish mining, by computing the optimal attack under different variants. We find that the profit threshold is strictly lower than the one induced by the SM1 scheme. The policies given by our algorithm dominate SM1 by better regulating attack-withdrawals. We further evaluate the impact of some previously suggested countermeasures, and show that they are less effective than previously conjectured.We then gain insight into selfish mining in the presence of communication delays, and show that, under a model that accounts for delays, the profit threshold vanishes, and even small attackers have incentive to occasionally deviate from the protocol. We conclude with observations regarding the combined power of selfish mining and double spending attacks.},
+  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/SK69E9P3/Sapirshtein et al. - 2017 - Optimal Selfish Mining Strategies in Bitcoin.pdf},
+  isbn = {978-3-662-54970-4},
+  keywords = {Full Version,Honest Node,Nash Equilibrium,Optimal Policy,Protocol Modification},
+  language = {en},
+  series = {Lecture {{Notes}} in {{Computer Science}}}
+}
+
 @article{schoenmakersLectureNotesCryptographic,
   title = {Lecture {{Notes Cryptographic Protocols}}},
   author = {Schoenmakers, Berry},
@@ -676,6 +757,34 @@
   howpublished = {https://docs.unstoppabledomains.com/}
 }
 
+@inproceedings{weberCoercionResistantElectronicElections2007a,
+  title = {On {{Coercion}}-{{Resistant Electronic Elections}} with {{Linear Work}}},
+  booktitle = {The {{Second International Conference}} on {{Availability}}, {{Reliability}} and {{Security}} ({{ARES}}'07)},
+  author = {Weber, S. G. and Araujo, R. and Buchmann, J.},
+  year = {2007},
+  month = apr,
+  pages = {908--916},
+  doi = {10.1109/ARES.2007.108},
+  abstract = {Remote electronic voting over the Internet is a promising concept to afford convenience to voters and to increase election turnouts. However, before employing electronic voting systems in regular elections, problems such as coercion and vote selling have to be solved. Juels, Catalano and Jakobsson introduced a strong security requirement that deals with theses concerns. Coercion resistance improves on the former security notion of receipt freeness by taking additional real-life threats into account. In this paper, we present a coercion-resistant election scheme with a linear work factor. The scheme is based on the previous proposal of Juels et al., which exhibited a quadratic work factor, and employs Smith's idea to achieve a speedup to linear work. It, however, overcomes the drawbacks of these preceding solutions. We also present an evaluation of the scheme and identify the drawbacks and the real world aspects related to the scheme},
+  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/HDUJD7NN/Weber et al. - 2007 - On Coercion-Resistant Electronic Elections with Li.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/X5SGD3UP/4159891.html},
+  keywords = {Casting,coercion-resistant electronic elections,Computer science,Counting circuits,Cryptography,Electronic voting,Electronic voting systems,government data processing,Internet,linear work,Nominations and elections,politics,Proposals,receipt freeness,remote electronic voting,Security,security of data,security requirement,vote selling}
+}
+
+@article{wenAttacksCountermeasuresBlockchains2021a,
+  title = {Attacks and Countermeasures on Blockchains: {{A}} Survey from Layering Perspective},
+  shorttitle = {Attacks and Countermeasures on Blockchains},
+  author = {Wen, Yujuan and Lu, Fengyuan and Liu, Yufei and Huang, Xinli},
+  year = {2021},
+  month = mar,
+  pages = {107978},
+  issn = {13891286},
+  doi = {10.1016/j.comnet.2021.107978},
+  abstract = {Blockchain is an emerging technology with the characteristics of decentralization and transparency and has received extensive attention and in-depth research for the past few years. With security features such as immutability and decentralization, blockchain is used to ensure the security of other applications and services. However, the security issues of the blockchain itself are always easily overlooked. In this paper, we conducted a comprehensive literature survey on the security issues of the blockchain itself. From the perspective of architectural layering, each layer of the blockchain has its own corresponding security issues. We systematically review and analyze attacks against blockchains based on the basic framework of blockchain and conduct a stateof-the-art investigation of the corresponding countermeasures against those attacks. Furthermore, we conclude our observation and point out the future direction of blockchain security issues. The purpose of this paper is to provide researchers with future development insights of blockchain security and to stimulate more efforts about blockchain security issues.},
+  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/R53GCV26/Wen et al. - 2021 - Attacks and countermeasures on blockchains A surv.pdf},
+  journal = {Computer Networks},
+  language = {en}
+}
+
 @techreport{wustYouNeedBlockchain2017,
   title = {Do You Need a {{Blockchain}}?},
   author = {W{\"u}st, Karl and Gervais, Arthur},
@@ -727,6 +836,19 @@
   journal = {Future Generation Computer Systems},
   keywords = {Blockchain voting,End-to-end voter verification,Homomorphic addition,Self-tallying},
   language = {en}
+}
+
+@inproceedings{yangEffectiveScheme512019,
+  title = {Effective {{Scheme}} against 51\% {{Attack}} on {{Proof}}-of-{{Work Blockchain}} with {{History Weighted Information}}},
+  booktitle = {2019 {{IEEE International Conference}} on {{Blockchain}} ({{Blockchain}})},
+  author = {Yang, X. and Chen, Y. and Chen, X.},
+  year = {2019},
+  month = jul,
+  pages = {261--265},
+  doi = {10.1109/Blockchain.2019.00041},
+  abstract = {Proof-of-Work (PoW) is a popular protocol used in Blockchain systems to resolve double-spending problems. However, if an attacker has access to calculation hash power greater than half of the total hash power, this attacker can create a double-spending attack or 51\% attack. The cost of creating a 51\% attack is surprisingly low if hash power is abundantly available. That posts a great threat to lots of PoW blockchains. We propose a technique to combine history weighted information of miners with the total calculation difficulty to alleviate the 51\% attack problem. Analysis indicates that with the new technique, the cost of a traditional attack is increased by two orders of magnitude.},
+  file = {/home/chris/data/syncthing/infosec/astris/zotero/storage/CJ5RFJF8/Yang et al. - 2019 - Effective Scheme against 51% Attack on Proof-of-Wo.pdf;/home/chris/data/syncthing/infosec/astris/zotero/storage/3ABZ5T72/8946277.html},
+  keywords = {Blockchain,blockchain systems,Blockchain; 51\% Attack; Mining; Double spending attack,cryptocurrencies,cryptographic protocols,Cryptography,Data mining,double-spending attack,double-spending problems,hash power,History,history weighted information,Peer-to-peer computing,PoW blockchains,proof-of-work blockchain,Protocols,security of data,Switches}
 }
 
 @techreport{yuPlatformindependentSecureBlockchainBased2018,
