@@ -75,13 +75,16 @@
 %we need variables from this file.
 \input{content/99-go-astris}
 
+\frontmatter
+\pagenumbering{gobble}
+
 % title / cover and the anti-plagierism declaration page
 \include{content/00-cover}
+\include{content/00-anti-plagiarism-declaration}
 
-\frontmatter
+\include{content/00-acknowledgments}
 
-% \include{content/00-acknowledgments}
-
+\pagenumbering{roman}
 \tableofcontents
 
 \clearpage
@@ -99,9 +102,7 @@
 \printglossary[type=\acronymtype,title=List of Abbreviations,nonumberlist]
 \addcontentsline{toc}{chapter}{List of Abbreviations}
 
-
 \include{content/00-abstract}
-
 
 % This is the start of the project "for-real"
 \mainmatter
