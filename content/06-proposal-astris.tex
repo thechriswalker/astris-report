@@ -101,21 +101,136 @@ This process is visualized in \autoref{fig:astris-sequence}.
     \label{fig:astris-sequence}
 \end{figure}
 
-\section{Protocol Detail - V1}
+\section{Protocol Detail - V1.0}
 \label{ch:astris:detail}
 
-\todo{This is the fine detail - I will likely write up this bit once the software is finished in case of feedback\dots}
+This section aims to describe the functioning of the Astris protocol version \texttt{1.0} unambiguously, such that there is enough information to build a functioning client, able to interoperate with the reference implementation.
+
+All the data types mentioned are fully described in \autoref{appendix:datatypes} as they are quite verbose. When a data type is referenced it will be with a monospaced font such as \nameref{dt:elgamal:ct}.
+
+\subsection{Peer-to-Peer Communication}
+\label{ch:astris:detail:p2p}
+
+The Astris inter-node communication is done via gRPC  \itodo{add grpc url footnote} over a tight interface, consisting of only two methods and four message definitions. It is so simple the entire spec in the Protocol Buffer \itodo{add proto buf url footnote} syntax can be included here:
+
+\begin{verbatim}
+syntax = "proto3";
+package astris;
+service AstrisV1 {
+  rpc RecvBlocks(ElectionID) returns (stream BlockHeader) {}
+  rpc GetBlock(BlockID) returns (FullBlock) {}
+}
+message ElectionID { bytes id = 1; }
+message BlockID    { bytes id = 1; }
+
+message BlockHeader {
+  bytes prev_id = 1; //
+  bytes payload_hash = 2; // this should match the payload
+  fixed32 timestamp = 3; // unix timestamp of block creation
+  fixed32 nonce = 4; // proof of work
+  fixed64 depth = 5; // block height or chain depth
+}
+message FullBlock {
+  BlockHeader header = 1;
+  bytes payload = 2;
+}
+\end{verbatim}
+
+\todo{Should peer discovery be part of the specification?}
+
+Note that the service is \texttt{AstrisV1} to correspond with the current version of this specification. The gRPC service definition here is absolutely part of that specification as it describes how other implementations must communicate with each other. Note that the design is also such that each node will ask other nodes for information by means of connecting to the interface and awaiting data. That is, each method is a single direction stream of data, so each node will have to connect to and be connected to be each other node. This is by design, so the network can be run in a client-server, star topology as well as a peer-to-peer, mesh topology.
+
+The second method \texttt{RecvBlocks} asks the remote peer to send it new blocks for the given \texttt{ElectionID} as it receives them. This could be a block the peer has just mined and is distributing to other peers, or it could be a block that the peer has received and re-broadcast. The remote peer should send it's current highest block in the chain immediately. This will allow the caller to ascertain whether they have the same chain and the respective depths. This will likely be called
+
+The third method \texttt{GetBlock} asks the remote peer to send the full data for a given \texttt{BlockID}. After the node has the \texttt{BlockID} of a given head-of-chain, it can then recursively request previous blocks until the chain is complete.
+
+The blockchain used for Astris is not a permanent one, it is ephemeral, existing only for the duration of the election and designed to allow all parties the opportunity to audit and validate the chain, detecting tampering in real-time.
+
+The structure of the blockchain in the Astris chain is described in the \autoref{appendix:blockchain}, along with the proof of work algorithm used to perform the first layer of validation for new blocks. Subsequent block validation --- that is validation of the block payload being of the correct type and allowed at the current point in time is covered specifically in each phase description in the later sections of this chapter.
 
 \subsection{Setup Phase}
 \label{ch:astris:detail:setup}
 
-% If not all trustees or not all registrars have committed to the parameters with at least one block by the freeze date, then election is void. This ensures that the regsitrars and trustees are indeed willing to participate and deepens the initial chain to the point that re-writing it will be impossible to the satisfaction of the trusted parties. Note that the public have no say in this initial setup, nor have any possibility to deepen the chain themselves, however they can watch the chain at all times and after all additions, so it is tamper-evident.
+The setup phase involves the Authority, Registrar and Trustees and is done before the blockchain is created. The data created in the phase will form the genesis block for the chain for this election.
+
+\begin{enumerate}
+    \item The Authority decides on the \nameref{dt:elgamal:params} $EG$, the number of Trustees $l$ and the required number of Trustees to decrypt the votes $t$
+    \item Each Trustee is assigned an index $i$ where $0 <= i < l$,
+    \item The Authority sends each Trustee their initial data $(EG, i, t)$
+    \item Each Trustee Creates their \nameref{dt:setup:trustee} from the initial data and returns it to the Authority.
+          \begin{enumerate}
+              \item Let $p,q,g$ be the parameters from $EG$.
+              \item Generate two \nameref{dt:elgamal:keypair} objects from $EG$. Label one as signing keypair and one as encryption keypair.
+              \item Let the public key of the signing keypair be $P_{sig}$ and the public key of the encryption keypair be $P_{enc}$.
+              \item Create a \nameref{dt:elgamal:pok} $Z_{enc}$ of the secret key corresponding to $P_{enc}$.
+              \item Create $C$ an ordered list of $t$ random integers modulo $q$.
+              \item For each $c \in C$, calculate the exponent $e = g^c mod p$. Let $E$ be the ordered set of all the exponents for each $c$.
+              \item Create a \nameref{dt:elgamal:sig} $S$ over $(i, E, P_{sig}, P_{enc}, Z_{enc})$ by creating a message: \itodo{message}
+              \item The trustee returns $(i, E, P_{sig}, P_{enc}, Z_{enc}, S)$ to the Authority and keeps hold of the secret keys and coefficients.
+          \end{enumerate}
+    \item The Registrar creates their \nameref{dt:setup:registrar} data from the initial data and returns it to the Authority.
+          \begin{enumerate}
+              \item Generate a \nameref{dt:elgamal:keypair} from $EG$ to use as a signing key.
+              \item The registrar must provide a registration URL $U_r$ where the webpage must provide the facility to authenticate the voter and provide them with the information for them to complete the \nameref{ch:astris:detail:registration}.
+              \item Create a \nameref{dt:elgamal:sig} $S$ over $(P_{sig}, U_r)$
+              \item Return $(P_{sig}, U_r, S)$ to the Authority.
+          \end{enumerate}
+    \item The Authority verifies all the proofs and signatures.
+    \item The Authority validates that the published exponents from each Trustee \itodo{what do we validate here, they multiply to 0?}
+    \item The Authority downloads the voter list from the URL given by the registrar and verifies the hash is correct.
+    \item The Authority then fills in the rest of the data required in the \nameref{dt:payload:setup} using the responses from the Trustees and the Registrar
+    \item The authority then creates a genesis block using the \nameref{proc:json} of the setup data, starting the election.
+\end{enumerate}
+
+Once the genesis block is created, the Authority starts a peer-to-peer node service for the election and publishes the peer address as a \texttt{host:port} pair and the election ID.
+
+At this point any node may connect and watch the growth of the chain by following the rules described in each section for adding new blocks to the chain.
+
+From this point onwards the setup data are fixed provide a reference for all cryptographic and time-sensitive processes in the following steps.
 
 \subsection{Parameter Confirmation Phase}
 \label{ch:astris:detail:params}
 
+This phase involves the Trustees, and each must produce two blocks each for the chain. All trustees must add the first of these blocks before any can add the second. All trustees must add both blocks in the allotted time period specified in the setup data timing section using \texttt{setup.timing.parameterConfirmation} and \texttt{setup.timing.timeZone} to calculate the minimum and maximum times allowed for the blocks to be added.
+
+\todo {This list is still draft}
+
+\begin{enumerate}
+    \item For Each trustee with index $i$
+          \begin{enumerate}
+              \item Create the secret shares for each other Trustee $j$ as $S_{ij}$ encrypting them with the Trustee's published public encryption key.
+              \item Sign the set of shares.
+              \item Mine the data into a block and publish.
+          \end{enumerate}
+    \item Wait until all trustees have added their blocks
+    \item Each trustee $i$:
+          \begin{enumerate}
+              \item decrypts all $S_{ij}$ and computes their key pair shard of the distributed key.
+              \item creates a PoK of their Secret part
+              \item creates a signature over the public key and pok.
+              \item publishes the pok, public key and signature on the chain
+          \end{enumerate}
+\end{enumerate}
+
+After this all participants have enough data to combine the public key shards into a combined public key to use for encrypting votes.
+
 \subsection{Voter Registration Phase}
 \label{ch:astris:detail:registration}
+
+This phase involves the Voters and the Registrar. Timings via \texttt{setup.timing.voterRegistration}
+
+\todo {This list is still draft}
+
+\begin{enumerate}
+    \item Each eligible voter creates a keypair for the election using the ElGamal parameters in the setup data.
+    \item They then use a browser to navigate to (a GET request) the registration URL with the additional of the extra URL parameters:\\ \verb|election=<electionid>&public_key=<voter_public_key_json>|
+    \item The remote URL authenticates them via whichever mechanism the registrar approves.
+    \item The registrar gives the voter a unique id for this election, and creates a signature over the electionId, the publicKey and the voterId.
+    \item The registrar gives the voter the signature.
+    \item The voter then publishes the block with the voterId, voter public key and registrar signature.
+\end{enumerate}
+
+Note that we define the mechanism for propagating the election identifier and the voter's public key to the Registrar, but do not specify how the Registrar should return the data. This is deliberate as each implementation of the voting software may have a different mechanism for accepting the data back. We could use a redirection based approach similar to OAuth, with the opportunity for an \emph{out-of-band} method for non-URL-based interfaces. However, that would complicate the protocol beyond the scope of this report.
 
 \subsection{Vote Casting Phase}
 \label{ch:astris:detail:vote}

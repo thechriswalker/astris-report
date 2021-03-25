@@ -1,0 +1,82 @@
+\chapter{Datatypes in the Astris Protocol}
+\label{appendix:datatypes}
+
+List each one with a description. Could I extract them automatically with godoc? maybe...
+
+Big Integers are always stored in base64url encoded strings in the payloads.
+
+
+Payloads:
+\section*{\texttt{PayloadElectionSetup}}
+\label{dt:payload:setup}
+
+
+\section*{\texttt{PayloadTrusteeShares}}
+\label{dt:payload:shares}
+
+\section*{\texttt{PayloadTrusteePublic}}
+\label{dt:payload:public}
+
+\section*{\texttt{PayloadVoterRegistration}}
+\label{dt:payload:reg}
+
+\section*{\texttt{PayloadVoteCast}}
+\label{dt:payload:cast}
+
+\section*{\texttt{PayloadPartialTally}}
+\label{dt:payload:tally}
+
+
+
+Signatures/Keys/Proofs
+
+\section*{\texttt{ElGamalParameters}}
+\label{dt:elgamal:params}
+
+
+\section*{\texttt{PublicKey}}
+\label{dt:elgamal:pk}
+
+\section*{\texttt{KeyPair}}
+\label{dt:elgamal:keypair}
+
+
+\section*{\texttt{ProofOfKnowledge}}
+\label{dt:elgamal:pok}
+(of secret key)
+
+\section*{\texttt{Signature}}
+\label{dt:elgamal:sig}
+(over a defined message)
+
+\section*{\texttt{ZeroKnowledgeProof}}
+\label{dt:elgamal:zkp}
+(of a fact about a ciphertext)
+
+\section*{\texttt{CipherText}}
+\label{dt:elgamal:ct}
+
+\section*{\texttt{VoterList}}
+\label{dt:setup:voterlist}
+
+
+\chapter{Common Processes in the Astris Protocol}
+\label{appendix:processes}
+
+\section*{Signature}
+\label{proc:sign}
+
+\section*{Proof Of Knowledge}
+\label{proc:pok}
+
+\section*{Zero Knowledge Proof}
+\label{proc:zkp}
+
+of $n \in (0,1)$ or of $0 <= n <= max$
+
+
+\section*{Canonical JSON Encoding}
+\label{proc:json}
+
+\chapter{The Astris Blockchain}
+\label{appendix:blockchain}

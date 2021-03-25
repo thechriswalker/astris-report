@@ -26,13 +26,11 @@ The software should show that these functions can each be run independently, wit
 
 I have chosen Go (\url{https://golang.org/}) as the implementation language. This choice was for a few main reasons not least of which is that I am already familiar with the language and have implemented several small projects in it. Another good reason for the choice is that the simplicity and enforced formatting make most Go projects easily accessible to new contributors. Finally, the next biggest reason was that Go code can be trivially compiled to \gls{wasm} easily, meaning the same cryptographic code could be used in the browser as natively.
 
-I have chosen to use gRPC (\url{https://grpc.io}) as the inter-node communication protocol as hopefully it should make third party implementations more straightforward as they can share the protobuf definitions.
+I have chosen to use gRPC (\url{https://grpc.io}) as the inter-node communication protocol as hopefully it should make third party implementations more straightforward as they can share the Protocol Buffer definitions and code generation properties of gRPC.
 
-The core blockchain will be backed by a SQLite3 database for simplicity and ease of use, although the interface will be abstract to allow other storage backends should we want to. SQLite3 remains an incredibly robust, dependable and versatile format.
+The core blockchain in the Go implementation will be backed by a simple key-value store rather than a relational database. The portability of the data is not a problem as all transfer of data is done via the peer-to-peer methods over gRPC. Therefore, the choice of persistent datastore is an implementation detail rather than a protocol detail. A key-value store is simple enough as we will only ever wish to lookup data by the block hash, so no higher level query language is required.
 
-The payload for the blocks will be represented as arbitrary byte arrays at the blockchain level, and the extra validation of the Astris protocol will be performed at a higher level. This will keep the block exchange and networking code isolated from the Astris protocol logic.
-
-The application will be constructed as a library, and the various CLI invocations for the different roles will simply call different parts of the inner library to perform their tasks.
+The payload for the blocks will be represented as arbitrary byte arrays at the blockchain level, and the extra validation of the Astris protocol will be performed at a higher level. While this will keep the basic block validation simpler, we will still need Astris specific validation before we can accept the blocks as their format and type is dependent on the stage of the election and the previous block's data --- such as previously added signature verification keys.
 
 The code for this project is versioned with the Git version control software and a copy of the repository is located on GitHub. The software may well see further development after this report is completed so for reference, the version at the time of publishing is available at \url{\astrisrepo /tree/ \astrishash}.
 
@@ -44,4 +42,5 @@ As with any software project, pinning down the scope of the work and the require
 A notable example of a feature that would be almost essential in a production-ready implementation of Astris is the automated peer-to-peer discovery methods (as mentioned earlier) and \gls{nat} traversal. Both of these problems have common solutions: DHT \needcite{DHT} for discovery and STUN/TURN \needcite{stun/turn} for \gls{nat} traversal and could be added to this implementation in the future. The lack of these feature does not prevent the software from working, but instead the software requires more complex configuration.
 
 It turns out that the peer-to-peer networking code was tricky to get working correctly, as it has many failure models that must be taken into account: slow/unresponsive nodes, badly behaved nodes, intermittent node connection. In contrast, the cryptographic code --- which I had expected to be more complex --- was fairly straightforward to implement from the papers \needcite{cortierDistributedElGamalPedersen, elgamal} describing the constructs. This code will require scrutiny as although it functions correctly, such code is can be insecure due to side-channel or timing-attack vulnerabilities rather than bugs in the encryption processes directly \needcite{crypto vulns}.
+
 

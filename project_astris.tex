@@ -15,6 +15,7 @@
 \usepackage[nottoc]{tocbibind}
 \usepackage[math]{cellspace}
 \usepackage{tocloft}
+\usepackage[titletoc,title,header,page]{appendix}
 \usepackage{hyperref}
 
 \addto{\captionsenglish}{%
@@ -28,6 +29,7 @@
 
 \renewcommand*{\chapterheadstartvskip}{\vspace*{0em}}
 \renewcommand*{\chapterheadendvskip}{\vspace{1em}}
+
 
 \setlength{\parindent}{1em}
 \setlength{\parskip}{0.5em}
@@ -66,7 +68,7 @@
 \tocfile{\lstlistingname}{lol}
 \endgroup}
 
-\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\renewcommand{\thefootnote}{\roman{footnote}}
 
 \include{glossary}
 
@@ -127,5 +129,12 @@
 
 \bibliographystyle{lib/ieeetran}
 \bibliography{library}
+
+\begin{appendices}
+
+
+  \include{content/07-implementation-appendix}
+
+\end{appendices}
 
 \end{document}

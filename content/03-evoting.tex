@@ -11,7 +11,7 @@ The main difference between in-person voting and remote voting from the point of
 
 It could be argued that a seemingly obvious benefit --- that people can vote without having to travel to a secure booth --- is not really a benefit at all as we lose the security properties guaranteed by such a booth and the trade off of convenience over security is not worth it. On the other hand remote voting does indeed have some beneficial implications. It would lower the cost of an election as there would be no need to hire a secure location or the people to run it. There would be no need for transportation of the ballots for tallying, and no manual tallying process --- both lowering costs and reducing the likelihood of human error in the tallying. Furthermore, the convenience of not having to travel to a booth is also an enabler for those who would otherwise be unable to make to a booth, potentially increasing the election turnout.
 
-These benefits need to be weighed against the potential security downsides. It is worth noting that there is one insurmountable problem with remote voting which is that there is no possibility to satisfy the coercion-resistance property. This has been addressed in \cite{juelsCoercionResistantElectronicElections2002} and under their definitions the property we are discussing here is \emph{simulation attack} in which the adversary acquires the means to vote on behalf of the user. No matter how secure the voting scheme is from a technical point of view, allowing voting from an arbitrary location via the Internet means that a coercer could stand over the voter during the casting process, a situation which technically indistinguishable from the voter voting alone. In \cite{juelsCoercionResistantElectronicElections2002} the solution is based on the assumption that at some point the voter will be able to vote unhindered and that that vote will be the one counted, any coerced votes would not count and additionally that the unhindered vote could not be linked by the adversary to the voter. This would allow the voter to \emph{pretend} to cooperate with the coercer and separately vote legitimately without the coercer's knowledge (and hence no fear of retribution). The scheme proposed imposes an overhead which is quadratic with respect to the number of voters, which is impractical for large scale elections. Further work has been done to attempt to reduce this overhead to be linear \needcite{on coercion}. As such, remote voting unsuitable for large scale national elections.
+These benefits need to be weighed against the potential security downsides. It is worth noting that there is one insurmountable problem with remote voting which is that there is no possibility to satisfy the coercion-resistance property. This has been addressed in \cite{juelsCoercionResistantElectronicElections2002} and under their definitions the property we are discussing here is \emph{simulation attack} in which the adversary acquires the means to vote on behalf of the user. No matter how secure the voting scheme is from a technical point of view, allowing voting from an arbitrary location via the Internet means that a coercer could stand over the voter during the casting process, a situation which technically indistinguishable from the voter voting alone. In \cite{juelsCoercionResistantElectronicElections2002} the solution is based on the assumption that at some point the voter will be able to vote unhindered and that that vote will be the one counted, any coerced votes would not count and additionally that the unhindered vote could not be linked by the adversary to the voter. This would allow the voter to \emph{pretend} to cooperate with the coercer and separately vote legitimately without the coercer's knowledge (and hence no fear of retribution). The scheme proposed imposes an overhead which is quadratic with respect to the number of voters, which is impractical for large scale elections. Further work has been done to attempt to reduce this overhead to be linear \cite{weberCoercionResistantElectronicElections2007a}, but even so, the overhard is burdensome for large scale national elections and the coercion resistance is still predicated on the fact that the vote will have an opportunity to act unhindered.
 
 Due to these trade-offs we consider how some security properties mentioned in \autoref{ch:req:sec} that take on more or less importance in a remote system and some new security properties that can enhance a remote voting system.
 
@@ -19,9 +19,11 @@ The \textbf{Secrecy} property in a remote voting system becomes more important a
 
 The \textbf{Robustness} property in a remote voting system becomes more important as by definition the system will have computer systems at various boundaries which by necessity will be accessible over the public Internet. \Gls{dos} attacks against parts of the system will become a valid threat against the system continuing to function correctly. The more entities are in play in the system --- e.g. the Authority, Registrar, Trustees, Voter, Bulletin Board --- the more opportunity for an adversary to disrupt the communication channels between them. This works both ways as with fewer single entities responsible for each function in the system, the more work an adversary will have to disrupt \emph{all} of them. Therefore, remote voting systems must consider single points of failure and the public accessible nature of the system very carefully.
 
-The \textbf{Eligibility} property is vital in all voting systems. Great care must be taken in remote voting systems to ensure eligibility, as we must authenticate the voters remotely and the protocol used must be secure. A failure in the authentication protocol would undermine the entire system. \itodo{I need more in this paragraph.}
+The \textbf{Eligibility} property is vital in all voting systems. Great care must be taken in remote voting systems to ensure eligibility, as we must authenticate the voters remotely and the protocol used must be secure. A failure in the authentication protocol would undermine the integrity of the election. This area is a major cause for concern as eligibility and the one-voter-one-vote semantics that make the election function are at risk. The method of authentication in specifications of votings system is mostly unspecified but defined to be secure as an assumption. I believe this to be a reasonable assumption as the exact technology used to provide the authentication may change without affecting the core properties of the voting system. However, all the systems looked at in this report fall into two categories: those that authenticate early with a "registration" phase and those that authenticate \emph{just-in-time} --- at the point of casting a vote.
 
-The \textbf{Receipt-Freeness} property is primarily a factor adding to \emph{coercion-resistance} and a protection against vote-buying. With the fact that coercion-resistance is impossible for remote voting systems, it might be tempting to write-off receipt-freeness as unimportant. However, we can still counter all forms of vote-buying and coercion that do not involve physical presence --- which is expensive and logistically difficult on a large scale --- by ensuring receipt-freeness. If there was no receipt-freeness then a voter could use that receipt to prove to a coercer or vote-buyer the way they voted, or make such a proof public. With receipt-freeness this is not possible and without proof, it is unlikely that a coercer or vote-buyer would be willing to believe the voter. Due to this I believe that receipt-freeness is just as important in a remote system as in an in-person system.
+Those that authenticate early use the registration phase to use the authentication process to create election specific credentials \needcite{such as X}. This has the benefit that the credentials are shorter-lived, as they only apply to a single election, and
+
+The \textbf{Receipt-Freeness} property is primarily a factor adding to \emph{coercion-resistance} and a protection against vote-buying. With the fact that coercion-resistance is practically impossible for remote voting systems, it might be tempting to write-off receipt-freeness as unimportant. However, we can still counter all forms of vote-buying and coercion that do not involve physical presence --- which is expensive and logistically difficult on a large scale --- by ensuring receipt-freeness. If there was no receipt-freeness then a voter could use that receipt to prove to a coercer or vote-buyer the way they voted, or make such a proof public. With receipt-freeness this is not possible and without proof, it is unlikely that a coercer or vote-buyer would be willing to believe the voter. Due to this I believe that receipt-freeness is just as important in a remote system as in an in-person system.
 
 \textbf{Real-Time Universal Verifiability} is the property of a system that allows the property of universal verifiability to be conducted in real-time during the election. That is the bulletin board can be monitored in real-time and modifications observed. This would allow an external Auditor to be sure that the data on the bulletin board are not changed in a way that the voting system disallows, and such illegal modifications could be proven to have been made. This property enhances the universal verifiability property with time constraints. No party would be able to, with sufficient ability to break any cryptographic protocols, rewrite the bulletin board data to meet their goals while still validating under the rules of the voting system. They could only attack the system during the election itself, with all data making it onto the bulletin board.
 
@@ -43,39 +45,43 @@ The basic flow of an election is that the creator lists candidates and defines t
 
 Helios provides individual and universal verifiability through the publishing of the encrypted votes, along with enough proof to show that voters have voted within the bounds set in the election. The use of \glsplural{zkp} ensures that the votes conform to the correct structure and the homomorphic nature allows them to be tallied without decryption. This allows the encrypted vote data to be published in such a way that anyone can verify a specific vote is present and that the tally is correct. The vote data is available throughout the election process, so real-time universal verifiability is possible. The decryption of the tally also uses proof based on verifiable decryption, so without the key we can still be sure the tally was decrypted correctly providing the full universal verifiability. Note that this does not satisfy our definition of auditability which enforces that we must be able to discern the correct behaviour during and after the election and detect tampering. During the election the cast votes may be listed, but the onus is on the observer to prove that the list has been tampered with, Helios does not provide such. Once the result is published, the individual and universal verifiability properties combined allow any voter to check that their vote was included in that tally. Therefore, it stands to reason that an adversary, even with full access to the server running the election, could not remove votes without chance of detection. However, the Helios protocol does not forbid such an adversary the ability to create simulated votes for the absentee voters before calculating the totals. This implies that a high level of trust is required in the authority running the Helios server.
 
-By default, the Helios elections name voters by \gls{pii} --- in this case their email address. While this does not break the secrecy property directly, eternal secrecy is broken. Helios does have the ability to only identity voters by an alias which is a unique identifier not related to the individual and unique in each election. Provided the link between the voter and the alias is removed after the tallying, the eventual breaking of the cryptography would still not reveal the identity of the voter. Again, a dishonest server administrator could obtain that information from the server before it was removed, which implies a level of trust in the authority running the server, but not more so than already existed.
+By default, the Helios elections identify voters with \gls{pii} --- in this case their email address. While this does not break the secrecy property directly, eternal secrecy is broken. Helios does have the ability to only identity voters by an alias which is a unique identifier not related to the individual and unique in each election. Provided the link between the voter and the alias is removed after the tallying, the eventual breaking of the cryptography would still not reveal the identity of the voter. Again, a dishonest server administrator could obtain that information from the server before it was removed, which implies a level of trust in the authority running the server, but not more so than already existed.
 
 The voters are authenticated either by a password which the Helios system knows, or via an external authentication solution such as OpenID Connect. The exact method of authentication is configurable per election. This enforces the eligibility property with the exceptions of dishonest authentication providers --- registrars --- or dishonest server administrators. The result of the authentication of the user is not propagated into the vote, so with direct access to the database spurious votes could be cast.
 
 The votes in Helios are encrypted by the client, before posting to the server. This means we do not need to trust the server with unencrypted votes. The encryption process itself however requires the client to generate some randomness to use during encryption and subsequently destroy it. This randomness could be used to prove which candidate the vote was for and so breaks the receipt-freeness property.
 
-In summary, Helios' main weakness from a trust perspective is that much of its security is based on the security of the server running the software. This is often an acceptable assumption, under the threat model for the election.
+In summary, Helios' main weakness from a trust perspective is that much of its security is based on the security of the server running the software. This is often an acceptable assumption, given the specific threat model for the election being held.
 
 \subsection{Belenios}
 
 Belenios was heavy influenced by Helios, and the original implementation was indeed a fork of the Helios source code adding a distributed key setup for the trustees \cite{cortierBeleniosSimplePrivate2019}. It was subsequently re-implemented from scratch, but the protocol shows many similarities.
 
-A variant, BeleniosRF, enhances the protocol to provide receipt-freeness by use of a re-randomization step. The votes are encrypted and signed using the ElGamal cryptosystem, and a random number is required for each encryption. The knowledge of that number can prove your vote and so provide a receipt. The randomness is generated by the client, and so could be kept to provide that receipt to the voter. In BeleniosRF the encrypted vote and signature can be re-randomized at the voting server and a new valid signature created without the signing key. The voting server does not know the original vote as it is encrypted and the final cast vote is encrypted with randomness that the voter does not know, hence the protocol is reciept-free.
+A variant, BeleniosRF, enhances the protocol to provide receipt-freeness by use of a re-randomization step. The votes are encrypted and signed using the ElGamal cryptosystem, and a random number is required for each encryption. The knowledge of that number can prove your vote and so provide a receipt. The randomness is generated by the client, and so could be kept to provide that receipt to the voter. In BeleniosRF the encrypted vote and signature can be re-randomized at the voting server and a new valid signature created without the signing key. The voting server does not know the original vote as it is encrypted and the final cast vote is encrypted with randomness that the voter does not know, hence the protocol is receipt-free.
 
-A second variant, BeleniosVS goes further and provides a mechanism by which the vote does not even need to trust their own client. This is achieved by the vote being provided with a voting sheet ahead of time with the encrypted and signed votes already prepared. This sheet would also contain the randomness used for each encryption, so the voter can verify the encrypted values are correct. Combined with the BeleniosRF system for re-randomization, the vote is receipt-free and the user does not have to trust their own device. This system seems like it would be an excellent fit for an election with a secure voting booth. The booth provides the guaranteed isolation and the use of pre-prepared encryptions of votes means the voter need not trust the devices used for the voting.
+A second variant, BeleniosVS goes further and provides a mechanism by which the vote does not even need to trust their own client. This is achieved by the vote being provided with a voting sheet ahead of time with the encrypted and signed votes already prepared. This sheet would also contain the randomness used for each encryption, so the voter can verify the encrypted values are correct. Combined with the BeleniosRF system for re-randomization, the vote is receipt-free and the user does not have to trust their own device. Given a compromised device used for voting, the device could prevent submission of the vote but the voter would be able to confirm that. However, the device would not be able to create any vote on behalf of the user as the user never provides any secrets to it. This system seems like it would be an excellent fit for an election with a secure voting booth. The booth provides the guaranteed isolation and the use of pre-prepared encryptions of votes means the voter need not trust the devices used for the voting.
 
-We will consider this second variant, BeleniosVS, as it appears to be an evolution of the original. Being based on Helios, we will focus on the differences. BeleniosVS uses distributed key setup for the trustee keys that ensure that no entity ever sees the full decryption key at any point during the process. The key setup is also a threshold based system, meaning that only a subset of $M$ out of the $N$ trustees are required to perform the decryption. This has two effects. Firstly, given that $<M$ trustees are dishonest, the cast votes will remain secret, irrespective of the security of the server running the software or its database.
+We will consider this second variant, BeleniosVS, as it appears to be an evolution of the original. Being based on Helios, we will focus on the differences. BeleniosVS uses distributed key setup for the trustee keys that ensure that no entity ever sees the full decryption key at any point during the process. The key setup is also a threshold based system, meaning that only a subset of $M$ out of the $N$ trustees are required to perform the decryption. This has two effects. Firstly, given that $x < M$ trustees are dishonest, the cast votes will remain secret, irrespective of the security of the server running the software or its database. Secondly, it means that $N-M$ trustees can decide not to participate in the tallying and the result can still be calculated. There is a natural trade-off here between the additional robustness of having $N-M$ large, the additional confidence of secrecy by having $M$ large and the practical aspects of having $N$ large.
+
+\todo{more here?}
 
 
-\subsection{Estonian i-Voting}
+\subsection{Estonian i-Voting: IVXV}
 
-\needcite{estonia ivoting}
+Estonia has embraced remote voting and the i-Voting system known as IVXV has been used to run state level parliamentary elections since 2005. The description of the system and a limited amount of the source code used to run it is publicly available online\footnote{\url{https://www.valimised.ee/en/internet-voting/documents-about-internet-voting}}. The system is also under much scrutiny as the primary example of binding governmental elections held remotely. There have been 4
 
-Estonia has embraced remote voting and has been used to run state level parliamentary elections since 2005.
+The system allows remote votes to be cast for a time period before the physical casts. Voters may cast as many electronic votes as they wish, with a "last-vote-counts" mechanism for differentiating the valid vote. Finally, voters may also vote via the in-person methods with this vote overriding any previous electronic votes.
+
+
 
 \todo{
-    The i-Voting system is documented, it relies on eligibility via the smart cards and the estonian national PKI. These cards are used for all governmental actions, except marriage, divorce and real-estate
+  The i-Voting system is documented, it relies on eligibility via the smart cards and the estonian national PKI. These cards are used for all governmental actions, except marriage, divorce and real-estate
 
-    The system uses asymetic encryption with the smart card and uses a 2-level encryption and mix-net. The vote is encrypted with the public key for the election (provided as part of the PKI) and the encrypted vote is signed with the key of the user. The vote server recieves the user's vote and check the signature, unpacks the vote and then submits it into the wider system.
+  The system uses asymetic encryption with the smart card and uses a 2-level encryption and mix-net. The vote is encrypted with the public key for the election (provided as part of the PKI) and the encrypted vote is signed with the key of the user. The vote server recieves the user's vote and check the signature, unpacks the vote and then submits it into the wider system.
 
-    questions: secrecy? probably, but in the system the voter->vote may still be accessible. maybe the vote server holds the votes until time to release (catching double votes - the system is last vote wins).
+  questions: secrecy? probably, but in the system the voter->vote may still be accessible. maybe the vote server holds the votes until time to release (catching double votes - the system is last vote wins).
 
-    All the data is in the paper...
+  All the data is in the paper...
 }
 
 \subsection{Bitcoin voting proposal - Zhao}
@@ -83,9 +89,9 @@ Estonia has embraced remote voting and has been used to run state level parliame
 \cite{zhaoHowVotePrivately2016}
 
 \todo{
-    Has a novel incentive for good behaviour in charging a refundable bitcoin spend to vote \\
-    Also costs bitcoin to vote at all and requires a lot of co-operation between voters. \\
-    Interesting, but given the current volatility in the value of bitcoin (the paper suggests using 5BTC for vote - ~£200,000!) perhaps it is fundamentally flawed
+  Has a novel incentive for good behaviour in charging a refundable bitcoin spend to vote \\
+  Also costs bitcoin to vote at all and requires a lot of co-operation between voters. \\
+  Interesting, but given the current volatility in the value of bitcoin (the paper suggests using 5BTC for vote - ~£200,000!) perhaps it is fundamentally flawed
 
 }
 
@@ -94,9 +100,9 @@ Estonia has embraced remote voting and has been used to run state level parliame
 \cite{tarasovInternetVotingUsing2017}
 
 \todo{
-    Runs on unmodified ZCash \\
-    pre-paid cards suggested \\
-    anonymity provided by the ZCash addressing scheme. \\
+  Runs on unmodified ZCash \\
+  pre-paid cards suggested \\
+  anonymity provided by the ZCash addressing scheme. \\
 }
 
 \subsection{Scalable Open Vote Network}
@@ -104,9 +110,9 @@ Estonia has embraced remote voting and has been used to run state level parliame
 \cite{seifelnasrScalableOpenVoteNetwork2020}
 
 \todo{
-    Ethereum, base on prior work. \\
-    Smart contracts control all \\
-    Tally Computation off-chain with published evidence \\
+  Ethereum, base on prior work. \\
+  Smart contracts control all \\
+  Tally Computation off-chain with published evidence \\
 }
 
 \subsection{LWE Based proposal - Chillotti}
@@ -114,7 +120,7 @@ Estonia has embraced remote voting and has been used to run state level parliame
 \cite{chillottiHomomorphicLWEBased}
 
 \todo{
-    Post-Quantum, but otherwise, the voting is basically the same model as any homomorphic encryption based system.
+  Post-Quantum, but otherwise, the voting is basically the same model as any homomorphic encryption based system.
 }
 
 \subsection{Vote-SAVER - Lee}
@@ -122,8 +128,8 @@ Estonia has embraced remote voting and has been used to run state level parliame
 \cite{leeSAVERSNARKfriendlyAdditivelyhomomorphic2019}
 
 \todo{
-    This is interesting. based on a zkSNARK and smart contracts \\
-    another Ethereum based system.
+  This is interesting. based on a zkSNARK and smart contracts \\
+  another Ethereum based system.
 }
 
 \subsection{Generic Cryptocurrency Based Voting - Yu}
@@ -131,7 +137,7 @@ Estonia has embraced remote voting and has been used to run state level parliame
 \cite{yuPlatformindependentSecureBlockchainBased2018}
 
 \todo{
-    Use of Linkable Ring Signatures for scalability (keeping signatures short)
+  Use of Linkable Ring Signatures for scalability (keeping signatures short)
 }
 
 \subsection{Trustless - Gajek}
@@ -139,9 +145,9 @@ Estonia has embraced remote voting and has been used to run state level parliame
 \cite{gajekTrustlessCensorshipResilientScalable2019}
 
 \todo{
-    High claims of zero-trust \\
-    Solves the privacy/eligibility in zero trust with a distributed "off-chain oracle" system. \\
-    proptyped on HyperLedger
+  High claims of zero-trust \\
+  Solves the privacy/eligibility in zero trust with a distributed "off-chain oracle" system. \\
+  proptyped on HyperLedger
 }
 
 % for the trust on the table.
@@ -157,49 +163,49 @@ Estonia has embraced remote voting and has been used to run state level parliame
 
 
 \begin{table}[h]
-    \centering
-    \begin{tabular}{|Sr c c c c c c c c c c c c|}
-        \hline
-        Voting System                 & \rot{Correctness} & \rot{Secrecy} & \rot{Eligibility} & \rot{Fairness} & \rot{Robustness} & \rot{Receipt Freeness} & \rot{Coercion Resistance} & \rot{Individual Verifiability} & \rot{Universal Verifiability} & \rot{Auditability} & \rot{Real-time Universal Verifiability } & \rot{Eternal Secrecy} \\
+  \centering
+  \begin{tabular}{|Sr c c c c c c c c c c c c|}
+    \hline
+    Voting System                 & \rot{Correctness} & \rot{Secrecy} & \rot{Eligibility} & \rot{Fairness} & \rot{Robustness} & \rot{Receipt Freeness} & \rot{Coercion Resistance} & \rot{Individual Verifiability} & \rot{Universal Verifiability} & \rot{Auditability} & \rot{Real-time Universal Verifiability } & \rot{Eternal Secrecy} \\
 
-        \hline\hline
+    \hline\hline
 
-        \textbf{Helios}               & \ALL              & \SERVER       & \SERVERREG        & \SERVER        & \NP              & \NP                    & \NP                       & \ALL                           & \ALL                          & \NP                & \ALL                                     & \SERVER               \\
-        \hline
-        \textbf{Belenios}             & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
-        \textbf{i-Voting}             & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
-        \textbf{Zhao-Bitcoin}         & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
-        \textbf{Tarasov-ZCash}        & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
-        \textbf{Seiflelnasr-Ethereum} & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
-        \textbf{Chilloti-LWE}         & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
-        \textbf{Yu-Cryptocurrency}    & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
-        \textbf{Trustless-Gajek}      & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
+    \textbf{Helios}               & \ALL              & \SERVER       & \SERVERREG        & \SERVER        & \NP              & \NP                    & \NP                       & \ALL                           & \ALL                          & \NP                & \ALL                                     & \SERVER               \\
+    \hline
+    \textbf{BeleniosVS}           & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+    \hline
+    \textbf{i-Voting}             & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+    \hline
+    \textbf{Zhao-Bitcoin}         & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+    \hline
+    \textbf{Tarasov-ZCash}        & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+    \hline
+    \textbf{Seiflelnasr-Ethereum} & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+    \hline
+    \textbf{Chilloti-LWE}         & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+    \hline
+    \textbf{Yu-Cryptocurrency}    & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+    \hline
+    \textbf{Trustless-Gajek}      & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+    \hline
+  \end{tabular}
+
+
+
+  {\raggedright
+  \vspace{0.25em}
+  \footnotesize{
+    \begin{tabular}{r l}
+      \textbf{\NP}     & Not provided.                                            \\
+      \textbf{\ALL}    & Provided under all trust assumptions.                    \\
+      \textbf{\SERVER} & Provided assuming the server operator is trustworthy.    \\
+      \textbf{\AUTH}   & Provided assuming the election Authority is trustworthy. \\
+      \textbf{\REG}    & Provided assuming the Registrar is trustworthy.          \\
     \end{tabular}
+  }
+  }
 
-
-
-    {\raggedright
-    \vspace{0.25em}
-    \footnotesize{
-        \begin{tabular}{r l}
-            \textbf{\NP}     & Not provided.                                            \\
-            \textbf{\ALL}    & Provided under all trust assumptions.                    \\
-            \textbf{\SERVER} & Provided assuming the server operator is trustworthy.    \\
-            \textbf{\AUTH}   & Provided assuming the election Authority is trustworthy. \\
-            \textbf{\REG}    & Provided assuming the Registrar is trustworthy.          \\
-        \end{tabular}
-    }
-    }
-
-    \caption{Table of Voting Systems, Security Properties and Trust Requirements}
-    \label{table:voting-system-props}
+  \caption{Table of Voting Systems, Security Properties and Trust Requirements}
+  \label{table:voting-system-props}
 \end{table}
 
