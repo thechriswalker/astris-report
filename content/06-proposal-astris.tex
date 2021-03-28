@@ -73,7 +73,7 @@ This last non-goal is an interesting one, that later work may wish to revisit. I
     \item It must support verifiable decryption. A trustee must be able to prove that their decryption of the tally is correct.
 \end{itemize}
 
-There are a number of quantum-resistant algorithms \needcite{LWE, Ring-LWE, NTRU, mulitvariate, supersingular ECC,... } that fit some or all of these properties. ElGamal, while relying on the \gls{dlp} which has shown to be insecure under Shor's alorigthm \cite{shorAlgorithmsQuantumComputation1994}, has all the required properties. Provided all else is equal, using a post-quantum algorithm would indeed lower trust requirements as it would be more likely that the publicly available audit data for the election could \emph{never} be decrypted by an adversary, whereas under ElGamal a post-quantum attack could reveal data. Therefore, should we be able to replace our quantum-vulnerable algorithm with a quantum-resistant one, we would further reduce trust requirements in our system, but this reduction would be orthogonal to any other aspect. It would merely be replacing one black box with another.
+There are a number of quantum-resistant algorithms \needcite{LWE, Ring-LWE, NTRU, mulitvariate, supersingular ECC,... } that fit some or all of these properties. ElGamal, while relying on the \gls{dlp} which has shown to be insecure under Shor's alorigthm \cite{shorAlgorithmsQuantumComputation1994}, has all the required properties. Provided all else is equal, using a post-quantum algorithm would indeed lower trust requirements as it would be more likely that the publicly available audit data for the election could \emph{never} be decrypted by an adversary, whereas under ElGamal a post-quantum attack could reveal data. But given that we have --- under the reasonable trust assumption that the Registrar will destroy knowledge of the pairings of voter to voter ID --- no way to try votes to individuals, the \emph{eternal secrecy} property, this is of minimal added value. Therefore, should we be able to replace our quantum-vulnerable algorithm with a quantum-resistant one, we would further reduce trust requirements in our system, but this reduction would be orthogonal to any other aspect. It would merely be replacing one black box with another.
 
 Given this and that the post-quantum algorithms are significantly more complex to implement in software, I leave that as future work and accept that the solution will not be optimally minimized without post-quantum algorithms but that the core of this protocol would be unchanged by switching to one. Due to this, \autoref{ch:astris:overview} will not mention any specific cryptography and the exact nature of the implementation will be detailed only in \autoref{ch:astris:detail}.
 
@@ -104,49 +104,28 @@ This process is visualized in \autoref{fig:astris-sequence}.
 \section{Protocol Detail - V1.0}
 \label{ch:astris:detail}
 
-This section aims to describe the functioning of the Astris protocol version \texttt{1.0} unambiguously, such that there is enough information to build a functioning client, able to interoperate with the reference implementation.
-
-All the data types mentioned are fully described in \autoref{appendix:datatypes} as they are quite verbose. When a data type is referenced it will be with a monospaced font such as \nameref{dt:elgamal:ct}.
+This section aims to describe the functioning of the Astris protocol version \texttt{1.0} unambiguously, such that there is enough information to build a functioning client, able to interoperate with the reference implementation. All the data types mentioned are fully described in \autoref{appendix:datatypes} as they are quite verbose.
 
 \subsection{Peer-to-Peer Communication}
 \label{ch:astris:detail:p2p}
 
-The Astris inter-node communication is done via gRPC  \itodo{add grpc url footnote} over a tight interface, consisting of only two methods and four message definitions. It is so simple the entire spec in the Protocol Buffer \itodo{add proto buf url footnote} syntax can be included here:
+This specification details the inter-node communication, as we deem the boundary of the specification as how disparate clients should communicate, share data and come to a common conclusion. There are a number of operations within the protocol that call for an \emph{out-of-band} communication between one or more parties. The exact nature of these interactions is not specified, but the assumption is that the data \emph{could} be safely exchanged over a public network, without the need of a private channel.
 
-\begin{verbatim}
-syntax = "proto3";
-package astris;
-service AstrisV1 {
-  rpc RecvBlocks(ElectionID) returns (stream BlockHeader) {}
-  rpc GetBlock(BlockID) returns (FullBlock) {}
-}
-message ElectionID { bytes id = 1; }
-message BlockID    { bytes id = 1; }
+All inter-node communication via this API is concerned with the exchange of data about the blockchain. No higher voting functions will leak into the communication API.
 
-message BlockHeader {
-  bytes prev_id = 1; //
-  bytes payload_hash = 2; // this should match the payload
-  fixed32 timestamp = 3; // unix timestamp of block creation
-  fixed32 nonce = 4; // proof of work
-  fixed64 depth = 5; // block height or chain depth
-}
-message FullBlock {
-  BlockHeader header = 1;
-  bytes payload = 2;
-}
-\end{verbatim}
+The Astris inter-node communication is done via gRPC  \itodo{add grpc url footnote}, which while distinctly client/server in nature, can be used to build a peer-to-peer network. It's usage greatly simplifies the implementation versus using a much more complex peer-to-peer protocol such as `libp2p` (as used in IPFS \needcite{IPFS}) or attempting to create a custom peer-to-peer networking solution. Instead, we use a client/server based system to connect a peer in each direction. This means two connections per connected peer, rather than one, but given the reduced complexity of implementation and the ability to use a well-defined data exchange format with existing implementations and code-generation for various programming languages seemed worth it. The only concession to this design is that the common usage is to listen for new data from remote nodes --- hence the \texttt{RecvBlocks} method described below --- but also to add a \emph{single} block ourselves such as a voter registering or voting, or a trustee submitting a partial tally. As such the API is designed to allow most operations to \emph{not} require full participation in the network and only to connect outwards to listening nodes.
 
-\todo{Should peer discovery be part of the specification?}
+As with all gRPC services there is a file describing the protocol. The full file is described in \autoref{appendix:blockchain}, but the methods that need describing are as follows:
 
-Note that the service is \texttt{AstrisV1} to correspond with the current version of this specification. The gRPC service definition here is absolutely part of that specification as it describes how other implementations must communicate with each other. Note that the design is also such that each node will ask other nodes for information by means of connecting to the interface and awaiting data. That is, each method is a single direction stream of data, so each node will have to connect to and be connected to be each other node. This is by design, so the network can be run in a client-server, star topology as well as a peer-to-peer, mesh topology.
+\begin{description}
+    \item[\texttt{rpc PeerExchange(Peer) returns (stream Peer) \{\}}] A node will call this method to exchange its own peer information --- allowing the remote node to \emph{call back} if wanted --- and the remote node should send any peers it knows of back to the caller, as it discovers them. The number of peers a node should remember or send with this call is not specified but nodes should respond to this with as much useful information as possible.
+    \item[\texttt{rpc RecvBlocks(google.protobuf.Empty) returns (stream BlockHeader) \{\}}] This is a request from the calling node to ask the remote node to send new blocks as it discovers them. The remote node \emph{should} send the block currently at the end of its chain immediately. This allows the local node to attempt to get itself into
+    \item[\texttt{rpc GetBlock(BlockID) returns (FullBlock) \{\}}] This is a request for a block with a specific
+    \item[\texttt{rpc FromBlock(BlockID) returns (stream FullBlock) \{\}}] ask to an ordered list of block, starting at X
+    \item[\texttt{rpc AtDepth(Depth) returns (BlockID) \{\}}] Get the block header of a block at depth X
+    \item[\texttt{rpc PublishBlock(FullBlock) returns (Acceptance) \{\}}] Publish a block to the chain.
+\end{description}
 
-The second method \texttt{RecvBlocks} asks the remote peer to send it new blocks for the given \texttt{ElectionID} as it receives them. This could be a block the peer has just mined and is distributing to other peers, or it could be a block that the peer has received and re-broadcast. The remote peer should send it's current highest block in the chain immediately. This will allow the caller to ascertain whether they have the same chain and the respective depths. This will likely be called
-
-The third method \texttt{GetBlock} asks the remote peer to send the full data for a given \texttt{BlockID}. After the node has the \texttt{BlockID} of a given head-of-chain, it can then recursively request previous blocks until the chain is complete.
-
-The blockchain used for Astris is not a permanent one, it is ephemeral, existing only for the duration of the election and designed to allow all parties the opportunity to audit and validate the chain, detecting tampering in real-time.
-
-The structure of the blockchain in the Astris chain is described in the \autoref{appendix:blockchain}, along with the proof of work algorithm used to perform the first layer of validation for new blocks. Subsequent block validation --- that is validation of the block payload being of the correct type and allowed at the current point in time is covered specifically in each phase description in the later sections of this chapter.
 
 \subsection{Setup Phase}
 \label{ch:astris:detail:setup}
@@ -234,6 +213,8 @@ Note that we define the mechanism for propagating the election identifier and th
 
 \subsection{Vote Casting Phase}
 \label{ch:astris:detail:vote}
+
+
 
 % Once the election is opened, voters may vote by creating a number of encrypted votes (one for each candidate), encrypted with the public key for the election. These votes will be assured to each be representing 0 or 1 by means of a zero-knowledge proof. We can them also combine an overall proof that the sum of the votes is less than a threshold (probably $1$ in most cases but sometimes $x$ where $0 < x \le num_{candidates}$). The ElGamal based system we will use for the encryption makes the proofs fairly simple and very compact.
 

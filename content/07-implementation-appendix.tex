@@ -66,17 +66,98 @@ Signatures/Keys/Proofs
 \section*{Signature}
 \label{proc:sign}
 
+\todo{
+    Astris uses Schnorr signatures for various data. The process is to create a message $m$ from the data in a specific way. Then with a random number $r$, and commitment $C = h(m)$, we calculate something
+}
+
+
 \section*{Proof Of Knowledge}
 \label{proc:pok}
+
+Astris uses a proof of knowledge to prove that the creator knows the private key associated with a public key.
+First we construct a message $m$ from various data relating to the key and the context we are in --- for example the election identifier --- and we convert to an integer using a random oracle. In the absence of a true random oracle, we use the cryptographic hash function SHA256, giving us a 256bit integer which is the commitment $C = H(m)$.
+
+\todo{ Along with random data, chaum-pederson }
 
 \section*{Zero Knowledge Proof}
 \label{proc:zkp}
 
-of $n \in (0,1)$ or of $0 <= n <= max$
+These are used in Astris to show that a ciphertext encodes either a 0 or a 1, that is, it is $n$ such that $n \in (0,1)$.
+That is to show that the votes cast are only ones or zeros.
+
+Then we need to show that the sum of a voters votes is only a maximum of $x$ as set by the election setup data. That is, we need to prove that given $n = SUM(ciphertexts)$ then $0 <= n <= x$
+
+\todo{This is not even implemented yet}
 
 
 \section*{Canonical JSON Encoding}
 \label{proc:json}
 
+In order to use JSON serialization as a precursor to hashing to generate the block hashes, we need to ensure that all clients will encode the data in exactly the same way. As such we define a canonical JSON encoding which is used to serialize objects into for hashing and storage on the chain. JSON is not a unique representation of any object, but we can make it so by tightening some of the loose constraints.
+
+Whilst not directly related to canonical JSON, the \emph{big} integers in this spec --- for example those describing numbers in ciphertexts, signatures and keys --- are not serialized as raw integers despite the JSON spec allowing it. As most JSON decoding implementations would likely not accept these number, we prefer a string representation. Again, the obvious string of base-10 digits would be wasteful and instead we use the base64url encoding described in RFCxxx with padding removed. The numbers should be converted to a big-endian byte array before the base-64 encoding.
+
+In order to create a \emph{canonical} encoding of an object the following tweaks to the standard are made:
+
+\begin{enumerate}
+    \item Objects will have their keys sorted lexically.
+    \item Insignificant whitespace will be removed, i.e. no spacing or indentation
+    \item No spurious Unicode replacements in strings --- i.e. `\texttt{<}' $\leftarrow$ `\texttt{\ue{003c}}' --- \textbf{except} for the \texttt{LINE SEPARATOR U+2028} and \texttt{PARAGRAPH SEPARATOR U+2029} which should be encoded as \texttt{\ue{2028}} and \texttt{\ue{2029}} respectively.
+    \item After the encoding, we add a single line feed character, \texttt{ASCII 0x0A}, as a convenience for viewing the data manually.
+\end{enumerate}
+
+For a simple example, the object:
+
+\begin{verbatim}
+    {   "k": "<v/>",
+        "a": { "b": 1,
+               "a": 2 },
+        "0": [
+            "c",
+            "b",
+            "a"
+        ] }
+\end{verbatim}
+
+Would have the canonical representation:
+
+\begin{verbatim}
+{"0":["c","b","a"],"a":{"a":2,"b":1},"k":"<v/>"}
+\end{verbatim}
+
+For reference, the SHA256 hash of the Canonical JSON encoding of that object include the trailing new line character, encoded as hex is:
+
+\begin{center}
+    \texttt{5a5f0c64d0dd15c9ed2e2baa994c36dac4ba55c5a64ffde7e984b35ff004a543}
+\end{center}
+
+
+
+
+
 \chapter{The Astris Blockchain}
 \label{appendix:blockchain}
+
+The Astris Blockchain implementation is fairly simple. Each block's payload is an arbitrary set of bytes. These encode various data structures, but to the chain they are just bytes. The block header contains all the other metadata which can be used to validate the block. Let us use the gRPC Protocol Buffer message definition as that is the externally visible definition.
+
+\begin{verbatim}
+message BlockHeader {
+    bytes prev_id = 1;      // SHA256 hash of previous block
+    bytes payload_hash = 2; // SHA256 hash of the payload
+    fixed32 timestamp = 3;  // unix timestamp of block creation
+    fixed32 proof = 4;      // proof of work
+    fixed64 depth = 5;      // block height or chain depth
+    int16 kind = 6;         // type hint for the payload
+}
+\end{verbatim}
+
+The chain is maintained via \texttt{prev\_id} which is the previous block's ID, except for the genesis block which has all $0$ bytes here. The \texttt{payload\_hash} is a convenience, so we don't need to hash the entire payload each time we want to check the block ID. The \texttt{timestamp} is a 32bit unsigned integer representing seconds since the Unix epoch (00:00:00 on the 1st January 1970). The \texttt{depth} field is 64bit unsigned integer representing the block depth of this block in the chain, again a convenience to assist with validation and ordering. Finally, the \texttt{proof} field is a 32bit unsigned integer which is the result of our proof-of-work scheme explained later.
+
+The block ID is defined as the SHA256 hash of the concatenation of the previous block ID, the payload hash, the timestamp and the proof. The previous block ID and payload hash are bytes already, but the timestamp and proof are 32bit unsigned integers and must be converted to bytes using big-endian encoding. Note that the depth is in the block ID --- it is just metadata that could be calculated externally anyway, so its integrity as part of the ID is superfluous.
+
+In order to provide the proof of work, we define that the block ID must have $n$ leading 0 bits. That is, when considered as a number it should be less than the \emph{target} number. This is very straightforward to verify, but requires performing (on average) $2^n$ hashes before a valid value for the proof is found.
+
+
+
+
+Implementations will always consider the deepest valid chain as the correct one, however we should take careful note when a large change takes place as it may indicate adversarial behaviour. As such implementations are encouraged to keep all valid chains in storage, only considering the longest as true. The chains will make up a directed acyclic graph of blocks, with a single genesis and one longest branch. If more than one branch is equal longest, the implementation should pick the earliest final block as the true chain, but wait for new blocks to confirm which branch should be taken.
