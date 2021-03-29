@@ -119,10 +119,10 @@ As with all gRPC services there is a file describing the protocol. The full file
 
 \begin{description}
     \item[\texttt{rpc PeerExchange(Peer) returns (stream Peer) \{\}}] A node will call this method to exchange its own peer information --- allowing the remote node to \emph{call back} if wanted --- and the remote node should send any peers it knows of back to the caller, as it discovers them. The number of peers a node should remember or send with this call is not specified but nodes should respond to this with as much useful information as possible.
-    \item[\texttt{rpc RecvBlocks(google.protobuf.Empty) returns (stream BlockHeader) \{\}}] This is a request from the calling node to ask the remote node to send new blocks as it discovers them. The remote node \emph{should} send the block currently at the end of its chain immediately. This allows the local node to attempt to get itself into
-    \item[\texttt{rpc GetBlock(BlockID) returns (FullBlock) \{\}}] This is a request for a block with a specific
-    \item[\texttt{rpc FromBlock(BlockID) returns (stream FullBlock) \{\}}] ask to an ordered list of block, starting at X
-    \item[\texttt{rpc AtDepth(Depth) returns (BlockID) \{\}}] Get the block header of a block at depth X
+    \item[\texttt{rpc RecvBlocks(Empty) returns (stream BlockHeader) \{\}}] This is a request from the calling node to ask the remote node to send new blocks as it discovers them. The remote node \emph{should} send the block currently at the end of its chain immediately. This allows the local node to attempt to get itself in sync with the remote node, or whether the remote node is \emph{behind} it.
+    \item[\texttt{rpc GetBlock(BlockID) returns (FullBlock) \{\}}] This is a request for a block with a specific block ID. If the remote node knows about this block it should return it.
+    \item[\texttt{rpc FromBlock(BlockID) returns (stream FullBlock) \{\}}] Ask the remote node to sent an ordered stream of blocks, starting with the block with the given ID and continuing until the remote peer's current head of chain.
+    \item[\texttt{rpc AtDepth(Depth) returns (BlockID) \{\}}] Get the block ID of the block at a given depth according to the remote peer. This method allows us to use a binary search to find where our view of the chain differs from
     \item[\texttt{rpc PublishBlock(FullBlock) returns (Acceptance) \{\}}] Publish a block to the chain.
 \end{description}
 

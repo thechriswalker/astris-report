@@ -1,0 +1,44 @@
+syntax = "proto3";
+option go_package = "github.com/thechriswalker/go-astris/protocol";
+package astris;
+
+service AstrisV1 {
+  rpc PeerExchange(Peer)      returns (stream Peer) {}
+  rpc RecvBlocks(Empty)       returns (stream BlockHeader) {}
+  rpc GetBlock(BlockID)       returns (FullBlock) {}
+  rpc FromBlock(BlockID)      returns (stream FullBlock) {}
+  rpc AtDepth(Depth)          returns (BlockID) {}
+  rpc PublishBlock(FullBlock) returns (Acceptance) {}
+}
+
+message Empty {}
+
+message Peer {
+  string target = 1;
+}
+
+message Depth {
+  fixed64 depth = 1;
+}
+
+message Acceptance {
+  bool accepted = 1;
+}
+
+message BlockID {
+  bytes id = 1;
+}
+
+message BlockHeader {
+  bytes   prev_id = 1;
+  bytes   payload_hash = 2;
+  fixed32 timestamp = 3;
+  fixed32 proof = 4;
+  int64   depth = 5;
+  int32   kind = 6;
+}
+
+message FullBlock {
+  BlockHeader header = 1;
+  bytes       payload = 2;
+}

@@ -108,30 +108,34 @@ In order to create a \emph{canonical} encoding of an object the following tweaks
 
 For a simple example, the object:
 
-\begin{verbatim}
-    {   "k": "<v/>",
-        "a": { "b": 1,
-               "a": 2 },
-        "0": [
-            "c",
-            "b",
-            "a"
-        ] }
-\end{verbatim}
+\begin{lstlisting}[style=ES6]
+{   "k": "<v/>",
+    "a": { "b": 1,
+            "a": 2 },
+    "0": ["c",
+          "b",
+          "a"
+] }
+\end{lstlisting}
 
-Would have the canonical representation:
+Would have the canonical representation (note the trailing newline):
 
-\begin{verbatim}
+\begin{lstlisting}[style=ES6]
 {"0":["c","b","a"],"a":{"a":2,"b":1},"k":"<v/>"}
-\end{verbatim}
+
+\end{lstlisting}
 
 For reference, the SHA256 hash of the Canonical JSON encoding of that object include the trailing new line character, encoded as hex is:
 
-\begin{center}
-    \texttt{5a5f0c64d0dd15c9ed2e2baa994c36dac4ba55c5a64ffde7e984b35ff004a543}
-\end{center}
+\begin{lstlisting}[style=ES6]
+"5a5f0c64d0dd15c9ed2e2baa994c36dac4ba55c5a64ffde7e984b35ff004a543"
+\end{lstlisting}
 
+\chapter{Astris gRPC Service Definition}
 
+Astris gRPC specification, although part of the source code at \scriptsize{\url{\astrisrepo}}, is useful to include.
+
+\lstinputlisting[language=protobuf3, style=protobuf]{astris.proto}
 
 
 
@@ -140,16 +144,16 @@ For reference, the SHA256 hash of the Canonical JSON encoding of that object inc
 
 The Astris Blockchain implementation is fairly simple. Each block's payload is an arbitrary set of bytes. These encode various data structures, but to the chain they are just bytes. The block header contains all the other metadata which can be used to validate the block. Let us use the gRPC Protocol Buffer message definition as that is the externally visible definition.
 
-\begin{verbatim}
+\begin{lstlisting}[language=protobuf3, style=protobuf]
 message BlockHeader {
-    bytes prev_id = 1;      // SHA256 hash of previous block
-    bytes payload_hash = 2; // SHA256 hash of the payload
-    fixed32 timestamp = 3;  // unix timestamp of block creation
-    fixed32 proof = 4;      // proof of work
-    fixed64 depth = 5;      // block height or chain depth
-    int16 kind = 6;         // type hint for the payload
+    bytes   prev_id = 1;      // SHA256 hash of previous block
+    bytes   payload_hash = 2; // SHA256 hash of the payload
+    fixed32 timestamp = 3;    // unix timestamp of block creation
+    fixed32 proof = 4;        // proof of work
+    int64   depth = 5;        // block height or chain depth
+    int32   kind = 6;         // type hint for the payload
 }
-\end{verbatim}
+\end{lstlisting}
 
 The chain is maintained via \texttt{prev\_id} which is the previous block's ID, except for the genesis block which has all $0$ bytes here. The \texttt{payload\_hash} is a convenience, so we don't need to hash the entire payload each time we want to check the block ID. The \texttt{timestamp} is a 32bit unsigned integer representing seconds since the Unix epoch (00:00:00 on the 1st January 1970). The \texttt{depth} field is 64bit unsigned integer representing the block depth of this block in the chain, again a convenience to assist with validation and ordering. Finally, the \texttt{proof} field is a 32bit unsigned integer which is the result of our proof-of-work scheme explained later.
 
