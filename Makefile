@@ -6,16 +6,13 @@ engine=pdflatex ${pdflatex_args}
 #engine=luatex ${luatex_args}
 
 .DEFAULT: final
-.PHONY: final pdf clean library go-astris-ref dated
+.PHONY: final pdf clean library dated
 
 pdf: figures/astris-protocol.svg
 	${engine} ${filename}
 
 clean:
 	find . -type f -regex '.*.\(acn\|acr\|alg\|aux\|lof\|log\|lot\|synctex.gz\|toc\|bbl\|blg\|glg\|glo\|gls\|glsdefs\|ist\|out\)' -delete
-
-go-astris-ref:
-	./get-go-astris-latest-commit.sh > content/99-go-astris.tex
 
 figures/astris-protocol.svg: figures/astris-protocol.mmd
 	mmdc --theme neutral --input figures/astris-protocol.mmd --output figures/astris-protocol.svg
@@ -32,7 +29,7 @@ library:
 	#sed -i '/^\s\+pages\? =/d' library.bib
 	bibtex ${filename}
 
-final: library figures/astris-protocol.svg go-astris-ref
+final: library figures/astris-protocol.svg
 	@-${engine} ${filename}
 	# twice to ensure that the indexes are all built correctly
 	makeglossaries ${filename}

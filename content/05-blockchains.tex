@@ -15,7 +15,7 @@ Blockchains can also be used without the public consensus rules in what is known
 
 Whilst cryptocurrencies were the first major application of blockchain technology there are other problems \needcite{KM suggests refs} that can benefit from the decentralized nature and immutability. The two properties together imply a form of censorship resistance that centralized systems can never have --- that is, there is no authority that can intercede to perform the censorship, every node in the network has equal rites. Two examples where this is a desirable property are  the attempts to create decentralized alternatives to the most common \gls{dns} used on the Internet \cite{Namecoin,ENSEthereumName,UnstoppableDomainsDocumentation} and the central \gls{pki} root(s) of trust used in many Operating Systems for certificate validation in \gls{tls} \cite{yakubovBlockchainbasedPKIManagement2018,kubilayCertLedgerNewPKI2019,matsumotoIKPTurningPKI2016}.
 
-Blockchains have a major disadvantage to centralized ledgers in that the speed of transactions is often prohibitively slow for many applications. Using the Ethereum blockchain network as an example, at the time of writing the largest transaction volume in a single day was 1,406,016 on Thursday, September 17 2020 \footnote{Ethereum transaction rate data from \url{https://etherscan.io}} which equates to ~16.2 transactions per second compared to the Visa payment network which claims greater than 56,000 messages per second \footnote{Visa transaction rates as advertised at \url{https://visanet.co.uk}}.
+Blockchains have a major disadvantage to centralized ledgers in that the speed of transactions is often prohibitively slow for many applications. Using the Ethereum blockchain network as an example, at the time of writing the largest transaction volume in a single day was 1,406,016 on Thursday, September 17 2020 \footnote{Ethereum transaction rate data from \surl{https://etherscan.io}} which equates to ~16.2 transactions per second compared to the Visa payment network which claims greater than 56,000 messages per second \footnote{Visa transaction rates as advertised at \surl{https://visanet.co.uk}}.
 
 
 \section{Structure of a Blockchain}
@@ -80,28 +80,27 @@ The solution to this is to lower our requirement of proof from complete certaint
 
 \begin{figure}[h]
     \centering
-    \begin{lstlisting}
-        # right-shift by this amount will leave only the bits
-        # we want to check are 0
-        let shift = numberOfBitsInHashOutput - nBitsShouldBeZero
+    \begin{lstlisting}[style=ES6, language=ES6]
+// right-shift by this amount will leave only the bits
+// we want to check are 0
+let shift = numberOfBitsInHashOutput - nBitsShouldBeZero
 
-        function hashcash_prove (commitment) {
-            do {
-                # pick a random value for r
-                let r = random()
-                # until it verifies
-            } while (!hashcash_verify(commitment, r))
+function hashcash_prove (commitment) {
+    do {
+        // pick a random value for r
+        let r = random()
+        // until it verifies
+    } while (!hashcash_verify(commitment, r))
 
-            return r
-        }
+    return r
+}
 
-        function hashcash_verify (commitment, r) {
-            # concatenate and apply hash function
-            let h = hash(commitment || r)
-            # after shift the result should be zero
-            return (h >> shift == 0)
-        }
-
+function hashcash_verify (commitment, r) {
+    // concatenate and apply hash function
+    let h = hash(commitment || r)
+    // after shift the result should be zero
+    return (h >> shift == 0)
+}
         \end{lstlisting}
     \caption{Pseudo-code for the HashCash algorithm}
     \label{fig:hashcash}
@@ -132,7 +131,7 @@ In order to spend funds from a previous transaction output the smart contract co
     what about more on smart contracts, ETH vs. GAS, solidity and the EVM...
 }
 
-In the Namecoin (\url{https://namecoin.org}) blockchain while fully functioning as a cryptocurrency --- it started as a fork of the original Bitcoin code --- also has a second type of output for transactions which allows \emph{purchasing} a key-value pair publicized on the chain which then lasts a fixed period of time before it must be renewed. The main idea behind the chain was to provide a censor-resistant platform for registering \gls{dns} records without a central authority. The cost in the currency would deter squatting or mass registering domains and the immutability and decentralized nature would make external censorship or seizure impossible.
+In the Namecoin (\surl{https://namecoin.org}) blockchain while fully functioning as a cryptocurrency --- it started as a fork of the original Bitcoin code --- also has a second type of output for transactions which allows \emph{purchasing} a key-value pair publicized on the chain which then lasts a fixed period of time before it must be renewed. The main idea behind the chain was to provide a censor-resistant platform for registering \gls{dns} records without a central authority. The cost in the currency would deter squatting or mass registering domains and the immutability and decentralized nature would make external censorship or seizure impossible.
 
 These transactions give a blockchain value, either by simply allowing it to function as a cryptocurrency or as a platform for trust-less computing by the execution of arbitrary smart contracts. There are some blockchains that do not aim for this public utility and instead aim for the immutability for audit purposes. By making it infeasible to alter historic records, the blockchain allows entities to publicize the chain for external audit, even if the rules do not allow external entities to write to the chain. Known as a \emph{permissioned} blockchain where participants have different permission levels, the blockchain can still provide value with no cryptocurrency involved.
 

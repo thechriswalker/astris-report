@@ -124,40 +124,18 @@
 	tabsize=2,
   % This 'literate' block is responsible for colouring numbers
   % appearing in the code
-  literate={0}{{\textcolor{proto_digits}{0}}}{1}%
-           {1}{{\textcolor{proto_digits}{1}}}{1}%
-           {2}{{\textcolor{proto_digits}{2}}}{1}%
-           {3}{{\textcolor{proto_digits}{3}}}{1}%
-           {4}{{\textcolor{proto_digits}{4}}}{1}%
-           {5}{{\textcolor{proto_digits}{5}}}{1}%
-           {6}{{\textcolor{proto_digits}{6}}}{1}%
-           {7}{{\textcolor{proto_digits}{7}}}{1}%
-           {8}{{\textcolor{proto_digits}{8}}}{1}%
-           {9}{{\textcolor{proto_digits}{9}}}{1}%
-           {.0}{{\textcolor{proto_digits}{.0}}}{2}%
-           {.1}{{\textcolor{proto_digits}{.1}}}{2}%
-           {.2}{{\textcolor{proto_digits}{.2}}}{2}%
-           {.3}{{\textcolor{proto_digits}{.3}}}{2}%
-           {.4}{{\textcolor{proto_digits}{.4}}}{2}%
-           {.5}{{\textcolor{proto_digits}{.5}}}{2}%
-           {.6}{{\textcolor{proto_digits}{.6}}}{2}%
-           {.7}{{\textcolor{proto_digits}{.7}}}{2}%
-           {.8}{{\textcolor{proto_digits}{.8}}}{2}%
-           {.9}{{\textcolor{proto_digits}{.9}}}{2}%
+  literate={0;}{{\textcolor{proto_digits}{0}};}{2}%
+           {1;}{{\textcolor{proto_digits}{1}};}{2}%
+           {2;}{{\textcolor{proto_digits}{2}};}{2}%
+           {3;}{{\textcolor{proto_digits}{3}};}{2}%
+           {4;}{{\textcolor{proto_digits}{4}};}{2}%
+           {5;}{{\textcolor{proto_digits}{5}};}{2}%
+           {6;}{{\textcolor{proto_digits}{6}};}{2}%
+           {7;}{{\textcolor{proto_digits}{7}};}{2}%
+           {8;}{{\textcolor{proto_digits}{8}};}{2}%
+           {9;}{{\textcolor{proto_digits}{9}};}{2}%
            % We need to add some hacks - otherwise 'listings' would
            % colour (only) the digits in the types instead of the type
-           {int32}{{\textcolor{proto_type}{int32}}}{5}%
-           {int64}{{\textcolor{proto_type}{int64}}}{5}%
-           {uint32}{{\textcolor{proto_type}{uint32}}}{6}%
-           {uint64}{{\textcolor{proto_type}{uint64}}}{6}%
-           {sint32}{{\textcolor{proto_type}{sint32}}}{6}%
-           {sint64}{{\textcolor{proto_type}{sint64}}}{6}%
-           {fixed32}{{\textcolor{proto_type}{fixed32}}}{7}%
-           {fixed64}{{\textcolor{proto_type}{fixed64}}}{7}%
-           {sfixed32}{{\textcolor{proto_type}{sfixed32}}}{8}%
-           {sfixed64}{{\textcolor{proto_type}{sfixed64}}}{8}%
-           {256}{{\textcolor{proto_comment}{256}}}{3}%
-           {proto3}{proto3}{6}%
            {java_string_check_utf8}{{%
              \textcolor{proto_options}{java_string_check_utf8}}}{2}%
            {\ }{{ }}{1},

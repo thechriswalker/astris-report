@@ -20,6 +20,8 @@
 \usepackage[titletoc,title,header,page]{appendix}
 \usepackage{hyperref}
 
+\def\astrisrepo{https://github.com/thechriswalker/go-astris}
+
 \addto{\captionsenglish}{%
   \renewcommand{\bibname}{References}
 }
@@ -39,6 +41,7 @@
 % for vertical table headers
 \newcommand*\rot{\rotatebox{90}}
 
+\newcommand{\dtref}[2]{\hyperref[#2]{\texttt{#1}}}
 
 % block todo
 \newcommand{\todo}[1]{
@@ -48,6 +51,10 @@
     \hspace{-5em} \textbf{@TODO} #1
   }
 }
+
+\newcommand{\surl}[1]{{\scriptsize{\url{#1}}}}
+
+\newcommand{\rfc}[1]{RFC#1\footnote{\surl{https://tools.ietf.org/html/rfc#1}}}
 
 \newcommand{\ue}[1]{\char`\\u#1}
 
@@ -77,9 +84,6 @@
 \include{glossary}
 
 \begin{document}
-
-%we need variables from this file.
-\input{content/99-go-astris}
 
 \frontmatter
 \pagenumbering{gobble}

@@ -7,7 +7,7 @@ This chapter looks at a proposal for new e-voting protocol. The focus of the new
 \begin{quote}
     ``There are only two hard things in Computer Science: cache invalidation and naming things.''
 
-    \rightline{--- Phil Karlton\footnote{This quote was attributed to Phil Karlton by Tim Bray, first appearing on the Internet in 2005 \url(http://www.tbray.org/ongoing/When/200x/2005/12/23/UPI).}}
+    \rightline{--- Phil Karlton\footnote{This quote was attributed to Phil Karlton by Tim Bray, first appearing on the Internet in 2005 in the post: \surl{https://www.tbray.org/ongoing/When/200x/2005/12/23/UPI}.}}
 \end{quote}
 
 Fortunately our protocol description does not touch on cache invalidation. However, the protocol bears a distinct resemblance to the Helios v4 protocol. This is due to the fact that many constructs within Helios are perfectly suited to application in this protocol. There are also significant differences in both the way elections are set up, voters registered and how the public bulletin board is constructed. Therefore, \emph{Astris} --- one of the daughters of Helios in Greek mythology --- seemed a fitting name.
@@ -104,18 +104,18 @@ This process is visualized in \autoref{fig:astris-sequence}.
 \section{Protocol Detail - V1.0}
 \label{ch:astris:detail}
 
-This section aims to describe the functioning of the Astris protocol version \texttt{1.0} unambiguously, such that there is enough information to build a functioning client, able to interoperate with the reference implementation. All the data types mentioned are fully described in \autoref{appendix:datatypes} as they are quite verbose.
+This section describes the functioning of the Astris protocol version \texttt{1.0}. Along with the appendices, there should be enough information to build a functioning client able to interoperate with the reference implementation. All the data types mentioned are fully described in \autoref{appendix:datatypes}, along with information of how to sign various messages and details of the \glsplural{zkp} used in the various payloads.
 
 \subsection{Peer-to-Peer Communication}
 \label{ch:astris:detail:p2p}
 
-This specification details the inter-node communication, as we deem the boundary of the specification as how disparate clients should communicate, share data and come to a common conclusion. There are a number of operations within the protocol that call for an \emph{out-of-band} communication between one or more parties. The exact nature of these interactions is not specified, but the assumption is that the data \emph{could} be safely exchanged over a public network, without the need of a private channel.
+This specification includes the detail of the inter-node communication as it this integral to the creation of interoperable clients. There are a number of operations within the protocol that call for an \emph{out-of-band} communication between one or more parties. The exact nature of these interactions is not specified, but the assumption is always that the data \emph{could} be safely exchanged over a public network, without the need of a private channel.
 
-All inter-node communication via this API is concerned with the exchange of data about the blockchain. No higher voting functions will leak into the communication API.
+All inter-node communication via this API is concerned with the exchange of data about the blockchain. No higher voting functions leak into the communication API.
 
-The Astris inter-node communication is done via gRPC  \itodo{add grpc url footnote}, which while distinctly client/server in nature, can be used to build a peer-to-peer network. It's usage greatly simplifies the implementation versus using a much more complex peer-to-peer protocol such as `libp2p` (as used in IPFS \needcite{IPFS}) or attempting to create a custom peer-to-peer networking solution. Instead, we use a client/server based system to connect a peer in each direction. This means two connections per connected peer, rather than one, but given the reduced complexity of implementation and the ability to use a well-defined data exchange format with existing implementations and code-generation for various programming languages seemed worth it. The only concession to this design is that the common usage is to listen for new data from remote nodes --- hence the \texttt{RecvBlocks} method described below --- but also to add a \emph{single} block ourselves such as a voter registering or voting, or a trustee submitting a partial tally. As such the API is designed to allow most operations to \emph{not} require full participation in the network and only to connect outwards to listening nodes.
+The Astris inter-node communication is done via gRPC (\surl{https://grpc.io}) which is not technically an acronym but is, in essence, a Google\texttrademark Remote Procedure Call framework. While gRPC is distinctly client/server in nature, it can be used to build a peer-to-peer network. It's usage greatly simplifies the implementation versus using a much more complex ---albeit more feature rich--- peer-to-peer protocol such as the suite around \texttt{libp2p} (\surl{https://libp2p.io}) or attempting to create a custom peer-to-peer networking solution. Instead, we use a client/server based system to connect a peer in each direction. This means two connections per connected peer, rather than one, but given the reduced complexity of implementation and the ability to use a well-defined data exchange format with existing implementations and code-generation for various programming languages seemed worth it. The only concession to this design is that the common usage is to listen for new data from remote nodes --- hence the \texttt{RecvBlocks} method described below --- but also to add a \emph{single} block ourselves such as a voter registering or voting, or a trustee submitting a partial tally. As such the API is designed to allow most operations to \emph{not} require full participation in the network and only to connect outwards to listening nodes.
 
-As with all gRPC services there is a file describing the protocol. The full file is described in \autoref{appendix:blockchain}, but the methods that need describing are as follows:
+As with all gRPC services there is a file describing the protocol. The full file is described in \autoref{appendix:grpc}, but the methods that need describing are as follows:
 
 \begin{description}
     \item[\texttt{rpc PeerExchange(Peer) returns (stream Peer) \{\}}] A node will call this method to exchange its own peer information --- allowing the remote node to \emph{call back} if wanted --- and the remote node should send any peers it knows of back to the caller, as it discovers them. The number of peers a node should remember or send with this call is not specified but nodes should respond to this with as much useful information as possible.
@@ -133,25 +133,25 @@ As with all gRPC services there is a file describing the protocol. The full file
 The setup phase involves the Authority, Registrar and Trustees and is done before the blockchain is created. The data created in the phase will form the genesis block for the chain for this election.
 
 \begin{enumerate}
-    \item The Authority decides on the \nameref{dt:elgamal:params} $EG$, the number of Trustees $l$ and the required number of Trustees to decrypt the votes $t$
+    \item The Authority decides on the \dtref{ElGamalParams}{dt:elgamal:params} $EG$, the number of Trustees $l$ and the required number of Trustees to decrypt the votes $t$
     \item Each Trustee is assigned an index $i$ where $0 <= i < l$,
     \item The Authority sends each Trustee their initial data $(EG, i, t)$
-    \item Each Trustee Creates their \nameref{dt:setup:trustee} from the initial data and returns it to the Authority.
+    \item Each Trustee Creates their \dtref{TrusteeSetup}{dt:setup:trustee} from the initial data and returns it to the Authority.
           \begin{enumerate}
               \item Let $p,q,g$ be the parameters from $EG$.
-              \item Generate two \nameref{dt:elgamal:keypair} objects from $EG$. Label one as signing keypair and one as encryption keypair.
+              \item Generate two \dtref{KeyPair}{dt:elgamal:keypair} objects from $EG$. Label one as signing keypair and one as encryption keypair.
               \item Let the public key of the signing keypair be $P_{sig}$ and the public key of the encryption keypair be $P_{enc}$.
-              \item Create a \nameref{dt:elgamal:pok} $Z_{enc}$ of the secret key corresponding to $P_{enc}$.
-              \item Create $C$ an ordered list of $t$ random integers modulo $q$.
-              \item For each $c \in C$, calculate the exponent $e = g^c mod p$. Let $E$ be the ordered set of all the exponents for each $c$.
-              \item Create a \nameref{dt:elgamal:sig} $S$ over $(i, E, P_{sig}, P_{enc}, Z_{enc})$ by creating a message: \itodo{message}
+              \item Create a \dtref{ProofOfKnowledge}{dt:elgamal:pok} $Z_{enc}$ of the secret key corresponding to $P_{enc}$.
+              \item Create $C$ an ordered list of $t + 1$ random integers modulo $q$, which represent the coefficients of a polynomial of order $t$.
+              \item For each $c \in C$, calculate the exponent $e = g^c mod p$. Let $E$ be the ordered set of all the exponents for each $c$. These exponents act as a commitment to the coefficients, which the trustee does not reveal.
+              \item Create a \dtref{Signature}{dt:elgamal:pok} $S$ over $(i, E, P_{sig}, P_{enc}, Z_{enc})$ by creating a message: \itodo{message}
               \item The trustee returns $(i, E, P_{sig}, P_{enc}, Z_{enc}, S)$ to the Authority and keeps hold of the secret keys and coefficients.
           \end{enumerate}
-    \item The Registrar creates their \nameref{dt:setup:registrar} data from the initial data and returns it to the Authority.
+    \item The Registrar creates their \dtref{RegistrarSetup}{dt:setup:registrar} data from the initial data and returns it to the Authority.
           \begin{enumerate}
-              \item Generate a \nameref{dt:elgamal:keypair} from $EG$ to use as a signing key.
+              \item Generate a \dtref{KeyPair}{dt:elgamal:keypair} from $EG$ to use as a signing key.
               \item The registrar must provide a registration URL $U_r$ where the webpage must provide the facility to authenticate the voter and provide them with the information for them to complete the \nameref{ch:astris:detail:registration}.
-              \item Create a \nameref{dt:elgamal:sig} $S$ over $(P_{sig}, U_r)$
+              \item Create a \dtref{Signature}{dt:elgamal:sig} $S$ over $(P_{sig}, U_r)$
               \item Return $(P_{sig}, U_r, S)$ to the Authority.
           \end{enumerate}
     \item The Authority verifies all the proofs and signatures.
@@ -172,54 +172,104 @@ From this point onwards the setup data are fixed provide a reference for all cry
 
 This phase involves the Trustees, and each must produce two blocks each for the chain. All trustees must add the first of these blocks before any can add the second. All trustees must add both blocks in the allotted time period specified in the setup data timing section using \texttt{setup.timing.parameterConfirmation} and \texttt{setup.timing.timeZone} to calculate the minimum and maximum times allowed for the blocks to be added.
 
-\todo {This list is still draft}
+This phase is split into two sections. The sharing of encrypted shares and the publishing of the public key shards.
 
 \begin{enumerate}
     \item For Each trustee with index $i$
           \begin{enumerate}
-              \item Create the secret shares for each other Trustee $j$ as $S_{ij}$ encrypting them with the Trustee's published public encryption key.
-              \item Sign the set of shares.
-              \item Mine the data into a block and publish.
+              \item Create the secret shares for each other Trustee $j$ as $S_{ij}$ encrypting them with the Trustee's published public encryption key. The secret share is created by evaluating the polynomial chosen by the trustee's secret coefficients at the point $j$. The value is then encrypted with the recipient's public encryption key.
+              \item Each share is signed individually with the trustee's private signing key using as described in the appendix.
+              \item Put the data into a \nameref{dt:payload:shares} object, mine into a block and publish to the network.
           \end{enumerate}
-    \item Wait until all trustees have added their blocks
+    \item Wait until all trustees have added their blocks to the chain.
+\end{enumerate}
+
+The chain should only accept the blocks if the signatures are valid, using the trustee's verification key from the setup data. It should also verify that the shares cover every trustee except the publisher.
+
+\todo{There is an addition validation that can be done at this point? Or is it after the next bit.}
+
+\begin{enumerate}
     \item Each trustee $i$:
           \begin{enumerate}
-              \item decrypts all $S_{ij}$ and computes their key pair shard of the distributed key.
-              \item creates a PoK of their Secret part
-              \item creates a signature over the public key and pok.
-              \item publishes the pok, public key and signature on the chain
+              \item Validates the signature on the shares.
+              \item Decrypts all $S_{ji}$ -- shares for this trustee from the others
+              \item Computes the key pair shard of the distributed key. This is done by multiplying all the decrypted shares (along with a calculation of $S_{ii}$) into a value $x$. The value $x$ is now the secret key for the shard, so we calculate the public key $y$.
+              \item Creates a \dtref{ProofOfKnowledge}{dt:elgamal:pok} of the secret key $x$.
+              \item Creates a \dtref{Signature}{dt:elgamal:pok} over the data as described in the appendix.
+              \item Creates a \nameref{dt:payload:public} block and publishes to the chain.
           \end{enumerate}
 \end{enumerate}
 
-After this all participants have enough data to combine the public key shards into a combined public key to use for encrypting votes.
+The chain should only accept blocks where both the proof of knowledge and the signatures are valid, and we have not seen the trustee's block yet.
+
+After this all participants have enough data to combine the public key shards into a combined public key to use for encrypting votes, provided all the trustees have correctly submitted both blocks. If not, then the election cannot continue.
 
 \subsection{Voter Registration Phase}
 \label{ch:astris:detail:registration}
 
-This phase involves the Voters and the Registrar. Timings via \texttt{setup.timing.voterRegistration}
-
-\todo {This list is still draft}
+This phase involves the Voters and the Registrar. Timings for the phase should be taken from \texttt{setup.timing.voterRegistration}.
 
 \begin{enumerate}
-    \item Each eligible voter creates a keypair for the election using the ElGamal parameters in the setup data.
+    \item Each eligible voter creates a keypair for the election using the ElGamal parameters in the setup data. The secret key for the election must be kept safe by the voter.
     \item They then use a browser to navigate to (a GET request) the registration URL with the additional of the extra URL parameters:\\ \verb|election=<electionid>&public_key=<voter_public_key_json>|
-    \item The remote URL authenticates them via whichever mechanism the registrar approves.
-    \item The registrar gives the voter a unique id for this election, and creates a signature over the electionId, the publicKey and the voterId.
+    \item The remote URL authenticates them via a mechanism the approved by the registrar.
+    \item The registrar gives the voter a unique id for this election, and creates a signature over the data as described in the appendix on \nameref{dt:payload:reg}.
     \item The registrar gives the voter the signature.
-    \item The voter then publishes the block with the voterId, voter public key and registrar signature.
+    \item The voter then creates their own signature as described in the appendix.
+    \item The voter then combines this data into the \nameref{dt:payload:reg} and publishes the block.
 \end{enumerate}
 
+The chain should only accept blocks were the voter ID has not been seen before and both the signatures are valid. The first restriction could be lifted to allow voters to re-register should they lose their keys, but for version \texttt{1.0} only a single registration per voter is allowed.
+
 Note that we define the mechanism for propagating the election identifier and the voter's public key to the Registrar, but do not specify how the Registrar should return the data. This is deliberate as each implementation of the voting software may have a different mechanism for accepting the data back. We could use a redirection based approach similar to OAuth, with the opportunity for an \emph{out-of-band} method for non-URL-based interfaces. However, that would complicate the protocol beyond the scope of this report.
+
+By the time the registration phase closes, no more voters can register. Only those voters that have registered by this point will be able to cast a vote.
 
 \subsection{Vote Casting Phase}
 \label{ch:astris:detail:vote}
 
+This phase involves the Voters only. The timings should be taken from \texttt{setup.timing.voteCasting}. In this phase the voters will require their secret signing key.
 
+Once this phase is opened, voters may cast a ballot by creating a number of encrypted votes (one for each candidate), encrypted with the public key for the election. This public key is not directly published on the chain, but instead is implicit and may be calculated by the client from the data that is on the chain.
 
-% Once the election is opened, voters may vote by creating a number of encrypted votes (one for each candidate), encrypted with the public key for the election. These votes will be assured to each be representing 0 or 1 by means of a zero-knowledge proof. We can them also combine an overall proof that the sum of the votes is less than a threshold (probably $1$ in most cases but sometimes $x$ where $0 < x \le num_{candidates}$). The ElGamal based system we will use for the encryption makes the proofs fairly simple and very compact.
+These votes will be assured to each be representing 0 or 1 by means of a zero-knowledge proof. We then also combine them into an overall proof that the sum of the votes is less than a threshold given by $x$, taken from \texttt{setup.maxChoices} (probably $1$ in most cases but can be $0 < x \le num_{candidates}$). The ElGamal based system we will use for the encryption makes the proofs fairly simple and very compact.
+
+\begin{enumerate}
+    \item The voter decides on up to $x$ candidates they wish to vote for.
+    \item For each candidate, the voter:
+          \begin{enumerate}
+              \item Creates a \dtref{CipherText}{dt:elgamal:ct} of the value $0$ or $1$ as the vote (or not) for that candidate. We use Exponential ElGamal for this as it is additively homomorphic, so the actual value enciphered is $n = g^v mod p$ where $v \in (0,1)$. This encryption requires a random value $r$, which is available to the voter. This breaks the receipt-free property. See \autoref{ch:analysis:impl} for a full discussion of the implications of this.
+              \item Creates a \dtref{ZeroKnowledgeProof}{dt:elgamal:zkp} to prove that the ciphertext correctly encrypts a $0$ or a $1$ (but not which). \itodo{ZKP method}
+          \end{enumerate}
+    \item The voter now creates a final \dtref{ZeroKnowledgeProof}{dt:elgamal:zkp} proving that the sum of the votes is at most $x$.
+    \item The voter creates a signature for the \dtref{PayloadCastVote}{dt:payload:cast} using their secret signing key generated in the registration phase.
+    \item The voter combines this data along with their voter ID into a \dtref{PayloadCastVote}{dt:payload:cast} and submits it to the chain.
+\end{enumerate}
+
+The chain should only accept votes from voter IDs that are both registered during the registration phase and have a valid signature and whose glsplural{zkp} check out.
+
+In this version we will allow duplicate voting, with \emph{last-vote-cast-wins} semantics. That means a voter can vote more than once, but only the final vote counts. Ordering is enforced by the chain depth, not the timestamp.
 
 \subsection{Tally Decryption Phase}
 \label{ch:astris:detail:tally}
 
+This is the final interactive phase and involves the trustees only. The timings for this phase should be those from the \texttt{setup.timings.tallyDecryption}. We hope that all trustees participate in this phase, however only $x = \texttt{setup.trusteesRequired}$ trustees are necessary.
+
+\begin{enumerate}
+    \item The trustee creates the homomorphic sum of valid votes. Remember that we have last-vote-counts, and only one vote per voter should be added. The Exponential ElGamal process means that homomorphic addition is done by multiplication of the \texttt{a} and \texttt{b} values of the ciphertext.
+    \item The trustee then uses the secret part of the shard of the key to produce a partial decryption of each tally.
+    \item The trustee produces a \dtref{ZeroKnowledgeProof}{dt:elgamal:zkp} of correct decryption.
+    \item The trustee produces a \dtref{Signature}{dt:elgamal:sig} over this \nameref{dt:payload:tally}.
+    \item The trustee produces the final \nameref{dt:payload:tally} with the signature and proofs and adds the block to the chain.
+\end{enumerate}
+
+Blocks should only be accepted if not already seen for this trustee. The homomorphic sum of valid votes can be calculated externally and should match the values confirmed in this block. The \glsplural{zkp} of decryption should be valid and the signature should also validate.
+
+After at least $x$ trustees have submitted these blocks, we can combine the partial decryption results to reveal the final plain text tallies. These will still be the exponentials of the final values, but can be converted back by means of a discrete logarithm lookup. Given we know the maximum possible value for any vote is the number of voters, we have an upper bound on the amount of exponentiations we must perform to calculate the logarithms. Even with 50 million voters, this is not a particularly taxing computation. These final adjusted tallies do not need to be added to the chain as they are directly computable by the state of the chain up to this point, with no external data required. Implementations are likely to cache such results.
+
+We allow all trustees to add their blocks. Each additional block after the first $x$ should also be able to be combined with a $x - 1$ other partial decryption results to produce the \emph{same} tally. Therefore, the more we have the more confident we can be in the final result.
+
 \subsection{Verification Phase}
 \label{ch:astris:detail:verify}
+
+This is the simplest possible phase, as any observer can retrace the chain, applying the exact same checks that were performed by each node as the blocks were added in the first place. If the chain is valid, then the election is also valid and the result can be confirmed.

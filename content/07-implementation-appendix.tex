@@ -1,63 +1,318 @@
-\chapter{Datatypes in the Astris Protocol}
+\chapter{Data types in the Astris Protocol}
 \label{appendix:datatypes}
 
-List each one with a description. Could I extract them automatically with godoc? maybe...
+This is a list of the data types used for the block payloads in the Astris system. Some nested structures are broken out to minimize repetition.
 
-Big Integers are always stored in base64url encoded strings in the payloads.
+All strings in this specification are defined as UTF-8 encoded text, including numeric representations.
 
+Note that in all the serialized representations, integers marked as \texttt{BigInt} are arbitrary size and there will be serialized to strings as the base64url (\rfc{4648}) encoding with padding characters stripped. The integers should be treated as unsigned and converted to big-endian bytes before the encoding takes place.
 
-Payloads:
+We also list the construction of the signature messages where appropriate, but the full construction of a signature is defined with the \dtref{Signature}{dt:elgamal:pok} data type.
+
+\section*{Payload hints: \texttt{kind}}
+\label{dt:payload:hints}
+\begin{lstlisting}[style=ES6]
+    1 = PayloadElectionSetup
+    2 = PayloadTrusteeShares
+    3 = PayloadTrusteePublic
+    4 = PayloadVoterRegistration
+    5 = PayloadVoteCast
+    6 = PayloadPartialTally
+\end{lstlisting}
+
 \section*{\texttt{PayloadElectionSetup}}
+
 \label{dt:payload:setup}
+\begin{lstlisting}[style=ES6]
+// PayloadElectionSetup: kind=1
+{
+    protcolVersion:         "1.0"
+    name:                   string
+    blockDifficulty:        integer
+    encryptionSharedParams: ElGamalParameters
+    trusteesRequired:       integer
+    candidates:             Array<string>
+    maxChoices:             integer
+    trustees:               Array<TrusteeSetup>
+    registrar:              RegistrarSetup
+    timing:                 TimingInfo
+}
+\end{lstlisting}
+\vspace*{-0.95em}
+\label{dt:elgamal:params}
+\begin{lstlisting}[style=ES6, firstnumber=last]
+// ElGamalParameters
+{
+    p: BigInt // The group prime,
+    q: BigInt // The sub-group prime,
+    g: BigInt // The generator for the group
+}
+\end{lstlisting}
+\vspace*{-0.95em}
+\label{dt:trustee}
+\begin{lstlisting}[style=ES6, firstnumber=last]
+// TrusteeSetup
+{
+    name:               string
+    verificationKey:    PublicKey
+    encryptionKey:      PublicKey
+    encryptionProof:    ProofOfKnowledge
+    publicExponents:    Array<BigInt>    // length = trusteesRequired + 1
+    signature:          Signature
+}
+\end{lstlisting}
+\vspace*{-0.95em}
+\label{dt:registrar}
+\begin{lstlisting}[style=ES6, firstnumber=last]
+// RegistrarSetup
+{
+    name:               string
+    verificationKey:    PublicKey
+    registrationURL:    string
+    signature:          Signature
+}
+\end{lstlisting}
+\vspace*{-0.95em}
+\label{dt:timing}
+\begin{lstlisting}[style=ES6, firstnumber=last]
+// TimingInfo
+{
+    timeZone:               string      // IANA timezone specifier
+    parameterConfirmation:  TimeBounds
+    voterRegistration:      TimeBounds
+    voteCasting:            TimeBounds
+    tallyDecryption:        TimeBounds
+}
+// TimeBounds
+{
+    opens:  string // ISO8601 Timestamp with second precision
+    closes: string // and no timezone information. e.g. `2020-01-13T18:00:00`
+}
+\end{lstlisting}
+
+The signature for a \texttt{TrusteeSetup} is calculated with using a message created by concatenation of:
+\begin{enumerate}
+  \item the literal string \lstinline[style=ES6]{"trustee:"}
+  \item the base10 representation of the trustee index (0-based)
+  \item the literal string \lstinline[style=ES6]{":"}
+  \item the base16 (lowercased) representation of the encryption public key \texttt{Y} value
+  \item for each \texttt{publicExponent}:
+        \begin{enumerate}
+          \item the literal string \lstinline[style=ES6]{":"}
+          \item the base16 (lowercased) representation of the exponent
+        \end{enumerate}
+\end{enumerate}
+
+The signature for a \texttt{RegistrarSetup} is calculated with using a message created by concatenation of:
+
+\begin{enumerate}
+  \item the literal string \lstinline[style=ES6]{"registrar:"}
+  \item the \texttt{registrationURL}
+\end{enumerate}
 
 
 \section*{\texttt{PayloadTrusteeShares}}
 \label{dt:payload:shares}
+\begin{lstlisting}[style=ES6]
+// PayloadTrusteeShares
+{
+    trusteeIndex:   integer
+    shares:         Array<EncryptedShare> // length = number of trustees - 1
+}
+\end{lstlisting}
+\vspace*{-0.95em}
+\label{dt:encshare}
+\begin{lstlisting}[style=ES6, firstnumber=last]
+// EncryptedShare
+{
+    recipient:  integer     // the trusteeIndex this is for
+    point:      CipherText  // encrypted with recipient public encryption key
+    signature:  Signature
+}
+\end{lstlisting}
+
+The trustee shares for a trustee with index $i$ out of $N$ trustees should be an array of encrypted shares for each $j$ where $j \neq i$ and $0 <= j <= N$. The signature on an encrypted share is constructed by the concatenation of:
+
+\begin{enumerate}
+  \item the literal string \lstinline[style=ES6]{"share:"}
+  \item the base10 representation of the trustee index $i$
+  \item the literal string \lstinline[style=ES6]{":"}
+  \item the base10 representation of the recipient trustee index $j$
+  \item the literal string \lstinline[style=ES6]{":"}
+  \item the base10 representation of the trustee index $i$
+  \item the literal string \lstinline[style=ES6]{":"}
+  \item the base16 (lowercased) representation of the point ciphertext \texttt{a} value
+  \item the literal string \lstinline[style=ES6]{":"}
+  \item the base16 (lowercased) representation of the point ciphertext \texttt{b} value
+\end{enumerate}
 
 \section*{\texttt{PayloadTrusteePublic}}
 \label{dt:payload:public}
+\begin{lstlisting}[style=ES6]
+// PayloadTrusteePublic
+{
+    trusteeIndex:   integer
+    shardKey:       PublicKey
+    shardProof:     ProofOfKnowledge // of the PrivateKey paired to "shardKey"
+    signature:      Signature
+}
+\end{lstlisting}
+
+The signature on the trustee public data is constructed by the concatenation of:
+
+\begin{enumerate}
+  \item the literal string \lstinline[style=ES6]{"shard:"}
+  \item the base10 representation of the trustee index (0-based)
+  \item the literal string \lstinline[style=ES6]{":"}
+  \item the base16 (lowercased) representation of the \texttt{shardKey} public key \texttt{Y} value
+\end{enumerate}
 
 \section*{\texttt{PayloadVoterRegistration}}
 \label{dt:payload:reg}
+\begin{lstlisting}[style=ES6]
+// PayloadVoterRegistration
+{
+    voterId             string    // only the registrar knows the mapping between voterId and voter
+    verificationKey:    PublicKey // voters own verificationPublic key
+    registrarSig:       Signature // signed with the registrar's signing key
+    voterSig:           Signature // signed with the voters signing key
+}
+\end{lstlisting}
+
+The signature \texttt{registrarSig} on the voter registration object is produced by the Registrar. The message is constructed by concatenation of:
+
+\begin{enumerate}
+  \item the literal string \lstinline[style=ES6]{"voter:r:"}
+  \item the base16 (lowercased) representation of the SHA256 sum over the \texttt{voterId}.
+  \item the literal string \lstinline[style=ES6]{":"}
+  \item the base16 (lowercased) representation of the \texttt{verificationKey} public key \texttt{y} value
+\end{enumerate}
+
+The signature \texttt{voterSig} on the voter registration object is produced by the Voter, using the private key associated with the \texttt{verificationKey} in the object. The message is constructed by concatenation of:
+
+\begin{enumerate}
+  \item the literal string \lstinline[style=ES6]{"voter:v:"}
+  \item the base16 (lowercased) representation of the SHA256 sum over the \texttt{voterId}.
+  \item the literal string \lstinline[style=ES6]{":"}
+  \item the base16 (lowercased) representation of the \texttt{registrarSig} \texttt{r} value
+\end{enumerate}
 
 \section*{\texttt{PayloadVoteCast}}
 \label{dt:payload:cast}
+\begin{lstlisting}[style=ES6]
+// PayloadVoteCast
+{
+    voterId:    string
+    votes:      Array<BigInt>               // length = number of candidates
+    proofs:     Array<ZeroKnowledgeProof>   // length = number of candidates
+    proof:      ZeroKnowledgeProof
+    signature:  Signature
+}
+\end{lstlisting}
+
+The \texttt{proofs} array contains \glsplural{zkp} for each vote, to prove that the encrypted vote is either a $0$ or $1$.
+
+The \texttt{proof} gls{zkp} is a proof that the sum of ciphertexts contains a number between $0$ and the configured \texttt{maxChoices} from the \texttt{PayloadElectionSetup}.
+
+The signature is created with the voter's private key and the message is constructed by concatenation of:
+
+\todo{add zkp data to sig?}
+
+\begin{enumerate}
+  \item the literal string \lstinline[style=ES6]{"ballot:"}
+  \item the base16 (lowercased) representation of the SHA256 sum over the \texttt{voterId}.
+  \item for each element of \texttt{votes}
+        \begin{enumerate}
+          \item the literal string \lstinline[style=ES6]{":"}
+          \item the base16 (lowercased) representation of the value
+        \end{enumerate}
+\end{enumerate}
 
 \section*{\texttt{PayloadPartialTally}}
 \label{dt:payload:tally}
+\begin{lstlisting}[style=ES6]
+// PayloadPartialTally
+{
+    trusteeIndex:   integer
+    tallies:        Array<CipherText>           // in candidate order
+    decrypted:      Array<BigInt>               // in candidate order
+    proofs:         Array<ZeroKnowledgeProof>   // in candidate order
+    signature:      Signature
+}
+\end{lstlisting}
 
+The \texttt{proofs} array contains \glsplural{zkp} for each decryption, proving the correct partial application of the shard key of the trustee.
 
+The signature is created with the trustee's private signing key and the message is constructed by concatenation of:
 
-Signatures/Keys/Proofs
+\todo{add zkp data to sig?}
 
-\section*{\texttt{ElGamalParameters}}
-\label{dt:elgamal:params}
+\begin{enumerate}
+  \item the literal string \lstinline[style=ES6]{"tally:"}
+  \item the base10 representation of the trustee index
+  \item for each ciphertext of \texttt{tallies}
+        \begin{enumerate}
+          \item the literal string \lstinline[style=ES6]{":"}
+          \item the base16 (lowercased) representation of the \texttt{a} value
+          \item the literal string \lstinline[style=ES6]{":"}
+          \item the base16 (lowercased) representation of the \texttt{b} value
+        \end{enumerate}
+  \item for each element of \texttt{decrypted}
+        \begin{enumerate}
+          \item the literal string \lstinline[style=ES6]{":"}
+          \item the base16 (lowercased) representation of the value
+        \end{enumerate}
+\end{enumerate}
 
+\section*{Common Structures}
 
-\section*{\texttt{PublicKey}}
 \label{dt:elgamal:pk}
-
-\section*{\texttt{KeyPair}}
+\begin{lstlisting}[style=ES6]
+// PublicKey
+{ y: BigInt }
+\end{lstlisting}
+\vspace*{-0.95em}
+\label{dt:elgamal:sk}
+\begin{lstlisting}[style=ES6, firstnumber=last]
+// SecretKey
+{ x: BigInt }
+\end{lstlisting}
+\vspace*{-0.95em}
 \label{dt:elgamal:keypair}
-
-
-\section*{\texttt{ProofOfKnowledge}}
+\begin{lstlisting}[style=ES6, firstnumber=last]
+// KeyPair
+{
+    pk: PublicKey
+    sk: SecretKey
+}
+\end{lstlisting}
+\vspace*{-0.95em}
 \label{dt:elgamal:pok}
-(of secret key)
-
-\section*{\texttt{Signature}}
-\label{dt:elgamal:sig}
-(over a defined message)
-
-\section*{\texttt{ZeroKnowledgeProof}}
+\begin{lstlisting}[style=ES6, firstnumber=last]
+// CipherText
+{
+    a: BigInt // known as "alpha"
+    b: BigInt // known as "beta"
+}
+\end{lstlisting}
+\vspace*{-0.95em}
+\label{dt:elgamal:pok}
+\begin{lstlisting}[style=ES6, firstnumber=last]
+// ProofOfKnowledge (of a SecretKey) / Signature (over a defined message)
+// Both constructs share the same properties
+{
+    c: BigInt
+    r: BigInt
+}
+\end{lstlisting}
+\vspace*{-0.95em}
 \label{dt:elgamal:zkp}
-(of a fact about a ciphertext)
-
-\section*{\texttt{CipherText}}
-\label{dt:elgamal:ct}
-
-\section*{\texttt{VoterList}}
-\label{dt:setup:voterlist}
+\begin{lstlisting}[style=ES6, firstnumber=last]
+// ZeroKnowledgeProof
+{
+    // TODO: properties here
+}
+\end{lstlisting}
 
 
 \chapter{Common Processes in the Astris Protocol}
@@ -67,7 +322,7 @@ Signatures/Keys/Proofs
 \label{proc:sign}
 
 \todo{
-    Astris uses Schnorr signatures for various data. The process is to create a message $m$ from the data in a specific way. Then with a random number $r$, and commitment $C = h(m)$, we calculate something
+  Astris uses Schnorr signatures for various data. The process is to create a message $m$ from the data in a specific way. Then with a random number $r$, and commitment $C = h(m)$, we calculate something
 }
 
 
@@ -95,15 +350,15 @@ Then we need to show that the sum of a voters votes is only a maximum of $x$ as 
 
 In order to use JSON serialization as a precursor to hashing to generate the block hashes, we need to ensure that all clients will encode the data in exactly the same way. As such we define a canonical JSON encoding which is used to serialize objects into for hashing and storage on the chain. JSON is not a unique representation of any object, but we can make it so by tightening some of the loose constraints.
 
-Whilst not directly related to canonical JSON, the \emph{big} integers in this spec --- for example those describing numbers in ciphertexts, signatures and keys --- are not serialized as raw integers despite the JSON spec allowing it. As most JSON decoding implementations would likely not accept these number, we prefer a string representation. Again, the obvious string of base-10 digits would be wasteful and instead we use the base64url encoding described in RFCxxx with padding removed. The numbers should be converted to a big-endian byte array before the base-64 encoding.
+Whilst not directly related to canonical JSON, the \emph{big} integers in this spec --- for example those describing numbers in ciphertexts, signatures and keys --- are not serialized as raw integers despite the JSON spec allowing it. As most JSON decoding implementations would likely not accept these number, we prefer a string representation. This is descibed in the preamble of \autoref{appendix:datatypes}.
 
 In order to create a \emph{canonical} encoding of an object the following tweaks to the standard are made:
 
 \begin{enumerate}
-    \item Objects will have their keys sorted lexically.
-    \item Insignificant whitespace will be removed, i.e. no spacing or indentation
-    \item No spurious Unicode replacements in strings --- i.e. `\texttt{<}' $\leftarrow$ `\texttt{\ue{003c}}' --- \textbf{except} for the \texttt{LINE SEPARATOR U+2028} and \texttt{PARAGRAPH SEPARATOR U+2029} which should be encoded as \texttt{\ue{2028}} and \texttt{\ue{2029}} respectively.
-    \item After the encoding, we add a single line feed character, \texttt{ASCII 0x0A}, as a convenience for viewing the data manually.
+  \item Objects will have their keys sorted lexically.
+  \item Insignificant whitespace will be removed, i.e. no spacing or indentation
+  \item No spurious Unicode replacements in strings --- i.e. `\texttt{<}' $\leftarrow$ `\texttt{\ue{003c}}' --- \textbf{except} for the \texttt{LINE SEPARATOR U+2028} and \texttt{PARAGRAPH SEPARATOR U+2029} which should be encoded as \texttt{\ue{2028}} and \texttt{\ue{2029}} respectively.
+  \item After the encoding, we add a single line feed character, \texttt{ASCII 0x0A}, as a convenience for viewing the data manually.
 \end{enumerate}
 
 For a simple example, the object:
@@ -132,12 +387,18 @@ For reference, the SHA256 hash of the Canonical JSON encoding of that object inc
 \end{lstlisting}
 
 \chapter{Astris gRPC Service Definition}
+\label{appendix:grpc}
 
-Astris gRPC specification, although part of the source code at \scriptsize{\url{\astrisrepo}}, is useful to include.
+Astris gRPC specification, although part of the source code at {\surl{\astrisrepo}}, is useful to include.
 
 \lstinputlisting[language=protobuf3, style=protobuf]{astris.proto}
 
+Some points to note in the specification.
 
+\begin{enumerate}
+  \item \texttt{FromBlock} allows traversal from a block towards the end of the chain. The blocks themselves only have the hash of the previous block in them so iterating forward is more complex than iterating backwards. This method implies that implementations must be able to iterate over the chain in either direction.
+  \item \texttt{AtDepth} allows a node to check the block ID that another node has at a specific depth in the chain allowing efficient calculation of where the two chains might diverge.
+\end{enumerate}
 
 \chapter{The Astris Blockchain}
 \label{appendix:blockchain}
@@ -155,13 +416,11 @@ message BlockHeader {
 }
 \end{lstlisting}
 
-The chain is maintained via \texttt{prev\_id} which is the previous block's ID, except for the genesis block which has all $0$ bytes here. The \texttt{payload\_hash} is a convenience, so we don't need to hash the entire payload each time we want to check the block ID. The \texttt{timestamp} is a 32bit unsigned integer representing seconds since the Unix epoch (00:00:00 on the 1st January 1970). The \texttt{depth} field is 64bit unsigned integer representing the block depth of this block in the chain, again a convenience to assist with validation and ordering. Finally, the \texttt{proof} field is a 32bit unsigned integer which is the result of our proof-of-work scheme explained later.
 
-The block ID is defined as the SHA256 hash of the concatenation of the previous block ID, the payload hash, the timestamp and the proof. The previous block ID and payload hash are bytes already, but the timestamp and proof are 32bit unsigned integers and must be converted to bytes using big-endian encoding. Note that the depth is in the block ID --- it is just metadata that could be calculated externally anyway, so its integrity as part of the ID is superfluous.
+The chain is maintained via \texttt{prev\_id} which is the previous block's ID, except for the genesis block which has all $0$ bytes here. The \texttt{payload\_hash} is a convenience, so we don't need to hash the entire payload each time we want to check the block ID. The \texttt{timestamp} is a 32bit unsigned integer representing seconds since the Unix epoch (00:00:00 on the 1st January 1970). The \texttt{depth} field is 64bit unsigned integer representing the block depth of this block in the chain, again a convenience to assist with validation and ordering. The \texttt{proof} field is a 32bit unsigned integer which is the result of our proof-of-work scheme explained later. Finally, we have the \texttt{kind} field which holds a hint as to the type of payload in this block. This is purely a convenience for the decoder to know in advance which data structure ought to be contained in the payload.
 
-In order to provide the proof of work, we define that the block ID must have $n$ leading 0 bits. That is, when considered as a number it should be less than the \emph{target} number. This is very straightforward to verify, but requires performing (on average) $2^n$ hashes before a valid value for the proof is found.
+The block ID is defined as the SHA256 hash of the concatenation of the previous block ID, the payload hash, the timestamp, the proof and the kind hint. The previous block ID and payload hash are bytes already, but the timestamp, proof and kind are 32bit unsigned integers and must be converted to bytes using big-endian encoding. Note that the depth is in the block ID --- it is just metadata that could be calculated externally and attempts to place fake data in this field will be noticed swiftly so its integrity as part of the ID is superfluous.
 
+In order to provide the proof of work, we define that the block ID must have $n$ leading 0 bits. That is, when considered as a number it should be less than the \emph{target} number. This is very straightforward to verify, but requires performing (on average) $2^n$ hashes before a valid value for the proof is found. The number of leading 0-bits is known as the \emph{difficulty} and is defined as $32$ for the genesis block --- which is less suseptible to post-facto forgery as the block ID is published as the election identifier --- and for every subsequent block by the value in the election setup data --- i.e. it is under control of the election authority.
 
-
-
-Implementations will always consider the deepest valid chain as the correct one, however we should take careful note when a large change takes place as it may indicate adversarial behaviour. As such implementations are encouraged to keep all valid chains in storage, only considering the longest as true. The chains will make up a directed acyclic graph of blocks, with a single genesis and one longest branch. If more than one branch is equal longest, the implementation should pick the earliest final block as the true chain, but wait for new blocks to confirm which branch should be taken.
+Implementations should always consider the deepest valid chain as the correct one, however we should take careful note when a large change takes place as it may indicate adversarial behaviour. As such implementations are encouraged to keep all valid chains in storage, only considering the longest as true. The chains will make up a directed acyclic graph of blocks, with a single genesis and one longest branch. If more than one branch is equal longest, the implementation should pick the earliest final block as the true chain, but wait for new blocks to confirm which branch should be taken.

@@ -13,34 +13,30 @@ sequenceDiagram
 
     A->>A: Initial Election Parameters
     A->>+T: Send Params
-    T-->>-A: Send Keys and ZKPs<br/>as required for setup
+    T-->>-A: Send Keys, Exponents, Proofs,<br/>Signatures as required for setup
     A->>+R: Send Params
-    R-->>-A: Send VoterList, RegURL, Keys and ZKP<br />as required for setup
+    R-->>-A: Send RegURL, Keys and Signature<br />as required for setup
 
     A-->>+BC: Create Genesis Block
     BC-->+AD: Auditor Watches Chain
 
-    Note over BC, V: Parameter Confirmation Phases
+    Note over BC, V: Parameter Confirmation (Shares, then Public)
 
-    loop Each Phase
-
-    BC->>+T: Check BlockChain for data
-    T-->>-BC: Confirm with Signature and next Phase data
-    BC->>+R: Check BlockChain for data
-    R-->>-BC: Confirm with Signature and next Phase data
-
-    end
+    BC->>+T: Check BlockChain for setup data
+    T-->>-BC: Confirm with Signature and Encrypted Shares
+    BC->>+R: Check BlockChain for all shares
+    R-->>-BC: Confirm with Signature and Public Key Shard
 
     Note over BC,V: Voter Registration Phase
 
-    BC->>+V: Check Genesis Block
-    V->>+R: Authenticate with Registrar<br />and Send PublicKey
+    BC->>+V: Check Genesis Block and Parameter Confirmation
+    V->>+R: Authenticate with Registrar<br />and send Public Key
     R-->>-V: Sign PublicKey and VoterId
-    V-->>-BC: Add Block with Signed PublicKey and VoterId
+    V-->>-BC: Sign and Add Block with <br />Signed PublicKey and VoterId
 
     Note over BC,V: Vote Casting Phase
 
-    V->>BC: Add Block with encrypted vote and ZKP
+    V->>BC: Add Block with Signature, Encrypted <br />Votes and ZKP
 
     Note over BC,V: Tally Decryption Phase
 
