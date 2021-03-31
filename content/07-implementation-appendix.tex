@@ -203,9 +203,9 @@ The signature \texttt{voterSig} on the voter registration object is produced by 
 // PayloadVoteCast
 {
     voterId:    string
-    votes:      Array<BigInt>               // length = number of candidates
-    proofs:     Array<ZeroKnowledgeProof>   // length = number of candidates
-    proof:      ZeroKnowledgeProof
+    votes:      Array<BigInt>                      // length = number of candidates
+    proofs:     Array<ZeroKnowledgeProofOneOrZero> // length = number of candidates
+    proof:      ZeroKnowledgeProofOneOfX
     signature:  Signature
 }
 \end{lstlisting}
@@ -215,8 +215,6 @@ The \texttt{proofs} array contains \glsplural{zkp} for each vote, to prove that 
 The \texttt{proof} gls{zkp} is a proof that the sum of ciphertexts contains a number between $0$ and the configured \texttt{maxChoices} from the \texttt{PayloadElectionSetup}.
 
 The signature is created with the voter's private key and the message is constructed by concatenation of:
-
-\todo{add zkp data to sig?}
 
 \begin{enumerate}
   \item the literal string \lstinline[style=ES6]{"ballot:"}
@@ -244,8 +242,6 @@ The signature is created with the voter's private key and the message is constru
 The \texttt{proofs} array contains \glsplural{zkp} for each decryption, proving the correct partial application of the shard key of the trustee.
 
 The signature is created with the trustee's private signing key and the message is constructed by concatenation of:
-
-\todo{add zkp data to sig?}
 
 \begin{enumerate}
   \item the literal string \lstinline[style=ES6]{"tally:"}
@@ -287,7 +283,7 @@ The signature is created with the trustee's private signing key and the message 
 }
 \end{lstlisting}
 \vspace*{-0.95em}
-\label{dt:elgamal:pok}
+\label{dt:elgamal:ct}
 \begin{lstlisting}[style=ES6, firstnumber=last]
 // CipherText
 {
@@ -310,47 +306,145 @@ The signature is created with the trustee's private signing key and the message 
 \begin{lstlisting}[style=ES6, firstnumber=last]
 // ZeroKnowledgeProof
 {
-    // TODO: properties here
+    a: BigInt,
+    b: BigInt,
+    c: BigInt,
+    r: BigInt,
 }
+// ZeroKnowledgeProofOneOrZero
+// represented as a tuple of 2 proofs
+[ZeroKnowledgeProof, ZeroKnowledgeProof]
+
+// ZeroKnowledgeProofOneOfX
+// represented as an X-tuple of proofs,
+[ZeroKnowledgeProof, ..., ZeroKnowledgeProof] // length = X
 \end{lstlisting}
 
 
 \chapter{Common Processes in the Astris Protocol}
 \label{appendix:processes}
 
+We note here that many cryptographic operations assume a random oracle. That is a function that given a sequence of bytes, produces a deterministic second sequence of bytes where there is no discernable relation between the two sequences. Cryptographic Hash functions fulfil this property with high confidence and therefore when a random oracle is required, we instead use a hash function. For Astris \texttt{1.0} the hash function used for all random oracle substitution is the SHA256 digest function.
+
+
 \section*{Signature}
 \label{proc:sign}
 
-\todo{
-  Astris uses Schnorr signatures for various data. The process is to create a message $m$ from the data in a specific way. Then with a random number $r$, and commitment $C = h(m)$, we calculate something
-}
+Astris uses Schnorr signatures described fully in \rfc{8235}. We start with our system parameters $p$, $q$ and $g$, the secret key $a$ (with public key  $A = g^a\ \textrm{mod}\ p$) and a random number $v \in_R \mathbb{Z}_q$. We then calculate $V = g^v\ \textrm{mod}\ p$. Now we create the message to be signed in a manner specific to the data we wish to sign, each data type with a signature has the details of how their message should be constructed. Assume that message is created as an array of bytes: $m$.
 
+Now we create the commitment $c = H(V || A || m)\ \textrm{mod}\ q$ where $H$ is the SHA256 hash function and the concatenation is done as follows:
 
-\section*{Proof Of Knowledge}
+\begin{enumerate}
+  \item Start with the string (UTF8 encoded): \lstinline[style=ES6]{"sig|"}.
+  \item Then append the base16 (lowercased) representation of $V$.
+  \item Append a pipe character \lstinline[style=ES6]{"|"}.
+  \item Then append the base16 (lowercased) representation of $A$.
+  \item Append a pipe character \lstinline[style=ES6]{"|"}.
+  \item Then append the raw bytes of the message $m$.
+\end{enumerate}
+
+Now we calculate the response $r = v - ac\ \textrm{mod}\ q$. The signature is now the pair $(c, r)$.
+
+To verify the signature we recreate $V = g^r * A^c\ \textrm{mod}\ p$, and therefore the expected challenge message $C = H(V || A || m)\ \textrm{mod}\ q$ in the same way as during creation. Then we check:
+
+\begin{enumerate}
+  \item $A$ is a valid public key for this system
+  \item $C \equiv c$ the challenge we created is the same as the given one.
+\end{enumerate}
+
+\section*{Proof Of Knowledge of Secret Key}
 \label{proc:pok}
 
-Astris uses a proof of knowledge to prove that the creator knows the private key associated with a public key.
-First we construct a message $m$ from various data relating to the key and the context we are in --- for example the election identifier --- and we convert to an integer using a random oracle. In the absence of a true random oracle, we use the cryptographic hash function SHA256, giving us a 256bit integer which is the commitment $C = H(m)$.
+The Proof of Knowledge construct is a \gls{zkp}. In fact, it is exactly the same construct as the Signature. Consider that to create a valid signature, one must possess the secret key, so \emph{any} signature that is valid by definition proves the possession of the private key. So we perform the exact same process as the defined for Signature, with the fixed message of \lstinline[style=ES6]{"pok"}.
 
-\todo{ Along with random data, chaum-pederson }
-
-\section*{Zero Knowledge Proof}
+\section*{Zero Knowledge Proofs}
 \label{proc:zkp}
 
-These are used in Astris to show that a ciphertext encodes either a 0 or a 1, that is, it is $n$ such that $n \in (0,1)$.
-That is to show that the votes cast are only ones or zeros.
+We have two \glsplural{zkp} that both rely on the same core process. We will describe it once and then describe the two distinct processes. The general method is specified in \cite{camenischProofSystemsGeneral}.
 
-Then we need to show that the sum of a voters votes is only a maximum of $x$ as set by the election setup data. That is, we need to prove that given $n = SUM(ciphertexts)$ then $0 <= n <= x$
+Firstly, we have the system parameters $(g,p,q)$ and choose a random $w \in \mathbb{Z}_q$. Let us consider the following parameters we choose: $h \in \mathbb{Z}_p$ is public knowledge and $s \in \mathbb{Z}_q$ is the secret knowledge we wish to prove we know, but not reveal. Let $G = g^s$ and $H = h^s$ be public. Finally, we have a function $F$ which produces a challenge $C \in \mathbb{Z}_q$ in a random oracle model. The exact specifics depend on the type of proof.
 
-\todo{This is not even implemented yet}
+The prover calculates:
 
+\begin{enumerate}
+  \item Commitment A: $t_1 = g^w$
+  \item Commitment B: $t_2 = h^w$
+  \item A challenge with: from $C = F()$, $F$ may use any public parameters known so far.
+  \item A Response $R = (w - sC)\ \textrm{mod}\ q$
+\end{enumerate}
+
+The proof is the tuple $(t_1, t_2, C, R, G, H)$.
+
+The verifier can now take the public information $(g,p,q,h)$ and the proof $(t)_1, t_2, C, R, G, H)$ and check:
+
+\begin{enumerate}
+  \item $g^R mod p = (t_1G^C)\ \textrm{mod}\ p$
+  \item $h^R mod p = (t_2H^C)\ \textrm{mod}\ p$
+  \item That the challenge $C$ was created correctly from the data, which will be specific to the type of proof.
+\end{enumerate}
+
+\subsection*{Zero Knowledge Proof of Correct Decryption}
+\label{proc:zkp:dec}
+
+As we are using ElGamal over a finite field for encryption, we can prove that a plaintext comes from a ciphertext without revealing our secret key. Let us remember the encryption and decryption functions over the parameters $(p,q,g)$.
+
+To encrypt a message $m$ with a public key $y$ we need randomness $r \in_{R} \mathbb{Z}_q$. Then we calculate $a = g^r\ \textrm{mod}\ p$ and $b = mh^r\ \textrm{mod}\ p$. The ciphertext is $(a,b)$
+
+To decrypt the ciphertext $(a,b)$ with private key $x$ we calculate $m = ba^{-x}\ \textrm{mod}\ p$.
+
+The decryption function can be rearranged as $b/m = a^x$ and the public key is $y = g^x$. So we can create a \gls{zkp} with a simple challenge function over $(t_1, t_2)$ that we have defined using our random oracle function over the message created by concatenation of:
+
+\begin{enumerate}
+  \item the literal string \lstinline[style=ES6]{"zkp:dec|"}
+  \item the base16 (lowercased) representation of $t_1$
+  \item the literal string \lstinline[style=ES6]{"|"}
+  \item the base16 (lowercased) representation of $t_2$
+\end{enumerate}
+
+The public parameters are $s = x$, $g = g$, $G = g^s = g^x = y$, $h = a$, $H = a^s = a^x = b/m$ (we have the ciphertext and plaintext as we have decrypted the value).
+
+
+\subsection*{Zero Knowledge Proof of Encryption of One of a Set of Plaintexts}
+\label{proc:zkp:enc}
+
+This one is more complex. We wish to prove that the ciphertext given is a valid encryption of one of a set of possible plaintexts. The possible texts are public.
+
+In this situation we use the method for create a proof that we know one piece of knowledge from a group described in \cite{camenischProofSystemsGeneral} to create a set of proofs over the possible plaintexts, where all but the \emph{real} values are faked. We use the fake commitments from the fake proofs, along with the real commitment, to create an overall challenge value. We then subtract the fake challenge values from the overall challenge value to create the challenge for the real proof.
+
+In this situation, the verifier cannot tell which proof is the real one, but can check that they all verify. They can also sum the challenge values and check that they match the calculated challenge value for a commitment over all the proofs. If so, then the plaintext must indeed be one of the given values.
+
+The prover has the list of plaintexts $(m_1, m_2, ..., m_k)$, the ciphertext $(a,b)$ and the randomness $r$ used in the encryption. There is also a publicly known piece of metadata $d$ (in our case a hash of the voter's ID in the system) to prevent re-use of the \gls{zkp} in a separate context.
+
+For each plaintext in the list where $i$ is the index:
+
+If the plaintext $m_i$ \emph{isn't} the one encrypted, we create a fake proof. The fake proof calculates $b_i = b / m_i$ and two random values for the challenge and response $C \in_{R} \mathbb{Z}_q$ and $R \in_{R} \mathbb{Z}_q$. They then calculates the values for $(t_1, t_2)$ (which is done the other way around in a real proof). $t_1 = g^Ra^{-C}$ and $t_2 = y^Rb_{i}^{-C}$.
+
+If the plaintext $m_i$ \emph{is} the actual one encrypted, we create a real proof with \gls{zkp} parameters $s = r$, $h = y$, $g = g$. This implies that $G = g^r = a$ and $H = h^r = y^r = (g^x)^r = (g^r)^x = a^x = b/m_i$. As all of these values are known we can construct the \gls{zkp} commitments $(t_1, t_2)$. To create the challenge for the real proof we combine \emph{all} the commitments for all fake and real proofs in order by using the random oracle over a message constructed by concatenation of:
+
+\begin{enumerate}
+  \item the literal string \lstinline[style=ES6]{"zkp:enc|"}
+  \item for each proof in order:
+        \begin{enumerate}
+          \item the base16 (lowercased) representation of $t_1$
+          \item the literal string \lstinline[style=ES6]{"|"}
+          \item the base16 (lowercased) representation of $t_2$
+          \item the literal string \lstinline[style=ES6]{"|"}
+        \end{enumerate}
+  \item the extra metadata passed in $d$ as raw bytes
+\end{enumerate}
+
+The final challenge value is the random oracle's response, minus each of the other proof's challenge values. This ensures the sum of the challenges is the overall challenge value.
+
+The proof is then the list of tuples $(t_1, t_2, C, R)_1, (t_1, t_2, C, R)_2, ..., (t_1, t_2, C, R)_k$.
+
+The verifier must verify the list of proofs, against the list of plaintexts, without doing the challenge check, but instead creating a sum of the challenges. Then the verifier should re-create the challenge using all the commitments in order and the known metadata $d$. The sum of the individual challenges should match the overall re-created challenge value.
 
 \section*{Canonical JSON Encoding}
 \label{proc:json}
 
-In order to use JSON serialization as a precursor to hashing to generate the block hashes, we need to ensure that all clients will encode the data in exactly the same way. As such we define a canonical JSON encoding which is used to serialize objects into for hashing and storage on the chain. JSON is not a unique representation of any object, but we can make it so by tightening some of the loose constraints.
+In order to use JSON serialization as a precursor to hashing to generate the block hashes, we need to ensure that all clients will encode the data in exactly the same way. As such we define a canonical JSON encoding which is used to serialize objects into for hashing and storage on the chain. JSON is not a unique representation of any object, but we can make it so by tightening some loose constraints.
 
-Whilst not directly related to canonical JSON, the \emph{big} integers in this spec --- for example those describing numbers in ciphertexts, signatures and keys --- are not serialized as raw integers despite the JSON spec allowing it. As most JSON decoding implementations would likely not accept these number, we prefer a string representation. This is descibed in the preamble of \autoref{appendix:datatypes}.
+Whilst not directly related to canonical JSON, the \emph{big} integers in this spec --- for example those describing numbers in ciphertexts, signatures and keys --- are not serialized as raw integers despite the JSON spec allowing it. As most JSON decoding implementations would likely not accept these number, we prefer a string representation. This is described in the preamble of \autoref{appendix:datatypes}.
 
 In order to create a \emph{canonical} encoding of an object the following tweaks to the standard are made:
 

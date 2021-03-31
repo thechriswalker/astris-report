@@ -143,7 +143,7 @@ The setup phase involves the Authority, Registrar and Trustees and is done befor
               \item Let the public key of the signing keypair be $P_{sig}$ and the public key of the encryption keypair be $P_{enc}$.
               \item Create a \dtref{ProofOfKnowledge}{dt:elgamal:pok} $Z_{enc}$ of the secret key corresponding to $P_{enc}$.
               \item Create $C$ an ordered list of $t + 1$ random integers modulo $q$, which represent the coefficients of a polynomial of order $t$.
-              \item For each $c \in C$, calculate the exponent $e = g^c mod p$. Let $E$ be the ordered set of all the exponents for each $c$. These exponents act as a commitment to the coefficients, which the trustee does not reveal.
+              \item For each $c \in C$, calculate the exponent $e = g^c\ \textrm{mod}\ p$. Let $E$ be the ordered set of all the exponents for each $c$. These exponents act as a commitment to the coefficients, which the trustee does not reveal.
               \item Create a \dtref{Signature}{dt:elgamal:pok} $S$ over $(i, E, P_{sig}, P_{enc}, Z_{enc})$ by creating a message: \itodo{message}
               \item The trustee returns $(i, E, P_{sig}, P_{enc}, Z_{enc}, S)$ to the Authority and keeps hold of the secret keys and coefficients.
           \end{enumerate}
@@ -238,7 +238,7 @@ These votes will be assured to each be representing 0 or 1 by means of a zero-kn
     \item The voter decides on up to $x$ candidates they wish to vote for.
     \item For each candidate, the voter:
           \begin{enumerate}
-              \item Creates a \dtref{CipherText}{dt:elgamal:ct} of the value $0$ or $1$ as the vote (or not) for that candidate. We use Exponential ElGamal for this as it is additively homomorphic, so the actual value enciphered is $n = g^v mod p$ where $v \in (0,1)$. This encryption requires a random value $r$, which is available to the voter. This breaks the receipt-free property. See \autoref{ch:analysis:impl} for a full discussion of the implications of this.
+              \item Creates a \dtref{CipherText}{dt:elgamal:ct} of the value $0$ or $1$ as the vote (or not) for that candidate. We use Exponential ElGamal for this as it is additively homomorphic, so the actual value enciphered is $n = g^v\ \textrm{mod}\ p$ where $v \in (0,1)$. This encryption requires a random value $r$, which is available to the voter. This breaks the receipt-free property. See \autoref{ch:analysis:impl} for a full discussion of the implications of this.
               \item Creates a \dtref{ZeroKnowledgeProof}{dt:elgamal:zkp} to prove that the ciphertext correctly encrypts a $0$ or a $1$ (but not which). \itodo{ZKP method}
           \end{enumerate}
     \item The voter now creates a final \dtref{ZeroKnowledgeProof}{dt:elgamal:zkp} proving that the sum of the votes is at most $x$.
