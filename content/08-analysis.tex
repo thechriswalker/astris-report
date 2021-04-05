@@ -5,17 +5,26 @@
 \section{Analysis of the Proposed Protocol}
 \label{ch:analysis:analysis}
 
-\todo{Does the protocol meet the security properties I wanted it to?
-    Yes, but as for trust, it is reduced but is it minimal?}
+\todo{Does the protocol meet the security properties I wanted it to? \\
+    Yes, but as for trust, it is reduced but is it minimal? \\
+    Nope, we could have recipt-freeness if we add a Sealer, which would then need trusting but it could be a multi-party sealer, but that complicates the protocol by a non-negliible amount. Is it worth it?
+
+}
 
 
 \section{Comparison to Existing Protocols}
 \label{ch:analysis:comparison}
 
 \todo{
+    Of the systems covered in \autoref{ch:ev:existing}, a large number fell in a bracket that effectively use the same techniques for providing the core security properties. Different forms of encryption and \gls{zkp} techniques are used, but the core functionality is roughly the same. Astris is as well very similar in many ways, and this is likely due to convergent evolution --- they are good solutions to the problem and obviously better solutions do not yet exist. They all suffer from the same drawbacks as well, in that they become increasing more fragile or complex as further security guarantees are met. For example, we can reduce trust requirements in the holders of a private key using secret-sharing methods and multi-party-computing to prevent a single entity being able to subvert the whole system. However, with every extra multi-party step, we add complexity to the process which gives the opportunity for new attack vectors to creep in. The more communication a voter must perform, the more side-channel data is produced which could potentially link the voter back to the vote without the encryption or mixing algorithms being compromised. Many schemes assume the existence of not only a private channel to communicate, but a private, anonymous channel for communication. Such channels may not be realistically available. Other trade anonymity with K-anonymity --- everything is a trade off.
+}
+
+\todo{
     Does it tick more boxes? Does it make different assumptions? Is there less trust required?
 
     I would say it ticks a few more boxes, but the assumptions are different.
+
+    Note that on performing the implementation and actually writing the code to perform the encryption I found a number of unlisted but public reports similarly discussing evoting and trust and coming to similar conclusions. Should I mention these?
 }
 
 \section{Implementation Success and Analysis}

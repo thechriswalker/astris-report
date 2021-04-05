@@ -30,7 +30,13 @@ The \textbf{Receipt-Freeness} property is primarily a factor adding to \emph{coe
 \textbf{Eternal Secrecy} is a property that states that the connection between the voters identity and the vote they cast should never be able to be revealed. This means that any data released on the bulletin board, or during the voting process, should never reveal the link between the voter and their vote even if all the cryptographic protocols used are broken. This means, for example, that a voting system relying on a cryptosystem that can be broken with a quantum computing algorithm while secure today, would not be secure in a future where such quantum computers exist. In that future, all the protections from the cryptosystem will be void. We need to ensure that the link between voter and vote is not compromised even then. Note that such a break before or during an election would break the \emph{fairness} property, as the broken cryptosystem would reveal the state of the election before all votes were cast. So we will assume that this property is concerned with the future, after the end of the election.
 
 
-\section{Existing Systems Analysis}
+\textbf{Software Independence} is a property that enforces that any undetected changes or errors in the software cannot lead to undetected changes or errors in the result. This property was first discussed in \cite{rivestNoitionSoftwareIndependence2008} and is extremely important from a trust point of view. The concept is that a bug --- or indeed an active, malicious piece of code --- in the software for any stage in the election should not be able to produce data that any other correct software will accept as valid.
+
+\todo{
+  why is this so important.
+}
+
+\section{Existing Systems}
 \label{ch:ev:existing}
 
 There are many practical and theoretical remote voting systems, more than could be covered here. So we look at a selection that use a variety of technologies and techniques to achieve their goals, investigate the security properties they have and discuss the trust implication of their structure. See \autoref{table:voting-system-props} for a table of comparison of the various systems and the properties they achieve. This is not as binary as it may appear, as many of the properties are satisfied with a given assumption of trust. Therefore, the table shows an indication of the level of trust required to achieve the property, if it can be achieved at all.
@@ -63,41 +69,38 @@ A second variant, BeleniosVS goes further and provides a mechanism by which the 
 
 We will consider this second variant, BeleniosVS, as it appears to be an evolution of the original. Being based on Helios, we will focus on the differences. BeleniosVS uses distributed key setup for the trustee keys that ensure that no entity ever sees the full decryption key at any point during the process. The key setup is also a threshold based system, meaning that only a subset of $M$ out of the $N$ trustees are required to perform the decryption. This has two effects. Firstly, given that $x < M$ trustees are dishonest, the cast votes will remain secret, irrespective of the security of the server running the software or its database. Secondly, it means that $N-M$ trustees can decide not to participate in the tallying and the result can still be calculated. There is a natural trade-off here between the additional robustness of having $N-M$ large, the additional confidence of secrecy by having $M$ large and the practical aspects of having $N$ large.
 
-\todo{more here?}
-
-
 \subsection{Estonian i-Voting: IVXV}
 
-Estonia has embraced remote voting and the i-Voting system known as IVXV has been used to run state level parliamentary elections since 2005. The description of the system and a limited amount of the source code used to run it is publicly available online\footnote{\surl{https://www.valimised.ee/en/internet-voting/documents-about-internet-voting}}. The system is also under much scrutiny as the primary example of binding governmental elections held remotely. There have been 4
+Estonia has embraced remote voting and the i-Voting system known as IVXV has been used to run state level parliamentary elections since 2005. The description of the system and a limited amount of the source code used to run it is publicly available online\footnote{Source code at \surl{https://www.valimised.ee/en/internet-voting/documents-about-internet-voting}}. The system is also under much scrutiny since its inception as the primary example of binding governmental elections held remotely \needcite{scrutiny of ivoting}. There have been four reports from the Office for Democratic Institutions and Human Rights (OSCE/ODIHR), most recently in 2019 \cite{OSCEODIHRElection2019}, to observe the election processes and comment on potential security issues. These reports are designed to continually assess the current state of the system and its reaction to previous recommendations. Judging from the statistics regarding the proportion of votes that come from remote voters, the system is widely popular amongst the electorate --- in the 2019 election 43.8\% of votes were cast remotely according to \cite{OSCEODIHRElection2019}.
 
-The system allows remote votes to be cast for a time period before the physical casts. Voters may cast as many electronic votes as they wish, with a "last-vote-counts" mechanism for differentiating the valid vote. Finally, voters may also vote via the in-person methods with this vote overriding any previous electronic votes.
+The system allows remote votes to be cast for a time period before the physical casts. Voters may cast as many electronic votes as they wish, with a ``last-vote-counts'' mechanism for differentiating the valid vote. Finally, voters may also vote via the in-person methods with this vote overriding any previous electronic votes.
+
+The system is based on nationally run \gls{pki} for authentication of voters --- a system which is widely used in Estonia to authenticate citizens and create legally binding signatures. The identity system provides the voter with a private key that can be used to create such signatures. There is also a key generated specifically for the election. There are three distinct entities involved in the process, the Collector, the Processor and the Tallier.
+
+Votes are encrypted with the election-specific key, then the encrypted vote is signed with the voter's personal key and passed to the Collector, who does not have access to the private key for decrypting the votes. Once all votes have been cast, the Collector passes all votes to the Processor who verifies all the signatures and selects the correct single vote from any voter that has cast multiple, ensuring the ``last-vote-counts'' semantics. The Processor cannot decrypt the votes, so although it can match encrypted votes to voters, it cannot infer the voters' choices. The Processor then strips the signatures from the valid votes and passes them in bulk to the Tallier. As such, the Tallier does not have the ability to match encrypted votes to the voter that cast them, but the Tallier can decrypt the votes and so produce a final tally.
+
+The observations of the ODIHR in \cite{OSCEODIHRElection2019} stated that the system was improved compared to the time of the previous report, however certain internal data --- considered \emph{private} but available to those with privileged access to the internal systems --- contained enough information to break secrecy, when a voter had made their \emph{receipt} public. This receipt is intended to be solely prove that a vote cast was counted, satisfying \emph{individual verifiability}, but in this case would allow the entity with internal access the ability to reveal the voter's vote. This class of threat, that of internal users with elevated privileges accessing raw data presumed secret, exists in other remote voting systems and its severity may only be ascertained by the threat model and risk assessment of the specific election. In the case of the IVXV, these are binding national governmental elections and so the stakes are high.
+
+On the other hand, the role of Collector, Processor and Tallier are provided by independent entities which reduces the chances of collaboration which would also defeat the secrecy of the election. This is only a reduction of chances, rather than a full mitigation as an adversary would simply need to subvert all three entities, rather than just one to be in a position to attack the election. This would objectively be more difficult, but no less impossible.
+
+Despite the criticism and the potential security flaws, the published statistics from the Estonian elections show that many voters can and do overcome the trust requirements for submitting their votes remotely and that the number of voters willing to do so is increasing over time. It is my belief that the widespread use of digital identity in Estonian governmental processes --- which has been happening for many years --- has given the citizens enough confidence in the use of this identity for other legally binding commitments that they are willing to extend the same level of trust to the national voting system. As long as the system continues to work effective without major cyberattacks or public failings, I expect that confidence to rise. However, a major public failing of the system would likely have severe consequences on public trust of the digital identities. This make the continued success of the system balance on a knife edge, with public support predicated on the lack of incident, but incident always possible.
 
 
+\subsection{Bitcoin Voting Proposal - Zhao}
 
-\todo{
-  The i-Voting system is documented, it relies on eligibility via the smart cards and the estonian national PKI. These cards are used for all governmental actions, except marriage, divorce and real-estate
+This section looks at the system proposed in \cite{zhaoHowVotePrivately2016} which creates a voting system on top of the Bitcoin cryptocurrency. The system is limited to a two candidate election, with each voter able to vote for one candidate or the other, without the possibility of abstention. There are further practically issues in this system that make it unsuitable for real-world usage, such as the fact that it requires real bitcoin transactions that are not free. Whilst the proposal itself used 1 Bitcoin as the base pricing unit --- which would be a ridiculous with the current price of Bitcoin --- but even using a smaller base, the real-world costs would be problematic.
 
-  The system uses asymetic encryption with the smart card and uses a 2-level encryption and mix-net. The vote is encrypted with the public key for the election (provided as part of the PKI) and the encrypted vote is signed with the key of the user. The vote server recieves the user's vote and check the signature, unpacks the vote and then submits it into the wider system.
+The system describes two possible voting methods. The first behaves in such a way that should the protocol fail and the election not be satisfactorily concluded by a certain time, then the voter can receive the deposited amount back by creating a refund transaction. This first method however requires that each subsequent voter commits a larger amount of bitcoin in their deposit transaction. The second allows the voter to get back a deposit, but not the total cost of voting. Indeed, in either situation the cost of transactions themselves is not taken into account and every transaction has a non-zero cost in and of itself that goes to the miner of the block. While both these methods incentivize good behaviour of voters by imposing real-world costs for deviating from the protocol, the costs themselves impose a barrier to entry.
 
-  questions: secrecy? probably, but in the system the voter->vote may still be accessible. maybe the vote server holds the votes until time to release (catching double votes - the system is last vote wins).
+Another practicality issue is that the all the voters must contribute to the protocol in the correct stages and in the correct order, or the protocol fails and the refunds can be claimed but no winner decided. This make the process fragile, breaking the \emph{robustness} property.
 
-  All the data is in the paper...
-}
+Therefore, while much of the algorithmic processes within the scheme are sound, there is an extremely high opportunity for any single voter to completely void the entire election by withholding a vote. This places an extremely high level trust required for each participant to give to each other participant.
 
-\subsection{Bitcoin voting proposal - Zhao}
+\subsection{ZCash Voting Proposal - Tarasov}
 
-\cite{zhaoHowVotePrivately2016}
+This section looks at the system proposed in \cite{tarasovInternetVotingUsing2017} which uses the ZCash cryptocurrency as a base for a voting system.
 
-\todo{
-  Has a novel incentive for good behaviour in charging a refundable bitcoin spend to vote \\
-  Also costs bitcoin to vote at all and requires a lot of co-operation between voters. \\
-  Interesting, but given the current volatility in the value of bitcoin (the paper suggests using 5BTC for vote - ~£200,000!) perhaps it is fundamentally flawed
 
-}
-
-\subsection{ZCash voting proposal - Tarasov}
-
-\cite{tarasovInternetVotingUsing2017}
 
 \todo{
   Runs on unmodified ZCash \\
@@ -107,7 +110,7 @@ The system allows remote votes to be cast for a time period before the physical 
 
 \subsection{Scalable Open Vote Network}
 
-\cite{seifelnasrScalableOpenVoteNetwork2020}
+This section looks at the system proposed in \cite{seifelnasrScalableOpenVoteNetwork2020} which uses smart contracts on the Ethereum blockchain as a basis for a voting.
 
 \todo{
   Ethereum, base on prior work. \\
@@ -117,7 +120,7 @@ The system allows remote votes to be cast for a time period before the physical 
 
 \subsection{LWE Based proposal - Chillotti}
 
-\cite{chillottiHomomorphicLWEBased}
+This section looks at the system proposed in \cite{chillottiHomomorphicLWEBased} which uses a \emph{post-quantum} homomorphic encryption system as the base for a voting protocol.
 
 \todo{
   Post-Quantum, but otherwise, the voting is basically the same model as any homomorphic encryption based system.
@@ -125,7 +128,7 @@ The system allows remote votes to be cast for a time period before the physical 
 
 \subsection{Vote-SAVER - Lee}
 
-\cite{leeSAVERSNARKfriendlyAdditivelyhomomorphic2019}
+This section looks at the system proposed in \cite{leeSAVERSNARKfriendlyAdditivelyhomomorphic2019} which uses the Ethereum blockchain with a novel zero-knowledge proof system as the basis for a voting protocol.
 
 \todo{
   This is interesting. based on a zkSNARK and smart contracts \\
@@ -134,7 +137,7 @@ The system allows remote votes to be cast for a time period before the physical 
 
 \subsection{Generic Cryptocurrency Based Voting - Yu}
 
-\cite{yuPlatformindependentSecureBlockchainBased2018}
+This section looks at the system proposed in \cite{yuPlatformindependentSecureBlockchainBased2018} which describes a voting system that could run on any cryptocurrency.
 
 \todo{
   Use of Linkable Ring Signatures for scalability (keeping signatures short)
@@ -142,12 +145,13 @@ The system allows remote votes to be cast for a time period before the physical 
 
 \subsection{Trustless - Gajek}
 
-\cite{gajekTrustlessCensorshipResilientScalable2019}
+This section looks at the system proposed in \cite{gajekTrustlessCensorshipResilientScalable2019} which focuses on producing a zero-trust protocol.
 
 \todo{
   High claims of zero-trust \\
   Solves the privacy/eligibility in zero trust with a distributed "off-chain oracle" system. \\
-  proptyped on HyperLedger
+  proptyped on HyperLedger \\
+  \textbf{I have to justify why I haven't based everything on this.}
 }
 
 % for the trust on the table.
