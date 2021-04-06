@@ -85,9 +85,9 @@ On the other hand, the role of Collector, Processor and Tallier are provided by 
 Despite the criticism and the potential security flaws, the published statistics from the Estonian elections show that many voters can and do overcome the trust requirements for submitting their votes remotely and that the number of voters willing to do so is increasing over time. It is my belief that the widespread use of digital identity in Estonian governmental processeswhich has been happening for many years--- has given the citizens enough confidence in the use of this identity for other legally binding commitments that they are willing to extend the same level of trust to the national voting system. As long as the system continues to work effective without major cyberattacks or public failings, I expect that confidence to rise. However, a major public failing of the system would likely have severe consequences on public trust of the digital identities. This make the continued success of the system balance on a knife edge, with public support predicated on the lack of incident, but incident always possible.
 
 
-\subsection{Bitcoin Voting Proposal - Zhao}
+\subsection{Bitcoin Voting Proposal - Zhao and Chan}
 
-This section looks at the system proposed in \cite{zhaoHowVotePrivately2016} which creates a voting system on top of the Bitcoin cryptocurrency. The system is limited to a two candidate election, with each voter able to vote for one candidate or the other, without the possibility of abstention. There are further practically issues in this system that make it unsuitable for real-world usage, such as the fact that it requires real bitcoin transactions that are not free. Whilst the proposal itself used 1 Bitcoin as the base pricing unit ---which would be an inconceivable amount with the current price of Bitcoin--- but even using a smaller base, the real-world costs would be problematic.
+This section looks at the system proposed in \cite{zhaoHowVotePrivately2016} which creates a voting system on top of the Bitcoin cryptocurrency. The system is limited to a two candidate election, with each voter able to vote for one candidate or the other, without the possibility of abstention. There are further practically issues in this system that make it unsuitable for real-world usage, such as the fact that it requires real bitcoin transactions that are not free. Whilst the proposal itself used 1 Bitcoin as the base pricing unit ---which would be an inconceivable amount with the current price of Bitcoin--- but even using a smaller base, the real-world costs would be problematic. To core of the proposal is that the voters transfer bitcoin to the winner.
 
 The system describes two possible voting methods. The first behaves in such a way that should the protocol fail and the election not be satisfactorily concluded by a certain time, then the voter can receive the deposited amount back by creating a refund transaction. This first method however requires that each subsequent voter commits a larger amount of bitcoin in their deposit transaction. The second allows the voter to get back a deposit, but not the total cost of voting. Indeed, in either situation the cost of transactions themselves is not taken into account and every transaction has a non-zero cost in and of itself that goes to the miner of the block. While both these methods incentivize good behaviour of voters by imposing real-world costs for deviating from the protocol, the costs themselves impose a barrier to entry.
 
@@ -95,26 +95,34 @@ Another practicality issue is that the all the voters must contribute to the pro
 
 Therefore, while much of the algorithmic processes within the scheme are sound, there is an extremely high opportunity for any single voter to completely void the entire election by withholding a vote. This places an extremely high level trust required for each participant to give to each other participant.
 
-\subsection{ZCash Voting Proposal - Tarasov}
+\subsection{ZCash Voting Proposal - Tarasov and Tewari}
 
-This section looks at the system proposed in \cite{tarasovInternetVotingUsing2017} which uses the ZCash cryptocurrency as a base for a voting system.
+This section looks at the system proposed in \cite{tarasovInternetVotingUsing2017} which uses the ZCash cryptocurrency as a base for a voting system. ZCash is a cryptocurrency system which supports two address types. The first: a \emph{z-address} is which is anonymous and transactions to or from them cannot be linked back to any other transaction. The second is a \emph{t-address} which is functionally similar to a bitcoin wallet address, and as such the movement of coins to or from these addresses can be publicly discerned.
 
+The proposal uses a registration phase and the Registrar entity also plays the roles of the Election Authority. Once a voter has registered, their data is held in an unspecified datastore by the Registrar/Authority entity. On the \emph{opening} of the vote, the Registrar/Authority sends invitation links by email to the voters. The voter's then provide a \emph{t-address} to which a ``vote token'' is provided. This must come from some pre-existing source of coins and the state of which voters have been issued tokens must be tracked by the Registrar/Authority entity. This source is called the \emph{ZEC pool}.
 
+Once the voter has their ``vote-token'' there are two variants described for the voting process.  The first variant sees the candidate using a \emph{z-address}. This means that the transaction is anonymous in that no one can introspect the details of the vote. However, it also ---by design--- means that the vote is now unable to verify that their token is part of the system; they cannot trace their own vote has been counted.
 
-\todo{
-    Runs on unmodified ZCash \\
-    pre-paid cards suggested \\
-    anonymity provided by the ZCash addressing scheme. \\
-}
+The second variant has the candidate using a \emph{t-address}. In this variant the token balance is discernable to all parties at all times, and the link between token and vote is preserved. While this latter property would allow the voter to verify their vote, it would also allow the authority to match the vote to the voter.
+
+The final tally and audit stage of the process sees the candidates transfer the balance of the tokens they have back to the \emph{ZEC pool}. The number of tokens that came from each candidate are counted and made public. The Registrar/Authority is tasked ---and \emph{trusted} with performing the task of verification that the count of votes balances with all previous data.
+
+The proposal itself contains a section on the security considerations, which reveals some areas of trust that exist within the protocol. The first voting variant, using candidate \emph{z-addresses} have no way of tracking the balance of votes that a candidate has received. This enables the \emph{fairness} property as no indication of the ongoing status of the election is revealed until the end. However, it does mean that we rely on the candidate to transfer the full contents of the address back to the pool for audit. An untrustworthy candidate may decide to wait until the other candidates have transferred their tokens and if they have not won the election ---a fact that they can verify--- they could underreport their votes with two consequences. Firstly, they could keep the other tokens, which have a non-negligible real-world monetary value and secondly, the election token balances would not add up and the election would be void. This latter situation could mean a re-vote which may be in the untrustworthy candidate's favour, or simply a denial of the result for the otherwise victorious candidate.
+
+In the second voting variant, the underreporting of vote tokens would be noticeable as the candidate wallet is a \emph{t-address} and could be directly linked to the guilty candidate. Whether this would void the election or simply disqualify the candidate is not specified. However, in the second system the \emph{fairness} property has been broken, which in the author's opinion is enough to disqualify this proposal as a valid voting system.
+
+A great deal of the state of the system is kept private by the Registrar/Authority yet required to be used in later stages of the election process. The integrity and authenticity of this state is not considered and there are no details to how it may be stored and validated. This would break the property of software independence, as the vote tokens and transactions may be on the blockchain the auxilliary state is not.
+
+In summary, this proposal despite running on a blockchain requires an extremely high level of trust from its participants. The number of ways an adversarial entity ---whether voter, registrar, authority, or candidate--- could disrupt the system means that it is not \emph{robust} unless all parties are honest. While that does not prevent the system from functioning, it does make it impractical and imposes high trust requirements from voters who know that they must trust many entities to behave correctly.
 
 \subsection{Scalable Open Vote Network}
 
 This section looks at the system proposed in \cite{seifelnasrScalableOpenVoteNetwork2020} which uses smart contracts on the Ethereum blockchain as a basis for a voting.
 
 \todo{
-    Ethereum, base on prior work. \\
-    Smart contracts control all \\
-    Tally Computation off-chain with published evidence \\
+  Ethereum, base on prior work. \\
+  Smart contracts control all \\
+  Tally Computation off-chain with published evidence \\
 }
 
 \subsection{LWE Based proposal - Chillotti}
@@ -122,7 +130,7 @@ This section looks at the system proposed in \cite{seifelnasrScalableOpenVoteNet
 This section looks at the system proposed in \cite{chillottiHomomorphicLWEBased} which uses a \emph{post-quantum} homomorphic encryption system as the base for a voting protocol.
 
 \todo{
-    Post-Quantum, but otherwise, the voting is basically the same model as any homomorphic encryption based system.
+  Post-Quantum, but otherwise, the voting is basically the same model as any homomorphic encryption based system.
 }
 
 \subsection{Vote-SAVER - Lee}
@@ -130,8 +138,8 @@ This section looks at the system proposed in \cite{chillottiHomomorphicLWEBased}
 This section looks at the system proposed in \cite{leeSAVERSNARKfriendlyAdditivelyhomomorphic2019} which uses the Ethereum blockchain with a novel zero-knowledge proof system as the basis for a voting protocol.
 
 \todo{
-    This is interesting. based on a zkSNARK and smart contracts \\
-    another Ethereum based system.
+  This is interesting. based on a zkSNARK and smart contracts \\
+  another Ethereum based system.
 }
 
 \subsection{Generic Cryptocurrency Based Voting - Yu}
@@ -139,7 +147,7 @@ This section looks at the system proposed in \cite{leeSAVERSNARKfriendlyAdditive
 This section looks at the system proposed in \cite{yuPlatformindependentSecureBlockchainBased2018} which describes a voting system that could run on any cryptocurrency.
 
 \todo{
-    Use of Linkable Ring Signatures for scalability (keeping signatures short)
+  Use of Linkable Ring Signatures for scalability (keeping signatures short)
 }
 
 \subsection{Trustless - Gajek}
@@ -147,10 +155,10 @@ This section looks at the system proposed in \cite{yuPlatformindependentSecureBl
 This section looks at the system proposed in \cite{gajekTrustlessCensorshipResilientScalable2019} which focuses on producing a zero-trust protocol.
 
 \todo{
-    High claims of zero-trust \\
-    Solves the privacy/eligibility in zero trust with a distributed ``off-chain oracle'' system. \\
-    proptyped on HyperLedger \\
-    \textbf{I have to justify why I haven't based everything on this.}
+  High claims of zero-trust \\
+  Solves the privacy/eligibility in zero trust with a distributed ``off-chain oracle'' system. \\
+  proptyped on HyperLedger \\
+  \textbf{I have to justify why I haven't based everything on this.}
 }
 
 % for the trust on the table.
@@ -166,49 +174,49 @@ This section looks at the system proposed in \cite{gajekTrustlessCensorshipResil
 
 
 \begin{table}[h]
-    \centering
-    \begin{tabular}{|Sr c c c c c c c c c c c c|}
-        \hline
-        Voting System                 & \rot{Correctness} & \rot{Secrecy} & \rot{Eligibility} & \rot{Fairness} & \rot{Robustness} & \rot{Receipt Freeness} & \rot{Coercion Resistance} & \rot{Individual Verifiability} & \rot{Universal Verifiability} & \rot{Auditability} & \rot{Real-time Universal Verifiability } & \rot{Eternal Secrecy} \\
+  \centering
+  \begin{tabular}{|Sr c c c c c c c c c c c c|}
+    \hline
+    Voting System                 & \rot{Correctness} & \rot{Secrecy} & \rot{Eligibility} & \rot{Fairness} & \rot{Robustness} & \rot{Receipt Freeness} & \rot{Coercion Resistance} & \rot{Individual Verifiability} & \rot{Universal Verifiability} & \rot{Auditability} & \rot{Real-time Universal Verifiability } & \rot{Eternal Secrecy} \\
 
-        \hline\hline
+    \hline\hline
 
-        \textbf{Helios}               & \ALL              & \SERVER       & \SERVERREG        & \SERVER        & \NP              & \NP                    & \NP                       & \ALL                           & \ALL                          & \NP                & \ALL                                     & \SERVER               \\
-        \hline
-        \textbf{BeleniosVS}           & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
-        \textbf{i-Voting}             & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
-        \textbf{Zhao-Bitcoin}         & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
-        \textbf{Tarasov-ZCash}        & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
-        \textbf{Seiflelnasr-Ethereum} & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
-        \textbf{Chilloti-LWE}         & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
-        \textbf{Yu-Cryptocurrency}    & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
-        \textbf{Trustless-Gajek}      & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
+    \textbf{Helios}               & \ALL              & \SERVER       & \SERVERREG        & \SERVER        & \NP              & \NP                    & \NP                       & \ALL                           & \ALL                          & \NP                & \ALL                                     & \SERVER               \\
+    \hline
+    \textbf{BeleniosVS}           & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+    \hline
+    \textbf{i-Voting}             & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+    \hline
+    \textbf{Zhao-Bitcoin}         & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+    \hline
+    \textbf{Tarasov-ZCash}        & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+    \hline
+    \textbf{Seiflelnasr-Ethereum} & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+    \hline
+    \textbf{Chilloti-LWE}         & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+    \hline
+    \textbf{Yu-Cryptocurrency}    & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+    \hline
+    \textbf{Trustless-Gajek}      & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+    \hline
+  \end{tabular}
+
+
+
+  {\raggedright
+  \vspace{0.25em}
+  \footnotesize{
+    \begin{tabular}{r l}
+      \textbf{\NP}     & Not provided.                                            \\
+      \textbf{\ALL}    & Provided under all trust assumptions.                    \\
+      \textbf{\SERVER} & Provided assuming the server operator is trustworthy.    \\
+      \textbf{\AUTH}   & Provided assuming the election Authority is trustworthy. \\
+      \textbf{\REG}    & Provided assuming the Registrar is trustworthy.          \\
     \end{tabular}
+  }
+  }
 
-
-
-    {\raggedright
-    \vspace{0.25em}
-    \footnotesize{
-        \begin{tabular}{r l}
-            \textbf{\NP}     & Not provided.                                            \\
-            \textbf{\ALL}    & Provided under all trust assumptions.                    \\
-            \textbf{\SERVER} & Provided assuming the server operator is trustworthy.    \\
-            \textbf{\AUTH}   & Provided assuming the election Authority is trustworthy. \\
-            \textbf{\REG}    & Provided assuming the Registrar is trustworthy.          \\
-        \end{tabular}
-    }
-    }
-
-    \caption{Table of Voting Systems, Security Properties and Trust Requirements}
-    \label{table:voting-system-props}
+  \caption{Table of Voting Systems, Security Properties and Trust Requirements}
+  \label{table:voting-system-props}
 \end{table}
 
