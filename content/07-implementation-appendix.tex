@@ -92,22 +92,22 @@ We also list the construction of the signature messages where appropriate, but t
 
 The signature for a \texttt{TrusteeSetup} is calculated with using a message created by concatenation of:
 \begin{enumerate}
-  \item the literal string \lstinline[style=ES6]{"trustee:"}
-  \item the base10 representation of the trustee index (0-based)
-  \item the literal string \lstinline[style=ES6]{":"}
-  \item the base16 (lowercased) representation of the encryption public key \texttt{Y} value
-  \item for each \texttt{publicExponent}:
-        \begin{enumerate}
-          \item the literal string \lstinline[style=ES6]{":"}
-          \item the base16 (lowercased) representation of the exponent
-        \end{enumerate}
+    \item the literal string \lstinline[style=ES6]{"trustee:"}
+    \item the base10 representation of the trustee index (0-based)
+    \item the literal string \lstinline[style=ES6]{":"}
+    \item the base16 (lowercased) representation of the encryption public key \texttt{Y} value
+    \item for each \texttt{publicExponent}:
+          \begin{enumerate}
+              \item the literal string \lstinline[style=ES6]{":"}
+              \item the base16 (lowercased) representation of the exponent
+          \end{enumerate}
 \end{enumerate}
 
 The signature for a \texttt{RegistrarSetup} is calculated with using a message created by concatenation of:
 
 \begin{enumerate}
-  \item the literal string \lstinline[style=ES6]{"registrar:"}
-  \item the \texttt{registrationURL}
+    \item the literal string \lstinline[style=ES6]{"registrar:"}
+    \item the \texttt{registrationURL}
 \end{enumerate}
 
 
@@ -134,16 +134,16 @@ The signature for a \texttt{RegistrarSetup} is calculated with using a message c
 The trustee shares for a trustee with index $i$ out of $N$ trustees should be an array of encrypted shares for each $j$ where $j \neq i$ and $0 <= j <= N$. The signature on an encrypted share is constructed by the concatenation of:
 
 \begin{enumerate}
-  \item the literal string \lstinline[style=ES6]{"share:"}
-  \item the base10 representation of the trustee index $i$
-  \item the literal string \lstinline[style=ES6]{":"}
-  \item the base10 representation of the recipient trustee index $j$
-  \item the literal string \lstinline[style=ES6]{":"}
-  \item the base10 representation of the trustee index $i$
-  \item the literal string \lstinline[style=ES6]{":"}
-  \item the base16 (lowercased) representation of the point ciphertext \texttt{a} value
-  \item the literal string \lstinline[style=ES6]{":"}
-  \item the base16 (lowercased) representation of the point ciphertext \texttt{b} value
+    \item the literal string \lstinline[style=ES6]{"share:"}
+    \item the base10 representation of the trustee index $i$
+    \item the literal string \lstinline[style=ES6]{":"}
+    \item the base10 representation of the recipient trustee index $j$
+    \item the literal string \lstinline[style=ES6]{":"}
+    \item the base10 representation of the trustee index $i$
+    \item the literal string \lstinline[style=ES6]{":"}
+    \item the base16 (lowercased) representation of the point ciphertext \texttt{a} value
+    \item the literal string \lstinline[style=ES6]{":"}
+    \item the base16 (lowercased) representation of the point ciphertext \texttt{b} value
 \end{enumerate}
 
 \section*{\texttt{PayloadTrusteePublic}}
@@ -161,10 +161,10 @@ The trustee shares for a trustee with index $i$ out of $N$ trustees should be an
 The signature on the trustee public data is constructed by the concatenation of:
 
 \begin{enumerate}
-  \item the literal string \lstinline[style=ES6]{"shard:"}
-  \item the base10 representation of the trustee index (0-based)
-  \item the literal string \lstinline[style=ES6]{":"}
-  \item the base16 (lowercased) representation of the \texttt{shardKey} public key \texttt{Y} value
+    \item the literal string \lstinline[style=ES6]{"shard:"}
+    \item the base10 representation of the trustee index (0-based)
+    \item the literal string \lstinline[style=ES6]{":"}
+    \item the base16 (lowercased) representation of the \texttt{shardKey} public key \texttt{Y} value
 \end{enumerate}
 
 \section*{\texttt{PayloadVoterRegistration}}
@@ -182,19 +182,19 @@ The signature on the trustee public data is constructed by the concatenation of:
 The signature \texttt{registrarSig} on the voter registration object is produced by the Registrar. The message is constructed by concatenation of:
 
 \begin{enumerate}
-  \item the literal string \lstinline[style=ES6]{"voter:r:"}
-  \item the base16 (lowercased) representation of the SHA256 sum over the \texttt{voterId}.
-  \item the literal string \lstinline[style=ES6]{":"}
-  \item the base16 (lowercased) representation of the \texttt{verificationKey} public key \texttt{y} value
+    \item the literal string \lstinline[style=ES6]{"voter:r:"}
+    \item the base16 (lowercased) representation of the SHA256 sum over the \texttt{voterId}.
+    \item the literal string \lstinline[style=ES6]{":"}
+    \item the base16 (lowercased) representation of the \texttt{verificationKey} public key \texttt{y} value
 \end{enumerate}
 
 The signature \texttt{voterSig} on the voter registration object is produced by the Voter, using the private key associated with the \texttt{verificationKey} in the object. The message is constructed by concatenation of:
 
 \begin{enumerate}
-  \item the literal string \lstinline[style=ES6]{"voter:v:"}
-  \item the base16 (lowercased) representation of the SHA256 sum over the \texttt{voterId}.
-  \item the literal string \lstinline[style=ES6]{":"}
-  \item the base16 (lowercased) representation of the \texttt{registrarSig} \texttt{r} value
+    \item the literal string \lstinline[style=ES6]{"voter:v:"}
+    \item the base16 (lowercased) representation of the SHA256 sum over the \texttt{voterId}.
+    \item the literal string \lstinline[style=ES6]{":"}
+    \item the base16 (lowercased) representation of the \texttt{registrarSig} \texttt{r} value
 \end{enumerate}
 
 \section*{\texttt{PayloadVoteCast}}
@@ -217,13 +217,13 @@ The \texttt{proof} gls{zkp} is a proof that the sum of ciphertexts contains a nu
 The signature is created with the voter's private key and the message is constructed by concatenation of:
 
 \begin{enumerate}
-  \item the literal string \lstinline[style=ES6]{"ballot:"}
-  \item the base16 (lowercased) representation of the SHA256 sum over the \texttt{voterId}.
-  \item for each element of \texttt{votes}
-        \begin{enumerate}
-          \item the literal string \lstinline[style=ES6]{":"}
-          \item the base16 (lowercased) representation of the value
-        \end{enumerate}
+    \item the literal string \lstinline[style=ES6]{"ballot:"}
+    \item the base16 (lowercased) representation of the SHA256 sum over the \texttt{voterId}.
+    \item for each element of \texttt{votes}
+          \begin{enumerate}
+              \item the literal string \lstinline[style=ES6]{":"}
+              \item the base16 (lowercased) representation of the value
+          \end{enumerate}
 \end{enumerate}
 
 \section*{\texttt{PayloadPartialTally}}
@@ -244,20 +244,20 @@ The \texttt{proofs} array contains \glsplural{zkp} for each decryption, proving 
 The signature is created with the trustee's private signing key and the message is constructed by concatenation of:
 
 \begin{enumerate}
-  \item the literal string \lstinline[style=ES6]{"tally:"}
-  \item the base10 representation of the trustee index
-  \item for each ciphertext of \texttt{tallies}
-        \begin{enumerate}
-          \item the literal string \lstinline[style=ES6]{":"}
-          \item the base16 (lowercased) representation of the \texttt{a} value
-          \item the literal string \lstinline[style=ES6]{":"}
-          \item the base16 (lowercased) representation of the \texttt{b} value
-        \end{enumerate}
-  \item for each element of \texttt{decrypted}
-        \begin{enumerate}
-          \item the literal string \lstinline[style=ES6]{":"}
-          \item the base16 (lowercased) representation of the value
-        \end{enumerate}
+    \item the literal string \lstinline[style=ES6]{"tally:"}
+    \item the base10 representation of the trustee index
+    \item for each ciphertext of \texttt{tallies}
+          \begin{enumerate}
+              \item the literal string \lstinline[style=ES6]{":"}
+              \item the base16 (lowercased) representation of the \texttt{a} value
+              \item the literal string \lstinline[style=ES6]{":"}
+              \item the base16 (lowercased) representation of the \texttt{b} value
+          \end{enumerate}
+    \item for each element of \texttt{decrypted}
+          \begin{enumerate}
+              \item the literal string \lstinline[style=ES6]{":"}
+              \item the base16 (lowercased) representation of the value
+          \end{enumerate}
 \end{enumerate}
 
 \section*{Common Structures}
@@ -335,12 +335,12 @@ Astris uses Schnorr signatures described fully in \rfc{8235}. We start with our 
 Now we create the commitment $c = H(V || A || m)\ \textrm{mod}\ q$ where $H$ is the SHA256 hash function and the concatenation is done as follows:
 
 \begin{enumerate}
-  \item Start with the string (UTF8 encoded): \lstinline[style=ES6]{"sig|"}.
-  \item Then append the base16 (lowercased) representation of $V$.
-  \item Append a pipe character \lstinline[style=ES6]{"|"}.
-  \item Then append the base16 (lowercased) representation of $A$.
-  \item Append a pipe character \lstinline[style=ES6]{"|"}.
-  \item Then append the raw bytes of the message $m$.
+    \item Start with the string (UTF8 encoded): \lstinline[style=ES6]{"sig|"}.
+    \item Then append the base16 (lowercased) representation of $V$.
+    \item Append a pipe character \lstinline[style=ES6]{"|"}.
+    \item Then append the base16 (lowercased) representation of $A$.
+    \item Append a pipe character \lstinline[style=ES6]{"|"}.
+    \item Then append the raw bytes of the message $m$.
 \end{enumerate}
 
 Now we calculate the response $r = v - ac\ \textrm{mod}\ q$. The signature is now the pair $(c, r)$.
@@ -348,8 +348,8 @@ Now we calculate the response $r = v - ac\ \textrm{mod}\ q$. The signature is no
 To verify the signature we recreate $V = g^r * A^c\ \textrm{mod}\ p$, and therefore the expected challenge message $C = H(V || A || m)\ \textrm{mod}\ q$ in the same way as during creation. Then we check:
 
 \begin{enumerate}
-  \item $A$ is a valid public key for this system
-  \item $C \equiv c$ the challenge we created is the same as the given one.
+    \item $A$ is a valid public key for this system
+    \item $C \equiv c$ the challenge we created is the same as the given one.
 \end{enumerate}
 
 \section*{Proof Of Knowledge of Secret Key}
@@ -367,10 +367,10 @@ Firstly, we have the system parameters $(g,p,q)$ and choose a random $w \in \mat
 The prover calculates:
 
 \begin{enumerate}
-  \item Commitment A: $t_1 = g^w$
-  \item Commitment B: $t_2 = h^w$
-  \item A challenge with: from $C = F()$, $F$ may use any public parameters known so far.
-  \item A Response $R = (w - sC)\ \textrm{mod}\ q$
+    \item Commitment A: $t_1 = g^w$
+    \item Commitment B: $t_2 = h^w$
+    \item A challenge with: from $C = F()$, $F$ may use any public parameters known so far.
+    \item A Response $R = (w - sC)\ \textrm{mod}\ q$
 \end{enumerate}
 
 The proof is the tuple $(t_1, t_2, C, R, G, H)$.
@@ -378,9 +378,9 @@ The proof is the tuple $(t_1, t_2, C, R, G, H)$.
 The verifier can now take the public information $(g,p,q,h)$ and the proof $(t)_1, t_2, C, R, G, H)$ and check:
 
 \begin{enumerate}
-  \item $g^R mod p = (t_1G^C)\ \textrm{mod}\ p$
-  \item $h^R mod p = (t_2H^C)\ \textrm{mod}\ p$
-  \item That the challenge $C$ was created correctly from the data, which will be specific to the type of proof.
+    \item $g^R mod p = (t_1G^C)\ \textrm{mod}\ p$
+    \item $h^R mod p = (t_2H^C)\ \textrm{mod}\ p$
+    \item That the challenge $C$ was created correctly from the data, which will be specific to the type of proof.
 \end{enumerate}
 
 \subsection*{Zero Knowledge Proof of Correct Decryption}
@@ -395,10 +395,10 @@ To decrypt the ciphertext $(a,b)$ with private key $x$ we calculate $m = ba^{-x}
 The decryption function can be rearranged as $b/m = a^x$ and the public key is $y = g^x$. So we can create a \gls{zkp} with a simple challenge function over $(t_1, t_2)$ that we have defined using our random oracle function over the message created by concatenation of:
 
 \begin{enumerate}
-  \item the literal string \lstinline[style=ES6]{"zkp:dec|"}
-  \item the base16 (lowercased) representation of $t_1$
-  \item the literal string \lstinline[style=ES6]{"|"}
-  \item the base16 (lowercased) representation of $t_2$
+    \item the literal string \lstinline[style=ES6]{"zkp:dec|"}
+    \item the base16 (lowercased) representation of $t_1$
+    \item the literal string \lstinline[style=ES6]{"|"}
+    \item the base16 (lowercased) representation of $t_2$
 \end{enumerate}
 
 The public parameters are $s = x$, $g = g$, $G = g^s = g^x = y$, $h = a$, $H = a^s = a^x = b/m$ (we have the ciphertext and plaintext as we have decrypted the value).
@@ -422,15 +422,15 @@ If the plaintext $m_i$ \emph{isn't} the one encrypted, we create a fake proof. T
 If the plaintext $m_i$ \emph{is} the actual one encrypted, we create a real proof with \gls{zkp} parameters $s = r$, $h = y$, $g = g$. This implies that $G = g^r = a$ and $H = h^r = y^r = (g^x)^r = (g^r)^x = a^x = b/m_i$. As all of these values are known we can construct the \gls{zkp} commitments $(t_1, t_2)$. To create the challenge for the real proof we combine \emph{all} the commitments for all fake and real proofs in order by using the random oracle over a message constructed by concatenation of:
 
 \begin{enumerate}
-  \item the literal string \lstinline[style=ES6]{"zkp:enc|"}
-  \item for each proof in order:
-        \begin{enumerate}
-          \item the base16 (lowercased) representation of $t_1$
-          \item the literal string \lstinline[style=ES6]{"|"}
-          \item the base16 (lowercased) representation of $t_2$
-          \item the literal string \lstinline[style=ES6]{"|"}
-        \end{enumerate}
-  \item the extra metadata passed in $d$ as raw bytes
+    \item the literal string \lstinline[style=ES6]{"zkp:enc|"}
+    \item for each proof in order:
+          \begin{enumerate}
+              \item the base16 (lowercased) representation of $t_1$
+              \item the literal string \lstinline[style=ES6]{"|"}
+              \item the base16 (lowercased) representation of $t_2$
+              \item the literal string \lstinline[style=ES6]{"|"}
+          \end{enumerate}
+    \item the extra metadata passed in $d$ as raw bytes
 \end{enumerate}
 
 The final challenge value is the random oracle's response, minus each of the other proof's challenge values. This ensures the sum of the challenges is the overall challenge value.
@@ -444,15 +444,15 @@ The verifier must verify the list of proofs, against the list of plaintexts, wit
 
 In order to use JSON serialization as a precursor to hashing to generate the block hashes, we need to ensure that all clients will encode the data in exactly the same way. As such we define a canonical JSON encoding which is used to serialize objects into for hashing and storage on the chain. JSON is not a unique representation of any object, but we can make it so by tightening some loose constraints.
 
-Whilst not directly related to canonical JSON, the \emph{big} integers in this spec --- for example those describing numbers in ciphertexts, signatures and keys --- are not serialized as raw integers despite the JSON spec allowing it. As most JSON decoding implementations would likely not accept these number, we prefer a string representation. This is described in the preamble of \autoref{appendix:datatypes}.
+Whilst not directly related to canonical JSON, the \emph{big} integers in this spec ---for example those describing numbers in ciphertexts, signatures and keys--- are not serialized as raw integers despite the JSON spec allowing it. As most JSON decoding implementations would likely not accept these number, we prefer a string representation. This is described in the preamble of \autoref{appendix:datatypes}.
 
 In order to create a \emph{canonical} encoding of an object the following tweaks to the standard are made:
 
 \begin{enumerate}
-  \item Objects will have their keys sorted lexically.
-  \item Insignificant whitespace will be removed, i.e. no spacing or indentation
-  \item No spurious Unicode replacements in strings --- i.e. `\texttt{<}' $\leftarrow$ `\texttt{\ue{003c}}' --- \textbf{except} for the \texttt{LINE SEPARATOR U+2028} and \texttt{PARAGRAPH SEPARATOR U+2029} which should be encoded as \texttt{\ue{2028}} and \texttt{\ue{2029}} respectively.
-  \item After the encoding, we add a single line feed character, \texttt{ASCII 0x0A}, as a convenience for viewing the data manually.
+    \item Objects will have their keys sorted lexically.
+    \item Insignificant whitespace will be removed, i.e. no spacing or indentation
+    \item No spurious Unicode replacements in strings ---i.e. `\texttt{<}' $\leftarrow$ `\texttt{\ue{003c}}'--- \textbf{except} for the \texttt{LINE SEPARATOR U+2028} and \texttt{PARAGRAPH SEPARATOR U+2029} which should be encoded as \texttt{\ue{2028}} and \texttt{\ue{2029}} respectively.
+    \item After the encoding, we add a single line feed character, \texttt{ASCII 0x0A}, as a convenience for viewing the data manually.
 \end{enumerate}
 
 For a simple example, the object:
@@ -490,8 +490,8 @@ Astris gRPC specification, although part of the source code at {\surl{\astrisrep
 Some points to note in the specification.
 
 \begin{enumerate}
-  \item \texttt{FromBlock} allows traversal from a block towards the end of the chain. The blocks themselves only have the hash of the previous block in them so iterating forward is more complex than iterating backwards. This method implies that implementations must be able to iterate over the chain in either direction.
-  \item \texttt{AtDepth} allows a node to check the block ID that another node has at a specific depth in the chain allowing efficient calculation of where the two chains might diverge.
+    \item \texttt{FromBlock} allows traversal from a block towards the end of the chain. The blocks themselves only have the hash of the previous block in them so iterating forward is more complex than iterating backwards. This method implies that implementations must be able to iterate over the chain in either direction.
+    \item \texttt{AtDepth} allows a node to check the block ID that another node has at a specific depth in the chain allowing efficient calculation of where the two chains might diverge.
 \end{enumerate}
 
 \chapter{The Astris Blockchain}
@@ -515,6 +515,6 @@ The chain is maintained via \texttt{prev\_id} which is the previous block's ID, 
 
 The block ID is defined as the SHA256 hash of the concatenation of the previous block ID, the payload hash, the timestamp, the proof and the kind hint. The previous block ID and payload hash are bytes already, but the timestamp, proof and kind are 32bit unsigned integers and must be converted to bytes using big-endian encoding. Note that the depth is in the block ID --- it is just metadata that could be calculated externally and attempts to place fake data in this field will be noticed swiftly so its integrity as part of the ID is superfluous.
 
-In order to provide the proof of work, we define that the block ID must have $n$ leading 0 bits. That is, when considered as a number it should be less than the \emph{target} number. This is very straightforward to verify, but requires performing (on average) $2^n$ hashes before a valid value for the proof is found. The number of leading 0-bits is known as the \emph{difficulty} and is defined as $32$ for the genesis block --- which is less suseptible to post-facto forgery as the block ID is published as the election identifier --- and for every subsequent block by the value in the election setup data --- i.e. it is under control of the election authority.
+In order to provide the proof of work, we define that the block ID must have $n$ leading 0 bits. That is, when considered as a number it should be less than the \emph{target} number. This is very straightforward to verify, but requires performing (on average) $2^n$ hashes before a valid value for the proof is found. The number of leading 0-bits is known as the \emph{difficulty} and is defined as $32$ for the genesis block ---which is less susceptible to post-facto forgery as the block ID is published as the election identifier--- and for every subsequent block by the value in the election setup data --- i.e. it is under control of the election authority.
 
 Implementations should always consider the deepest valid chain as the correct one, however we should take careful note when a large change takes place as it may indicate adversarial behaviour. As such implementations are encouraged to keep all valid chains in storage, only considering the longest as true. The chains will make up a directed acyclic graph of blocks, with a single genesis and one longest branch. If more than one branch is equal longest, the implementation should pick the earliest final block as the true chain, but wait for new blocks to confirm which branch should be taken.
