@@ -111,18 +111,19 @@ The proposal itself contains a section on the security considerations, which rev
 
 In the second voting variant, the underreporting of vote tokens would be noticeable as the candidate wallet is a \emph{t-address} and could be directly linked to the guilty candidate. Whether this would void the election or simply disqualify the candidate is not specified. However, in the second system the \emph{fairness} property has been broken, which in the author's opinion is enough to disqualify this proposal as a valid voting system.
 
-A great deal of the state of the system is kept private by the Registrar/Authority yet required to be used in later stages of the election process. The integrity and authenticity of this state is not considered and there are no details to how it may be stored and validated. This would break the property of software independence, as the vote tokens and transactions may be on the blockchain the auxilliary state is not.
+A great deal of the state of the system is kept private by the Registrar/Authority yet required to be used in later stages of the election process. The integrity and authenticity of this state is not considered and there are no details to how it may be stored and validated. This would break the property of software independence, as the vote tokens and transactions may be on the blockchain the auxiliary state is not.
 
 In summary, this proposal despite running on a blockchain requires an extremely high level of trust from its participants. The number of ways an adversarial entity ---whether voter, registrar, authority, or candidate--- could disrupt the system means that it is not \emph{robust} unless all parties are honest. While that does not prevent the system from functioning, it does make it impractical and imposes high trust requirements from voters who know that they must trust many entities to behave correctly.
 
 \subsection{Scalable Open Vote Network}
 
-This section looks at the system proposed in \cite{seifelnasrScalableOpenVoteNetwork2020} which uses smart contracts on the Ethereum blockchain as a basis for a voting.
+This section looks at the system proposed in \cite{seifelnasrScalableOpenVoteNetwork2020} which itself is an evolution of \cite{mccorrySmartContractBoardroom2017} and uses smart contracts on the Ethereum blockchain as a basis for a voting. The system is limited to a binary vote i.e. the decision between one of two options. The smart contracts used ensure eligibility, the timing of the stages of the election and verify the \gls{zkp} that the vote is indeed a 0 or 1. The system is
+
 
 \todo{
-  Ethereum, base on prior work. \\
-  Smart contracts control all \\
-  Tally Computation off-chain with published evidence \\
+    Ethereum, base on prior work. \\
+    Smart contracts control all \\
+    Tally Computation off-chain with published evidence \\
 }
 
 \subsection{LWE Based proposal - Chillotti}
@@ -130,7 +131,7 @@ This section looks at the system proposed in \cite{seifelnasrScalableOpenVoteNet
 This section looks at the system proposed in \cite{chillottiHomomorphicLWEBased} which uses a \emph{post-quantum} homomorphic encryption system as the base for a voting protocol.
 
 \todo{
-  Post-Quantum, but otherwise, the voting is basically the same model as any homomorphic encryption based system.
+    Post-Quantum, but otherwise, the voting is basically the same model as any homomorphic encryption based system.
 }
 
 \subsection{Vote-SAVER - Lee}
@@ -138,8 +139,8 @@ This section looks at the system proposed in \cite{chillottiHomomorphicLWEBased}
 This section looks at the system proposed in \cite{leeSAVERSNARKfriendlyAdditivelyhomomorphic2019} which uses the Ethereum blockchain with a novel zero-knowledge proof system as the basis for a voting protocol.
 
 \todo{
-  This is interesting. based on a zkSNARK and smart contracts \\
-  another Ethereum based system.
+    This is interesting. based on a zkSNARK and smart contracts \\
+    another Ethereum based system.
 }
 
 \subsection{Generic Cryptocurrency Based Voting - Yu}
@@ -147,7 +148,7 @@ This section looks at the system proposed in \cite{leeSAVERSNARKfriendlyAdditive
 This section looks at the system proposed in \cite{yuPlatformindependentSecureBlockchainBased2018} which describes a voting system that could run on any cryptocurrency.
 
 \todo{
-  Use of Linkable Ring Signatures for scalability (keeping signatures short)
+    Use of Linkable Ring Signatures for scalability (keeping signatures short)
 }
 
 \subsection{Trustless - Gajek}
@@ -155,10 +156,10 @@ This section looks at the system proposed in \cite{yuPlatformindependentSecureBl
 This section looks at the system proposed in \cite{gajekTrustlessCensorshipResilientScalable2019} which focuses on producing a zero-trust protocol.
 
 \todo{
-  High claims of zero-trust \\
-  Solves the privacy/eligibility in zero trust with a distributed ``off-chain oracle'' system. \\
-  proptyped on HyperLedger \\
-  \textbf{I have to justify why I haven't based everything on this.}
+    High claims of zero-trust \\
+    Solves the privacy/eligibility in zero trust with a distributed ``off-chain oracle'' system. \\
+    proptyped on HyperLedger \\
+    \textbf{I have to justify why I haven't based everything on this.}
 }
 
 % for the trust on the table.
@@ -174,49 +175,49 @@ This section looks at the system proposed in \cite{gajekTrustlessCensorshipResil
 
 
 \begin{table}[h]
-  \centering
-  \begin{tabular}{|Sr c c c c c c c c c c c c|}
-    \hline
-    Voting System                 & \rot{Correctness} & \rot{Secrecy} & \rot{Eligibility} & \rot{Fairness} & \rot{Robustness} & \rot{Receipt Freeness} & \rot{Coercion Resistance} & \rot{Individual Verifiability} & \rot{Universal Verifiability} & \rot{Auditability} & \rot{Real-time Universal Verifiability } & \rot{Eternal Secrecy} \\
+    \centering
+    \begin{tabular}{|Sr c c c c c c c c c c c c|}
+        \hline
+        Voting System                 & \rot{Correctness} & \rot{Secrecy} & \rot{Eligibility} & \rot{Fairness} & \rot{Robustness} & \rot{Receipt Freeness} & \rot{Coercion Resistance} & \rot{Individual Verifiability} & \rot{Universal Verifiability} & \rot{Auditability} & \rot{Real-time Universal Verifiability } & \rot{Eternal Secrecy} \\
 
-    \hline\hline
+        \hline\hline
 
-    \textbf{Helios}               & \ALL              & \SERVER       & \SERVERREG        & \SERVER        & \NP              & \NP                    & \NP                       & \ALL                           & \ALL                          & \NP                & \ALL                                     & \SERVER               \\
-    \hline
-    \textbf{BeleniosVS}           & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-    \hline
-    \textbf{i-Voting}             & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-    \hline
-    \textbf{Zhao-Bitcoin}         & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-    \hline
-    \textbf{Tarasov-ZCash}        & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-    \hline
-    \textbf{Seiflelnasr-Ethereum} & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-    \hline
-    \textbf{Chilloti-LWE}         & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-    \hline
-    \textbf{Yu-Cryptocurrency}    & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-    \hline
-    \textbf{Trustless-Gajek}      & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-    \hline
-  \end{tabular}
-
-
-
-  {\raggedright
-  \vspace{0.25em}
-  \footnotesize{
-    \begin{tabular}{r l}
-      \textbf{\NP}     & Not provided.                                            \\
-      \textbf{\ALL}    & Provided under all trust assumptions.                    \\
-      \textbf{\SERVER} & Provided assuming the server operator is trustworthy.    \\
-      \textbf{\AUTH}   & Provided assuming the election Authority is trustworthy. \\
-      \textbf{\REG}    & Provided assuming the Registrar is trustworthy.          \\
+        \textbf{Helios}               & \ALL              & \SERVER       & \SERVERREG        & \SERVER        & \NP              & \NP                    & \NP                       & \ALL                           & \ALL                          & \NP                & \ALL                                     & \SERVER               \\
+        \hline
+        \textbf{BeleniosVS}           & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+        \hline
+        \textbf{i-Voting}             & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+        \hline
+        \textbf{Zhao-Bitcoin}         & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+        \hline
+        \textbf{Tarasov-ZCash}        & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+        \hline
+        \textbf{Seiflelnasr-Ethereum} & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+        \hline
+        \textbf{Chilloti-LWE}         & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+        \hline
+        \textbf{Yu-Cryptocurrency}    & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+        \hline
+        \textbf{Trustless-Gajek}      & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+        \hline
     \end{tabular}
-  }
-  }
 
-  \caption{Table of Voting Systems, Security Properties and Trust Requirements}
-  \label{table:voting-system-props}
+
+
+    {\raggedright
+    \vspace{0.25em}
+    \footnotesize{
+        \begin{tabular}{r l}
+            \textbf{\NP}     & Not provided.                                            \\
+            \textbf{\ALL}    & Provided under all trust assumptions.                    \\
+            \textbf{\SERVER} & Provided assuming the server operator is trustworthy.    \\
+            \textbf{\AUTH}   & Provided assuming the election Authority is trustworthy. \\
+            \textbf{\REG}    & Provided assuming the Registrar is trustworthy.          \\
+        \end{tabular}
+    }
+    }
+
+    \caption{Table of Voting Systems, Security Properties and Trust Requirements}
+    \label{table:voting-system-props}
 \end{table}
 

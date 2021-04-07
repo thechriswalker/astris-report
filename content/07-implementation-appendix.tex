@@ -48,7 +48,8 @@ We also list the construction of the signature messages where appropriate, but t
     g: BigInt // The generator for the group
 }
 \end{lstlisting}
-\vspace*{-0.95em}
+% this needs a page break.
+\newpage
 \label{dt:trustee}
 \begin{lstlisting}[style=ES6, firstnumber=last]
 // TrusteeSetup
@@ -110,7 +111,7 @@ The signature for a \texttt{RegistrarSetup} is calculated with using a message c
     \item the \texttt{registrationURL}
 \end{enumerate}
 
-
+\newpage % or just the title will be on one page.
 \section*{\texttt{PayloadTrusteeShares}}
 \label{dt:payload:shares}
 \begin{lstlisting}[style=ES6]
@@ -273,7 +274,8 @@ The signature is created with the trustee's private signing key and the message 
 // SecretKey
 { x: BigInt }
 \end{lstlisting}
-\vspace*{-0.95em}
+%\vspace*{-0.95em}
+\newpage %
 \label{dt:elgamal:keypair}
 \begin{lstlisting}[style=ES6, firstnumber=last]
 // KeyPair
@@ -457,6 +459,7 @@ In order to create a \emph{canonical} encoding of an object the following tweaks
 
 For a simple example, the object:
 
+\newpage
 \begin{lstlisting}[style=ES6]
 {   "k": "<v/>",
     "a": { "b": 1,
@@ -469,9 +472,9 @@ For a simple example, the object:
 
 Would have the canonical representation (note the trailing newline):
 
-\begin{lstlisting}[style=ES6]
+\begin{lstlisting}[style=ES6,escapechar=\%]
 {"0":["c","b","a"],"a":{"a":2,"b":1},"k":"<v/>"}
-
+%
 \end{lstlisting}
 
 For reference, the SHA256 hash of the Canonical JSON encoding of that object include the trailing new line character, encoded as hex is:

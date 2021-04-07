@@ -69,7 +69,7 @@ This last non-goal is an interesting one, that later work may wish to revisit. I
     \item It must be a probabilistic encryption. That is the same plaintext must not always encrypt to the same ciphertext. This is important as votes are going to have little variation in plaintext (i.e. they will be 1 or 0).
     \item It must support homomorphic addition. This is so we can add up the votes without decrypting them. There is an alternative to homomorphism in voting systems using mix-nets, but our protocol will homomorphism, and so requires an additive homomorphism.
     \item It must have a signature scheme, which can sign arbitrary messages.
-    \item It must support verifiable encryption. We must be able to proof that our vote plaintext has a certain format, and the combined votes have a certain format. That is, we need to be able to prove that we voted for at most 1 candidate --- the vote for each candidate is either a 0 or a 1, and the sum over the votes for all candidates the sum of votes is also 0 or 1.
+    \item It must support verifiable encryption. We must be able to proof that our vote plaintext has a certain format, and the combined votes have a certain format. That is, we need to be able to prove that we voted for at most $n$ candidates --- the vote for each candidate is either a 0 or a 1, and the sum over the votes for all candidates the sum of votes $v$ satisfies $0 < v \leq n$.
     \item It must support verifiable decryption. A trustee must be able to prove that their decryption of the tally is correct.
 \end{itemize}
 
@@ -144,7 +144,7 @@ The setup phase involves the Authority, Registrar and Trustees and is done befor
               \item Create a \dtref{ProofOfKnowledge}{dt:elgamal:pok} $Z_{enc}$ of the secret key corresponding to $P_{enc}$.
               \item Create $C$ an ordered list of $t + 1$ random integers modulo $q$, which represent the coefficients of a polynomial of order $t$.
               \item For each $c \in C$, calculate the exponent $e = g^c\ \textrm{mod}\ p$. Let $E$ be the ordered set of all the exponents for each $c$. These exponents act as a commitment to the coefficients, which the trustee does not reveal.
-              \item Create a \dtref{Signature}{dt:elgamal:pok} $S$ over $(i, E, P_{sig}, P_{enc}, Z_{enc})$ by creating a message: \itodo{message}
+              \item Create a \dtref{Signature}{dt:elgamal:pok} $S$ over $(i, E, P_{sig}, P_{enc}, Z_{enc})$ by creating a message as described in the apenndix for \dtref{TrusteeSetup}{dt:trustee}
               \item The trustee returns $(i, E, P_{sig}, P_{enc}, Z_{enc}, S)$ to the Authority and keeps hold of the secret keys and coefficients.
           \end{enumerate}
     \item The Registrar creates their \dtref{RegistrarSetup}{dt:setup:registrar} data from the initial data and returns it to the Authority.
