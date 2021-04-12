@@ -508,8 +508,8 @@ message BlockHeader {
     bytes   payload_hash = 2; // SHA256 hash of the payload
     fixed32 timestamp = 3;    // unix timestamp of block creation
     fixed32 proof = 4;        // proof of work
-    int64   depth = 5;        // block height or chain depth
-    int32   kind = 6;         // type hint for the payload
+    uint64  depth = 5;        // block height or chain depth
+    uint32  kind = 6;         // type hint for the payload
 }
 \end{lstlisting}
 
