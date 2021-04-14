@@ -1,13 +1,21 @@
 \chapter{Conclusion}
 \label{ch:conclusion}
 
-\section{Final Conclusions}
-\label{ch:conclusion:final}
+This report has considered voting, e-voting, blockchains, trust and practicality. We have seen the security properties that are desirable in voting systems and how a number of practical and theoretic systems approach them. We have looked at those same systems with respect to the amount of trust they require from their users and which entities within the system must be trusted before the security properties begin to fail. We have looked at a newly proposed system designed to minimize these trust requirements while maximizing the coverage of the security properties.
 
-\todo{
-    Wrap up and say something interesting....
+After considering all this, we now look at the question posed in the introduction: \emph{Can we reach a minimum level of trust while maintaining the desirable security properties?}.
 
-    - remote voting has trust issues which cannot be resolved with technology as they are not technology problems, they are human problems.
-    - the use of blockchains as a public audit trail is a good one for accountability, and our hybrid model for a write by anyone as long as the data
+We could interpret this question in two ways:
 
-}
+\begin{itemize}
+    \item Once trust requirements have reached a minimum, have we maintained the desired security properties?
+    \item Is there a minimal trust requirement where the desired security properties are achieved?
+\end{itemize}
+
+The author believes that the answer to the first question is \emph{no}, and the answer to the second is \emph{yes}.
+
+To justify the first answer, we consider the Astris protocol which was designed to be trust-minimal. One of the building blocks for reducing trust requirements is to distribute that trust amongst a number of entities, rather than one. The proportion of the number of entities that must be trustworthy to the number that can be dishonest without consequence for the protocol is key here and the smaller this proportion the lower the trust requirements will be. We discovered that by using such a threshold we also introduce the risk of fragility, reducing the \emph{robustness} of the protocol. Hence, Astris is a system where the trust requirements are configurable and must be traded-off against robustness. This fact opposes the first statement of the question: to minimize trust requirements we will necessarily increase fragility.
+
+For the second answer, the author was sorely tempted to write \emph{it depends}: which is at best a non-answer and at worst facetious. Unfortunately, the answer to so many questions ---especially in software engineering--- \textbf{is} \emph{it depends}, when there is so much context left unspecified. The reason that more context would be useful in this question is that knowing the threat model of the election and therefore a way to assess the trade-offs that must inevitably be made. However, irrespective of the context, once we have decided on the security properties and trade-offs we wish to make then the trust requirements can indeed be reduced to a minimum. Note that we have not specified how low this minimum is --- it is certainly non-zero.
+
+In summary, it is indeed possible to minimize trust requirements for an e-voting scheme, but that minimum will be dependent on the threat model of the election being held and how the trade-offs in the configuration are made. It leaves open the question of whether this reduction in trust is \emph{sufficient} for the body of voters. The theoretical arguments aside, the continued use of and increasing adoption of the state-backed remote voting system in Estonia for state-level elections despite reports outlining its flaws would indicate that the citizens are increasingly willing to trust the system in practice. This report's coverage of the Estonian i-Voting platform (\autoref{ch:ev:existing:ivoting}) demonstrates that there are higher trust requirements than the Astris proposal, but they are evidently low enough. This does not mean --and the author is not suggesting--- that we should not strive to improve voting systems and reduce the trust requirements for their use, but the opposite: it appears there is a great opportunity for remote voting and the author firmly believes that reduced transparency and increased auditability would be a major improvement to state-level elections.

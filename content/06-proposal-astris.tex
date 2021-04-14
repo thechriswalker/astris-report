@@ -31,7 +31,7 @@ We must make some assumptions about the environment in which this protocol will 
 
 \begin{itemize}
     \item We are not ``programming Satan's computer'' \cite{andersonProgrammingSatanComputer1995}. That is we must assume that each entity can trust the use of their own computer system and the integrity of the software running on it.
-    \item We assume the existence of a private communication channel that can be established as needed between any to entities in the system.
+    \item We assume the existence of a private communication channel that can be established as needed between any two entities in the system.
 \end{itemize}
 
 With this in mind, the aims of the Astris protocol are defined in \autoref{table:astris:aims}
@@ -49,7 +49,7 @@ With this in mind, the aims of the Astris protocol are defined in \autoref{table
         \textbf{3}  & Create a voting protocol which maximizes auditability and transparency.                                                                                               \\
         \hline
     \end{tabular}
-    \caption{Table of Objectives for the Astris Protocol}
+    \caption{Table of Objectives for the Astris Protocol.}
     \label{table:astris:aims}
 \end{table}
 
@@ -80,6 +80,8 @@ Given this and that the post-quantum algorithms are significantly more complex t
 \section{Protocol Overview}
 \label{ch:astris:overview}
 
+As mentioned at the start of this chapter, Astris is similar in some ways to the Helios v4 protocol, but also the Belenios additions to Helios. The features Astris shares with these existing protocols have been chosen due to their great fit for the problems at hand that all the systems are attempting to solve. It is self-evident that if we wish all our voting data to be public then the use of zero-knowledge proofs are essential, and both Helios and Belenios had already implemented the exact proofs required for Astris. By using the same ElGamal encryption methods, for which these proofs are available, Astris was able to keep almost all data public --- more indeed than either Astris or Belenios. The previous section covered the requirements for encryption and zero-knowledge proofs in Astris and the overlap Astris has with the existing system is to cover those needs explicitly.
+
 The Astris protocol is split into distinct stages. There is a setup stage where the election parameters are chosen, the trustees named and the distributed secret key created. This stage also names the Registrar and enumerates all the eligible voters. Once this initial setup stage is complete, the data is put into a genesis block for the public audit chain for this election and the hash of the block becomes the election identifier used throughout the rest of the protocol. All further data are added to this chain, and any party wishing to verify the election as it happens can join the network and see all the blocks.
 
 One section of the election parameters governs the timing of the phases, which will be used throughout the rest of the protocol.
@@ -88,7 +90,7 @@ The second stage is the parameter confirmation stage which is a timed stage. Dur
 
 After the parameter confirmation, we have the voter registration phase which is also a timed phase. During this phase, the voters must authenticate with the registrar and have the registrar sign their public key and voter id. The voter may then add this block to the chain, to show that their vote may be allowed and that it will be signed with their secret key. If eligible voters do not register to vote during this period, they may not cast a vote in the later vote casting stage.
 
-The next stage is the vote casting stage, also timed. Once voting opens, a voter may cast a vote by encrypting a series of 0's or 1's in the order of the listed candidates. Alongside the encrypted votes the voter will create a series of \glsplural{zkp} showing that each ciphertext encrypts either a 0 or a 1. The voter will also create a proof that the overall sum of votes is less than or equal to the configured election parameter minimum. Finally, the voter creates a signature over the ballot data and voter id with their private key. This signature can then be verified using the previously published public key.
+The next stage is the vote casting stage, also timed. Once voting opens, a voter may cast a vote by encrypting a series of 0's or 1's in the order of the listed candidates. Alongside the encrypted votes the voter will create a series of \glsplural{zkp} showing that each ciphertext encrypts either a 0 or a 1. The voter will also create a proof that the overall sum of votes is less than or equal to the configured election parameter minimum. Finally, the voter creates a signature over the ballot data and voter identifier with their private key. This signature can then be verified using the previously published public key.
 
 The last stage is the tally decryption stage, also timed. This poses the most threat to the integrity of the election as unless a threshold of trustees submits partial decryption results to the chain within the time bound, then the election will be void. It seems a legal incentive here would be necessary to ensure co-operation. Note that any entity may perform the homomorphic summation to get to the final encrypted tally, and once the threshold of partial decryption results have been published any entity may calculate the final result.
 

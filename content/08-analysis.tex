@@ -56,22 +56,29 @@ Finally, the Auditor is completely trustless. The Auditor role does not really e
 \section{Comparison to Existing Protocols}
 \label{ch:analysis:comparison}
 
-Of the systems covered in \autoref{ch:ev:existing}, many used effectively the same techniques for providing the core security properties. Different forms of encryption and \gls{zkp} techniques are used, but the core functionality is roughly the same. Astris is as well very similar in many ways, and this is likely due to convergent evolution --- they are good solutions to the problem at hand. They all suffer from the same drawbacks as well, in that they become increasing more fragile or complex as further security guarantees are met. For example, we can reduce trust requirements in the holders of a private key using secret-sharing methods and multi-party-computing to prevent a single entity being able to subvert the whole system. However, with every extra multi-party step, we add complexity to the process which gives the opportunity for new attack vectors to creep in. The more communication a voter must perform, the more side-channel data is produced which could potentially link the voter back to the vote without the requirement for the encryption or mixing algorithms to be compromised. Many \itodo{many is bad, either cite or remove this...} schemes assume the existence of not only a private channel to communicate, but a private, anonymous channel for communication. Such channels may not be realistically available. Others trade anonymity with K-anonymity --- everything is a trade-off.
+Of the systems covered in \autoref{ch:ev:existing}, the techniques used for achieving the core security properties of voting system where similar in nature. The use of either homomorphic encryption or mix-nets for secrecy, combined with \glsplural{zkp} for audit without revealing data were common to all of them. Astris is as well very similar in many ways, and this is due to convergent evolution --- they are good solutions to the problem at hand and innovative new solutions have not emerged to prove themselves better. However, they all suffer from the same drawbacks as well: they become increasing more fragile and  complex as further security guarantees are met. For example, we can reduce trust requirements in the holders of a private key using secret-sharing methods and multi-party-computing to prevent a single entity being able to subvert the whole system. But with every extra multi-party step, we add complexity to the process which gives the opportunity for new attack vectors to creep in. As we make the protocols more complex, the need for an anonymous private communication channel becomes more needed as more side-channel data is produced which could potentially link the voter back to the vote without the requirement for the encryption or mixing algorithms to be compromised. While private channels may be trivial via the use of \gls{tls} or similar, anonymizing these private channels without compromising on the privacy is certainly not trivial. A number of proposed voting systems \needcite{voting with private anonymous channels} assume the existence of such a channel in order to ensure the security properties they claim. Astris specifically aims to not require such a channel, the properties of a private channel being sufficient.
+
+Considering \gls{dlt} and its use in existing systems, there are three distinct classes of \gls{dlt}-based voting systems:
 
 
-\todo{
-    Note that on performing the implementation and actually writing the code to perform the encryption I found a number of unlisted but public reports similarly discussing evoting and trust and coming to similar conclusions. Should I mention these?
-}
+
+
+
 
 \section{Implementation Success and Analysis}
 \label{ch:analysis:impl}
 
-The software implementation of Astris did manage to implement the entire specification as listed here.
+The software implementation of Astris did implement the entire specification as described in this report. It was able to run through a complete election with simulated voters. The Audit node was able to verify the election and produce the final results when available. The peer-to-peer network allowed nodes to share and verify the chain data and new blocks into the system could be distributed, new peers into the network could ``catch up'' on the state of the chain from just the election identifier and a single seed peer. The software was able to play the role of each of the key entities in the system. As such the implementation did achieve the goal set out for it, which was to prove that such a system as specified could be implemented, with the only data-sharing via the blocks exchanged.
 
-\todo{
-    Did the implementation work? Did it achieve it's objectives? \\
-    Does is have any obvious flaws? Where did I take shortcuts? \\
-    What assumptions does it make? \\
+Therefore, despite the fact that the user interface for the software was clunky enough to not be suitable for non-technical users and the amount of manual steps involved in running an election, the author considers the software implementation to be a success.
 
-    The implementation proved that such a system can be built, however the problems of remote voting and satan's computer put the trust back into the hands of the authorities we were hoping not to have to trust.
-}
+That being said, there was an improvement that came to light during the implementation phase, albeit too late in the process to be able to integrate directly, but future work could benefit from the experience. The gRPC protocol for implementing the API was not a great choice. It appeared so during the research phase, as it provided a number of desirable features:
+
+\begin{itemize}
+    \item An API contract definition that has many client and server code generators to enable services in other languages to be built more easily.
+    \item A well-established and mature RPC system.
+    \item Works over HTTPS (over HTTP/2) so \gls{tls} would provide a secure channel for communications.
+    \item Has support for authentication use \gls{tls} client certificates (and mutual certificate validation)
+\end{itemize}
+
+Unfortunately it became apparent as the peer-to-peer code was being written that this last point was not exactly what the author had had in mind. We are working peer-to-peer and don't really want to have a valid Certificate Authority signed certificate for each peer. Instead, the peer-to-peer connections would work best with self-signed certificates and with the certificate itself used as the identity of the peer. The implementations of gRPC did not support this use case and so the API became such that public Audit nodes would use ``real'' \gls{tls} certificates, and the clients looking to perform one of the \emph{short actions} ---such as adding a single block--- could do so without having to obtain or generate a certificate at all. If the system were re-designed, a networking library more suited to the needs of Astris should probably be used.
