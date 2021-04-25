@@ -82,6 +82,7 @@ Given this and the fact that post-quantum algorithms are significantly more comp
 
 As mentioned at the start of this chapter, Astris is similar in some ways to the Helios v4 protocol, but also the Belenios additions to Helios. The features Astris shares with these existing protocols have been chosen due to their great fit for the problems at hand that all the systems are attempting to solve. It is self-evident that if we wish all our voting data to be public then the use of zero-knowledge proofs are essential, and both Helios and Belenios had already implemented the exact proofs required for Astris. By using the same ElGamal encryption methods, for which these proofs are available, Astris was able to keep almost all data public --- more indeed than either Astris or Belenios. The previous section covered the requirements for encryption and zero-knowledge proofs in Astris and the overlap Astris has with the existing system is to cover those needs explicitly.
 
+
 The Astris protocol is split into distinct stages. There is a setup stage where the election parameters are chosen, the trustees named and the distributed secret key created. This stage also identifies the Registrar, with details for authentication and key material for verifying signatures. Once this initial setup stage is complete, the data are put into a genesis block for the public audit chain for this election and the hash of the block becomes the election identifier used throughout the rest of the protocol. All further data are added to this chain, and any party wishing to verify the election as it happens can join the network and see all the blocks.
 
 One section of the election parameters governs the timing of the phases, which will be used throughout the rest of the protocol.
@@ -268,4 +269,4 @@ We can now still allow all the remaining trustees to add their blocks. Each addi
 \subsection{Verification Phase}
 \label{ch:astris:detail:verify}
 
-This is the simplest possible phase, as any observer can retrace the chain, applying the exact same checks that were performed by each node as the blocks were added in the first place. If the chain is valid, then the election is also valid and the result can be confirmed.
+This is the simplest possible phase as any observer can retrace the chain, applying the exact same checks that were performed by each node as the blocks were added in the first place. If the chain is valid, then the election is also valid and the result can be confirmed.

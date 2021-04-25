@@ -139,98 +139,102 @@ The other tree is the one for the computation of the tally. Restricting access t
 However, a voter may throw election very easily by simply not casting a vote. The encryption and tallying only work if all registered voters actually cast a vote. A single abstention would render the election void. This implies that we must trust the other voters not to destroy the election.
 
 
-\subsection{LWE Based proposal - Chillotti}
+\subsection{Post-Quantum LWE Based Proposal - Chillotti}
 
-This section looks at the system proposed in \cite{chillottiHomomorphicLWEBased} which uses a \emph{post-quantum} homomorphic encryption system as the base for a voting protocol.
+This section looks at the system proposed in \cite{chillottiHomomorphicLWEBased} which uses a \emph{post-quantum} homomorphic encryption system using a form of lattice encryption know as \gls{lwe}. The cryptography in this system is significantly more complex than classical cryptography, but has parallels in function to that which we have seen in many of the other systems. The author cannot claim a full understanding of the mathematics behind the lattice-based system in use, but can understand the principles enough to see the functional similarities to classical cryptosystems.
 
-\todo{
-    Post-Quantum, but otherwise, the voting is basically the same model as any homomorphic encryption based system.
-}
+The proposal is similar in structure to Belenios. There is a distributed key-generation phase to bootstrap a public key cryptosystem capable of providing a signature scheme, a non-malleable and a fully homomorphic encryption scheme and alternative solutions to \glsplural{zkp} to provide verifiable decryption and proof of vote validity (that the vote correctly encrypts the appropriate number of $0$s and $1$s).
 
-\subsection{Vote-SAVER - Lee}
+The entities involved are an Authority, a Bulletin Board and a set of Trustees. The Authority acts as Registrar and maintains a public list of legitimate voters. The Bulletin Board also acts as an Auditor in that it will only publish votes after ensuring validity and can reject them otherwise. The Bulletin Board has a keypair which is used during the election to perform the validation, and the secret key may be revealed after the election without compromising any security properties. Finally, the Trustees help in the initial cryptosystem setup and then during the tally phase to perform verifiable decryption of the homomorphic sum of the votes. The major concession, outlined in the proposal, is that the system is reliant on an honest Bulletin Board. It does not address the case where the board denies legitimate votes.
 
-This section looks at the system proposed in \cite{leeSAVERSNARKfriendlyAdditivelyhomomorphic2019} which uses the Ethereum blockchain with a novel zero-knowledge proof system as the basis for a voting protocol.
+The scheme runs in a familiar order, with parameter setup, followed by voter registration, voting and then tallying. In fact despite the differences in cryptography used in this scheme versus Belenios, each phase, action and security property has an analogous post-quantum alternative here. Note that this is the plain version of Belenios, not BeleniosRF nor BeleniosVS. As such, the only property that is enhanced in this scheme is eternal secrecy, This is enhanced under the advent of practical quantum computing because the \emph{difficult problem} posed by ElGamal is broken in this situation, but \gls{lwe} currently has no known solution quantum or otherwise.
 
-\todo{
-    This is interesting. based on a zkSNARK and smart contracts \\
-    another Ethereum based system.
-}
-
-\subsection{Generic Cryptocurrency Based Voting - Yu}
-
-This section looks at the system proposed in \cite{yuPlatformindependentSecureBlockchainBased2018} which describes a voting system that could run on any cryptocurrency.
-
-\todo{
-    Use of Linkable Ring Signatures for scalability (keeping signatures short)
-}
+Therefore, while the trust requirements are objectively lower due to an enhancement in eternal secrecy, the author would argue that the reduction would be is minimal and that this proposal has very similar trust requirements to Belenios.
 
 \subsection{Trustless - Gajek}
 
 This section looks at the system proposed in \cite{gajekTrustlessCensorshipResilientScalable2019} which focuses on producing a zero-trust protocol.
 
-\todo{
-    High claims of zero-trust \\
-    Solves the privacy/eligibility in zero trust with a distributed ``off-chain oracle'' system. \\
-    proptyped on HyperLedger \\
-    \textbf{I have to justify why I haven't based everything on this.}
-}
+This system does indeed have extremely low trust requirements. It uses \gls{dlt} and smart contracts to perform most of the validation, meaning all the data required for verification is in on-chain and therefore public. In the system, voters have an individual identity and there is a shared anonymous identity also used for casting votes anonymously. In order to cast a vote using the anonymous identity, the voter must obtain authorization in the form of a signature from a \emph{Signing Authority}.
 
-% for the trust on the table.
-\newcommand*\YES{}
-\newcommand*\NO{}
+The protocol has the familiar setup, registration, voting and tally phases. During the setup phase the organizer chooses a group of entities to be Signing Authorities and a group of entities to be Trustees (which the system calls Key Authorities). The organizer also defines here the set of voters and the choices they may vote for. These data are committed to the chain.
 
-\newcommand*\NP{$n$}
-\newcommand*\ALL{$Y$}
-\newcommand*\SERVER{$Y_s$}
-\newcommand*\REG{$Y_r$}
-\newcommand*\SERVERREG{$Y_{rs}$}
-\newcommand*\AUTH{$Y_a$}
+The Trustees now add their public key material to the chain, which checks to ensure the organizer allowed them to. Once all Trustees have added their keys, the voting may begin. In order to cast a vote, the voter first creates the data themselves and encrypts it will all the public keys registered by the Trustees. The vote must be signed by a threshold of the Signing Authorities. Each Signing Authority checks that the voter's true identity is eligible to vote and has not previously requested a signature, and provides a partial blind signature over the vote. Note that none of the Signing Authorities learn anything about the vote during this process, but at the end to voter is able to construct a valid signature over their vote. They now use the \emph{anonymous} identity to submit the encrypted and signed vote to the chain, which validates the signature before accepting the data.
 
+When the voting phase is complete, the tallying begins with all Trustees generate partial decryption keys for the election and publish them on the blockchain along with a signature to prove eligibility to do so. Once all keys are published the decryption of the votes is done on-chain, however it can be performed by anyone as the data are all public. Note that despite the fact that all votes are decrypted, they are also all anonymous and so no link between voter and vote is revealed, preserving the secrecy property.
 
-\begin{table}[h]
-    \centering
-    \begin{tabular}{|Sr c c c c c c c c c c c c|}
-        \hline
-        Voting System                 & \rot{Correctness} & \rot{Secrecy} & \rot{Eligibility} & \rot{Fairness} & \rot{Robustness} & \rot{Receipt Freeness} & \rot{Coercion Resistance} & \rot{Individual Verifiability} & \rot{Universal Verifiability} & \rot{Auditability} & \rot{Real-time Universal Verifiability } & \rot{Eternal Secrecy} \\
+We note that a dishonest set of Signing Authorities could enable double voting, or allow ineligible voters to vote. Either of these actions could be detected as the number of votes cast should be less than or equal to the number of eligible voters, make the outcome both more and less desirable depending on the intent of the dishonest group. If they wish to sway the election, then this is a risky method as it could invalidate the election. If the intent is to void the election then this may be an excellent avenue of attack. The protocol itself does not count that the number of cast votes is sane, so that must be performed by an external auditor.
 
-        \hline\hline
+A group of dishonest Trustees could ---without detection--- decrypt the all currently cast votes which would break the fairness property.
 
-        \textbf{Helios}               & \ALL              & \SERVER       & \SERVERREG        & \SERVER        & \NP              & \NP                    & \NP                       & \ALL                           & \ALL                          & \NP                & \ALL                                     & \SERVER               \\
-        \hline
-        \textbf{BeleniosVS}           & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
-        \textbf{i-Voting}             & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
-        \textbf{Zhao-Bitcoin}         & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
-        \textbf{Tarasov-ZCash}        & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
-        \textbf{Seiflelnasr-Ethereum} & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
-        \textbf{Chilloti-LWE}         & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
-        \textbf{Yu-Cryptocurrency}    & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
-        \textbf{Trustless-Gajek}      & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
-        \hline
-    \end{tabular}
+The voting system is designed to be run on the HyperLedger Fabric (\surl{https://www.hyperledger.org/projects/fabric}) blockchain. This system is a permissioned blockchain network, where the public will not have direct access to the ledger data however the voting protocol requires the all organizations involved in the network make their ledger data available which satisfies the auditability property.
+
+We also observe that receipt-freeness and therefore coercion-resistance is not provided by this system under any trust assumptions. The vote encryption process is probabilistic, so produces the ``toxic waste'' of the randomness used. This waste can be used to prove that the encrypted value matches a given plaintext without the decryption key, providing a receipt. Even if such waste were not available, the encrypted vote is available and the voter has knowledge of it. Once the election is complete the decryption key is released and therefore the known encrypted vote can be decrypted.
+
+In this system we do not need to trust the organizer; we only need to agree with the initial parameters. We only need to trust that a sufficient subset of the Signing Authorities ate honest, and that a sufficient subset of the Trustees are honest. There are no single points of trust in the system, however there are practical downsides. For example, the entire list of eligible voters must be provided in the initial parameters for the election, which in a large-scale election could range into the 100s of millions\footnote{According to \surl{https://www.presidency.ucsb.edu/statistics/data/voter-turnout-in-presidential-elections} the US had over 200 million eligible voters in 2016}.
 
 
 
-    {\raggedright
-    \vspace{0.25em}
-    \footnotesize{
-        \begin{tabular}{r l}
-            \textbf{\NP}     & Not provided.                                            \\
-            \textbf{\ALL}    & Provided under all trust assumptions.                    \\
-            \textbf{\SERVER} & Provided assuming the server operator is trustworthy.    \\
-            \textbf{\AUTH}   & Provided assuming the election Authority is trustworthy. \\
-            \textbf{\REG}    & Provided assuming the Registrar is trustworthy.          \\
-        \end{tabular}
-    }
-    }
 
-    \caption{Table of Voting Systems, Security Properties and Trust Requirements}
-    \label{table:voting-system-props}
-\end{table}
 
+% % for the trust on the table.
+% \newcommand*\YES{}
+% \newcommand*\NO{}
+
+% \newcommand*\NP{$n$}
+% \newcommand*\ALL{$Y$}
+% \newcommand*\SERVER{$Y_s$}
+% \newcommand*\REG{$Y_r$}
+% \newcommand*\SERVERREG{$Y_{rs}$}
+% \newcommand*\AUTH{$Y_a$}
+
+
+% \begin{table}[h]
+%     \centering
+%     \begin{tabular}{|Sr c c c c c c c c c c c c|}
+%         \hline
+%         Voting System            & \rot{Correctness} & \rot{Secrecy} & \rot{Eligibility} & \rot{Fairness} & \rot{Robustness} & \rot{Receipt Freeness} & \rot{Coercion Resistance} & \rot{Individual Verifiability} & \rot{Universal Verifiability} & \rot{Auditability} & \rot{Real-time Universal Verifiability } & \rot{Eternal Secrecy} \\
+
+%         \hline\hline
+
+%         \textbf{Helios}          & \ALL              & \SERVER       & \SERVERREG        & \SERVER        & \NP              & \NP                    & \NP                       & \ALL                           & \ALL                          & \NP                & \ALL                                     & \SERVER               \\
+%         \hline
+%         \textbf{BeleniosVS}      & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+%         \hline
+%         \textbf{i-Voting}        & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+%         \hline
+%         \textbf{Zhao-Bitcoin}    & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+%         \hline
+%         \textbf{Tarasov-ZCash}   & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+%         \hline
+%         \textbf{Chilloti-LWE}    & \YES              & \YES          & \YES              & \NO            & \NO              & \YES                   & \YES                      & \YES                           & \NO                           & \YES               & \NO                                      & \YES                  \\
+%         \hline
+%         \textbf{Trustless-Gajek} & \ALL              & \ALL          & \ALL              & \ALL           & \ALL             & \ALL                   & \ALL                      & \ALL                           & \ALL                          & \ALL               & \ALL                                     & \NO                   \\
+%         \hline
+%     \end{tabular}
+
+
+
+%     {\raggedright
+%     \vspace{0.25em}
+%     \footnotesize{
+%         \begin{tabular}{r l}
+%             \textbf{\NP}     & Not provided.                                            \\
+%             \textbf{\ALL}    & Provided under all trust assumptions.                    \\
+%             \textbf{\SERVER} & Provided assuming the server operator is trustworthy.    \\
+%             \textbf{\AUTH}   & Provided assuming the election Authority is trustworthy. \\
+%             \textbf{\REG}    & Provided assuming the Registrar is trustworthy.          \\
+%         \end{tabular}
+%     }
+%     }
+
+%     \caption{Table of Voting Systems, Security Properties and Trust Requirements}
+%     \label{table:voting-system-props}
+% \end{table}
+
+
+% \subsection{Other Notable Systems}
+
+% During the research phase of this report, the author read about many voting systems, some of which did not differ enough to warrant a section of their own. However, some did contain specific technologies or ideas that are worthy of note and so we will briefly look at some of these other systems.
+
+% In \cite{yuPlatformindependentSecureBlockchainBased2018} the voter secrecy is enhanced by the use of \gls{lrs} on votes. A \gls{lrs} is a form of digital signature that allows a group of public key holders to sign data in a way that does not allow any entity to ascertain which signer was associated with the data and also, to ensure that we can detect if the same signer attempts to sign twice. This is an interesting approach as covers the secrecy property excellently, whilst simultaneously preventing double-voting. However, in this system it precludes repeat voting and requires much interactivity during the voting process.
