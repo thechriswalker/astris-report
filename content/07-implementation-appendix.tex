@@ -33,7 +33,7 @@ We also list the construction of the signature messages where appropriate, but t
     trusteesRequired:       integer
     candidates:             Array<string>
     maxChoices:             integer
-    trustees:               Array<TrusteeSetup>
+    trustees:               Array<TrusteeSetup> // index in here is trustee index (1-based)
     registrar:              RegistrarSetup
     timing:                 TimingInfo
 }
@@ -94,7 +94,9 @@ We also list the construction of the signature messages where appropriate, but t
 The signature for a \texttt{TrusteeSetup} is calculated with using a message created by concatenation of:
 \begin{enumerate}
     \item the literal string \lstinline[style=ES6]{"trustee:"}
-    \item the base10 representation of the trustee index (0-based)
+    \item the base10 representation of the trustee index (1-based)
+    \item the literal string \lstinline[style=ES6]{":"}
+    \item the \texttt{name} property
     \item the literal string \lstinline[style=ES6]{":"}
     \item the base16 (lowercased) representation of the encryption public key \texttt{Y} value
     \item for each \texttt{publicExponent}:
@@ -108,6 +110,8 @@ The signature for a \texttt{RegistrarSetup} is calculated with using a message c
 
 \begin{enumerate}
     \item the literal string \lstinline[style=ES6]{"registrar:"}
+    \item the \texttt{name} property
+    \item the literal string \lstinline[style=ES6]{":"}
     \item the \texttt{registrationURL}
 \end{enumerate}
 
@@ -117,7 +121,7 @@ The signature for a \texttt{RegistrarSetup} is calculated with using a message c
 \begin{lstlisting}[style=ES6]
 // PayloadTrusteeShares
 {
-    trusteeIndex:   integer
+    trusteeIndex:   integer               // (1-based)
     shares:         Array<EncryptedShare> // length = number of trustees - 1
 }
 \end{lstlisting}
@@ -126,7 +130,7 @@ The signature for a \texttt{RegistrarSetup} is calculated with using a message c
 \begin{lstlisting}[style=ES6, firstnumber=last]
 // EncryptedShare
 {
-    recipient:  integer     // the trusteeIndex this is for
+    recipient:  integer     // the trusteeIndex this is for (1-based)
     point:      CipherText  // encrypted with recipient public encryption key
     signature:  Signature
 }
@@ -136,11 +140,9 @@ The trustee shares for a trustee with index $i$ out of $N$ trustees should be an
 
 \begin{enumerate}
     \item the literal string \lstinline[style=ES6]{"share:"}
-    \item the base10 representation of the trustee index $i$
+    \item the base10 representation of the trustee index $i$ (1-based)
     \item the literal string \lstinline[style=ES6]{":"}
-    \item the base10 representation of the recipient trustee index $j$
-    \item the literal string \lstinline[style=ES6]{":"}
-    \item the base10 representation of the trustee index $i$
+    \item the base10 representation of the recipient trustee index $j$ (1-based)
     \item the literal string \lstinline[style=ES6]{":"}
     \item the base16 (lowercased) representation of the point ciphertext \texttt{a} value
     \item the literal string \lstinline[style=ES6]{":"}
@@ -163,7 +165,7 @@ The signature on the trustee public data is constructed by the concatenation of:
 
 \begin{enumerate}
     \item the literal string \lstinline[style=ES6]{"shard:"}
-    \item the base10 representation of the trustee index (0-based)
+    \item the base10 representation of the trustee index (1-based)
     \item the literal string \lstinline[style=ES6]{":"}
     \item the base16 (lowercased) representation of the \texttt{shardKey} public key \texttt{Y} value
 \end{enumerate}
@@ -204,7 +206,7 @@ The signature \texttt{voterSig} on the voter registration object is produced by 
 // PayloadVoteCast
 {
     voterId:    string
-    votes:      Array<BigInt>                      // length = number of candidates
+    votes:      Array<CipherText>                  // length = number of candidates
     proofs:     Array<ZeroKnowledgeProofOneOrZero> // length = number of candidates
     proof:      ZeroKnowledgeProofOneOfX
     signature:  Signature
@@ -223,7 +225,9 @@ The signature is created with the voter's private key and the message is constru
     \item for each element of \texttt{votes}
           \begin{enumerate}
               \item the literal string \lstinline[style=ES6]{":"}
-              \item the base16 (lowercased) representation of the value
+              \item the base16 (lowercased) representation of the ciphertext's \texttt{a} value
+              \item the literal string \lstinline[style=ES6]{"|"}
+              \item the base16 (lowercased) representation of the ciphertext's \texttt{b} value
           \end{enumerate}
 \end{enumerate}
 
@@ -246,12 +250,12 @@ The signature is created with the trustee's private signing key and the message 
 
 \begin{enumerate}
     \item the literal string \lstinline[style=ES6]{"tally:"}
-    \item the base10 representation of the trustee index
+    \item the base10 representation of the trustee index (1-based)
     \item for each ciphertext of \texttt{tallies}
           \begin{enumerate}
               \item the literal string \lstinline[style=ES6]{":"}
               \item the base16 (lowercased) representation of the \texttt{a} value
-              \item the literal string \lstinline[style=ES6]{":"}
+              \item the literal string \lstinline[style=ES6]{"|"}
               \item the base16 (lowercased) representation of the \texttt{b} value
           \end{enumerate}
     \item for each element of \texttt{decrypted}
@@ -261,6 +265,7 @@ The signature is created with the trustee's private signing key and the message 
           \end{enumerate}
 \end{enumerate}
 
+\newpage %
 \section*{Common Structures}
 
 \label{dt:elgamal:pk}
@@ -274,8 +279,7 @@ The signature is created with the trustee's private signing key and the message 
 // SecretKey
 { x: BigInt }
 \end{lstlisting}
-%\vspace*{-0.95em}
-\newpage %
+\vspace*{-0.95em}
 \label{dt:elgamal:keypair}
 \begin{lstlisting}[style=ES6, firstnumber=last]
 // KeyPair
@@ -397,7 +401,7 @@ To decrypt the ciphertext $(a,b)$ with private key $x$ we calculate $m = ba^{-x}
 The decryption function can be rearranged as $b/m = a^x$ and the public key is $y = g^x$. So we can create a \gls{zkp} with a simple challenge function over $(t_1, t_2)$ that we have defined using our random oracle function over the message created by concatenation of:
 
 \begin{enumerate}
-    \item the literal string \lstinline[style=ES6]{"zkp:dec|"}
+    \item the literal string \lstinline[style=ES6]{"zkp:dec:"}
     \item the base16 (lowercased) representation of $t_1$
     \item the literal string \lstinline[style=ES6]{"|"}
     \item the base16 (lowercased) representation of $t_2$
@@ -424,13 +428,13 @@ If the plaintext $m_i$ \emph{isn't} the one encrypted, we create a fake proof. T
 If the plaintext $m_i$ \emph{is} the actual one encrypted, we create a real proof with \gls{zkp} parameters $s = r$, $h = y$, $g = g$. This implies that $G = g^r = a$ and $H = h^r = y^r = (g^x)^r = (g^r)^x = a^x = b/m_i$. As all of these values are known we can construct the \gls{zkp} commitments $(t_1, t_2)$. To create the challenge for the real proof we combine \emph{all} the commitments for all fake and real proofs in order by using the random oracle over a message constructed by concatenation of:
 
 \begin{enumerate}
-    \item the literal string \lstinline[style=ES6]{"zkp:enc|"}
+    \item the literal string \lstinline[style=ES6]{"zkp:enc:"}
     \item for each proof in order:
           \begin{enumerate}
               \item the base16 (lowercased) representation of $t_1$
               \item the literal string \lstinline[style=ES6]{"|"}
               \item the base16 (lowercased) representation of $t_2$
-              \item the literal string \lstinline[style=ES6]{"|"}
+              \item the literal string \lstinline[style=ES6]{":"}
           \end{enumerate}
     \item the extra metadata passed in $d$ as raw bytes
 \end{enumerate}

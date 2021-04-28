@@ -162,7 +162,7 @@ The setup phase involves the Authority, Registrar and Trustees and is done befor
     \item The Authority then creates a genesis block using the \nameref{proc:json} of the setup data, starting the election.
 \end{enumerate}
 
-Once the genesis block is created, the Authority starts a peer-to-peer node service for the election and publishes the peer address as a \texttt{host:port} pair and the election ID.
+Once the genesis block is created, the election ID is defined as the block ID of the genesis block. Now the Authority starts a peer-to-peer node service for the election and publishes the peer address as a \texttt{host:port} pair and the election ID.
 
 At this point any node may connect and watch the growth of the chain by following the rules described in each section for adding new blocks to the chain.
 
@@ -200,7 +200,7 @@ The chain should only accept the blocks if the signatures are valid, using the t
           \end{enumerate}
 \end{enumerate}
 
-The chain should only accept blocks where both the proof of knowledge and the signatures are valid, and we have not seen the trustee's block yet. Note that the share validation is proof the other trustees have behaved correctly in generating their commitments (the exponents). In order to further validate the block the node should also calculate the expected $g^{S_{ji}}$ values using the public exponents. Then the expected public key value returned by the Trustee $y_i$, can also be calculated using the public information as $y_i = g^{x_i}$ and $x_i = \sum\limits_{j=0}^{t} S_{ij}$, therefore $y_i = \prod\limits_{j=0}^{t} g^{S_{ij}}$. As the \gls{zkp} proves that the trustee does indeed have knowledge of the correct private key, we can be sure that all the shares have been generated correctly.
+The chain should only accept blocks where both the proof of knowledge and the signatures are valid, and we have not seen the trustee's block yet. Note that the share validation is proof the other trustees have behaved correctly in generating their commitments (the exponents). In order to further validate the block the node should also calculate the expected $g^{S_{ji}}$ values using the public exponents. Then the expected public key value returned by the Trustee $y_i$, can also be calculated using the public information as $y_i = g^{x_i}$ and $x_i = \sum\limits_{j=1}^{n} S_{ji}$ (where $n$ is the number of trustees), therefore $y_i = \prod\limits_{j=1}^{n} g^{S_{ji}}$. As the \gls{zkp} proves that the trustee does indeed have knowledge of the correct private key, we can be sure that all the shares have been generated correctly.
 
 After this all participants have enough data to combine the public key shards into a combined public key to use for encrypting votes, provided all the trustees have correctly submitted both blocks and if not, then the election cannot continue.
 

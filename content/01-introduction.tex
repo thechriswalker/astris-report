@@ -1,6 +1,18 @@
 \chapter{Introduction}
 \label{ch:intro}
 
+This project investigates three fields in technology and their combined intersection.
+It considers the role of trust in software systems, the promise of secure remote voting and the blossoming field of \gls{dlt} --- a.k.a. Blockchain Technology.
+
+Trust in technology is becoming more relevant in a world where security breaches and data leaks make it into the general media. The public is more aware than ever that their use of technology comes with the potential for their information to be used in ways they did not intend. They make a decision ---consciously or not--- to trust the service provider in order to acquire the benefits of their service. For some, those who give it serious consideration, the decision will be made by weighing the benefit of using the service, the sensitivity of the data they give to the service against the trust they have in both the technology powering the service and the reputation of the service provider. Others may only consider the benefits and give the trust freely. The author believes that the former group, while in the minority now, will only grow as technology continues to advance and increasingly permeate our lives.
+
+Voting is the core of the democratic process. The promise of remote voting, is the ease in which the electorate can perform this process, combined with the reduced cost for the organizing authorities of providing such a service remotely. Remote voting, provided it is at least as trustworthy as in person voting, appears to provide many benefits with few downsides. The potential benefits of convenience, cost, reliability and non-repudiation seem for far outweigh the potential downsides of requiring voters have access to the technology to participate --- a downside that exists in an analogous form for in-person voting in that voters are required to be able to visit a voting booth in a timely manner. Despite these potential benefits, very few large scale remote voting systems are in use.
+
+\Gls{dlt} is a technology which at its core provides a distributed, immutable ledger that mutually distrusting parties can agree on. The surge of popularity in the last few years of cryptocurrencies ---such as Bitcoin, Ethereum and Zcash--- backed by \gls{dlt} has lead to much real-word testing of the reliability and practicality of various forms of the technology. Although the long-term future of cryptocurrencies is still to be seen, the technology itself has more than one use. One particular usage of note is its ability to create audit trails in which a single entity may add to the chain and many others ---possibly even the general public--- can validate the data to ensure consistency. As the data are shared as created, all entities with read access will be able to detect attempts at mutation. \Gls{dlt} however suffers its own popularity with the ``\emph{when all you have is a hammer, everything looks like a nail}'' issue of a solution in search of a problem. ``\emph{Blockchain}'' has become a technology buzzword and many projects are emerging that use \gls{dlt} in places where it is simply unnecessary and an over-complication. We will need a convincing argument that the use of \gls{dlt} is bringing benefit rather than simply a being a solution in need of a problem.
+
+Taking these fields together, can we utilize the \gls{dlt} to help provide a remote voting system with low trust requirements? This report will investigate the process of remote voting, looking at various systems proposed and implemented to see how they address the issues of trust. It will describe \gls{dlt} and its various usages and properties to see how it might be best used in the context of remote voting systems. Indeed, we should be able to show that using \gls{dlt} in such a system actively provides benefit. With this information, we will be in a position to propose and implement a remote voting system which uses the best of this knowledge to provide a voting platform with minimal trust requirements.
+
+
 \section{Motivation}
 \label{ch:intro:motiv}
 
@@ -34,7 +46,7 @@ This report aims to:
     \item Analyse existing e-voting schemes, their security properties and identify areas that require significant trust from the user.
     \item Introduce the technologies and cryptographic systems we can leverage to design a better system.
     \item Propose and provide a software implementation of a scheme that is minimizes trust requirements while maximizing coverage of the desirable security properties.
-    \item Analyse the protocol and the success of the implementation against the criteria used to analyse the existing schemes.
+    \item Analyse the protocol and the success of the implementation against the objectives set out for it.
     \item Form a conclusion whether we {\textbf{can}} reach a minimum level of trust requirement while maintaining the desirable security properties.
 \end{enumerate}
 
