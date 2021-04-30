@@ -351,7 +351,7 @@ Now we create the commitment $c = H(V || A || m)\ \textrm{mod}\ q$ where $H$ is 
 
 Now we calculate the response $r = v - ac\ \textrm{mod}\ q$. The signature is now the pair $(c, r)$.
 
-To verify the signature we recreate $V = g^r * A^c\ \textrm{mod}\ p$, and therefore the expected challenge message $C = H(V || A || m)\ \textrm{mod}\ q$ in the same way as during creation. Then we check:
+To verify the signature we recreate $V = g^r \times A^c\ \textrm{mod}\ p$, and therefore the expected challenge message $C = H(V || A || m)\ \textrm{mod}\ q$ in the same way as during creation. Then we check:
 
 \begin{enumerate}
     \item $A$ is a valid public key for this system
@@ -481,7 +481,7 @@ Would have the canonical representation (note the trailing newline):
 %
 \end{lstlisting}
 
-For reference, the SHA256 hash of the Canonical JSON encoding of that object include the trailing new line character, encoded as hex is:
+For reference, the SHA256 hash of the Canonical JSON encoding of that object ---including the trailing new line character--- encoded as hex is:
 
 \begin{lstlisting}[style=ES6]
 "5a5f0c64d0dd15c9ed2e2baa994c36dac4ba55c5a64ffde7e984b35ff004a543"
