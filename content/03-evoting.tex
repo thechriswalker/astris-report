@@ -174,10 +174,49 @@ We also observe that receipt-freeness and therefore coercion-resistance is not p
 In this system we do not need to trust the organizer; we only need to agree with the initial parameters. We only need to trust that a sufficient subset of the Signing Authorities ate honest, and that a sufficient subset of the Trustees are honest. There are no single points of trust in the system, however there are practical downsides. For example, the entire list of eligible voters must be provided in the initial parameters for the election, which in a large-scale election could range into the 100s of millions\footnote{According to \surl{https://www.presidency.ucsb.edu/statistics/data/voter-turnout-in-presidential-elections} the US had over 200 million eligible voters in 2016}.
 
 
+\subsection{Trust Comparison}
 
+The following table list the discussed voting systems along with the entities which require trust. It also shows the level of trust required with a few broad terms.
 
+\begin{itemize}
+    \item ``Full'' indicates that the entity must be trusted, as it could act in a way to jeopardize the election, breaking its otherwise held security properties.
+    \item ``Partial'' indicates that the trust in this entity is not so strong as for the full requirement. This could be due to trust reducing factors such as distribution of trust amongst a group, or due to the influence or role of another entity in the protocol.
+    \item ``Minimal'' indicates low trust requirements, breach would be possible but unlikely or with little benefit to the perpetrator.
+    \item ``None'' indicates that there is no trust requirement here. This means that either the work this entity does it public and verifiable, or that it is possible for the user to perform it directly themselves.
+    \item ``N/A'' indicates that this particular entity is not required within the protocol, or its purpose is subsumed by another entity.
+\end{itemize}
 
-% % for the trust on the table.
+The table shows quite clearly that some systems provide very low trust requirements, however it is often the case that practical or security properties have been traded off against the low trust, making the systems sub-optimal for real world use.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|Sr c c c c c c |}
+        \hline
+        Voting System               & Authority & Registrar & Trustee & Auditor & Bulletin Board & Candidate \\
+        \hline\hline
+        \textbf{Helios}             & Full      & Full      & Partial & None    & Full           & None      \\
+        \hline
+        \textbf{BeleniosVS}         & Full      & Full      & Partial & None    & Full           & None      \\
+        \hline
+        \textbf{i-Voting}           & Full      & Partial   & Partial & Partial & Full           & None      \\
+        \hline
+        \textbf{Zhao-Bitcoin}       & None      & N/A       & None    & None    & None           & None      \\
+        \hline
+        \textbf{Tarasov-ZCash}      & Full      & Full      & N/A     & N/A     & N/A            & Partial   \\
+        \hline
+        \textbf{Scalable Open Vote} & Minimal   & N/A       & Partial & None    & None           & Partial   \\
+        \hline
+        \textbf{Chilloti-LWE}       & Full      & Full      & Partial & None    & Full           & None      \\
+        \hline
+        \textbf{Trustless-Gajek}    & None      & Partial   & Minimal & None    & Minimal        & None      \\
+        \hline
+    \end{tabular}
+
+    \caption{Table of Voting Systems and Trust Requirements}
+    \label{table:voting-system-props}
+\end{table}%
+
+% for the trust on the table.
 % \newcommand*\YES{}
 % \newcommand*\NO{}
 

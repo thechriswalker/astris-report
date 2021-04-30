@@ -2,7 +2,7 @@
 \chapter{Proposal for an Improved Protocol: Astris}
 \label{ch:astris}
 
-This chapter looks at a proposal for new e-voting protocol. The focus of the new protocol will be minimizing the trust requirements of the user. It will achieve this by distributing single points of trust as far as practical and ensuring real-time universal verifiability.
+This chapter looks at a proposal for new e-voting protocol. Given the existing protocols and their individual trade-offs, the author believes there is scope for a new proposal providing lower trust requirements with equivalent security properties. The focus of the new protocol will be minimizing the trust requirements of the user. It will achieve this by distributing single points of trust as far as practical and ensuring real-time universal verifiability.
 
 \begin{quote}
     ``There are only two hard things in Computer Science: cache invalidation and naming things.''
@@ -255,7 +255,7 @@ This is the final interactive phase and involves the trustees only. The timings 
     \item The trustee creates the homomorphic sum of valid votes. Remember that we have last-vote-counts, and only one vote per voter should be added. The Exponential ElGamal process means that homomorphic addition is done by multiplication of the \texttt{a} and \texttt{b} values of the ciphertext.
     \item The trustee then uses the secret part of the shard of the key to produce a partial decryption of each tally.
     \item The trustee produces a \dtref{ZeroKnowledgeProof}{dt:elgamal:zkp} of correct decryption using the method in \hyperref[proc:zkp:dec]{appendix B}.
-    \item The trustee produces a \dtref{Signature}{dt:elgamal:sig} over this \nameref{dt:payload:tally}.
+    \item The trustee produces a \dtref{Signature}{dt:elgamal:pok} over this \nameref{dt:payload:tally}.
     \item The trustee produces the final \nameref{dt:payload:tally} with the signature and proofs and adds the block to the chain.
 \end{enumerate}
 
